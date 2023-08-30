@@ -3,14 +3,19 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class Player : MonoBehaviour
+public class Player : Character
 {
-    private Vector2 _direction;
-    [SerializeField] private float _speed = 1f;
+    private Vector3 _direction;
+
+    private void Start()
+    {
+        p_actualTime = 10;
+    }
 
     void Update()
     {
-        MovementCharacter();
+        PlayerMovement();
+        p_actualTime += Time.deltaTime;
     }
 
     public void SetMoveValue(InputAction.CallbackContext inputContext)
@@ -18,8 +23,17 @@ public class Player : MonoBehaviour
         _direction = inputContext.ReadValue<Vector2>();
     }
 
-    private void MovementCharacter()
+    public void SetShootValue(InputAction.CallbackContext inputContext)
     {
-        transform.position += new Vector3(_direction.x, _direction.y, 0) * Time.deltaTime * _speed;
+        if (p_actualTime > p_shootTimeRest)
+        {
+            p_actualTime = 0;
+            CharacterShoot();
+        }
+    }
+
+    private void PlayerMovement()
+    {
+        Move(_direction);
     }
 }
