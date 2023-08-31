@@ -42,7 +42,6 @@ public class BulletManager : MonoBehaviour
             {
                 _bullet = Instantiate(_bulletPrefab, transform.position, Quaternion.identity);
                 _bulletList.Add(_bullet);
-                _bullet.transform.parent = transform;
                 _bullet.activeBullet = true;
                 _bullet.direction = direction;
                 break;

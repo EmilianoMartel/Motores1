@@ -28,7 +28,10 @@ public class Character : MonoBehaviour
 
     private void Awake()
     {
-        CameraLimit();
+        if (p_mainCamera != null)
+        {
+            CameraLimit();
+        }
     }
     
     private void Update()
