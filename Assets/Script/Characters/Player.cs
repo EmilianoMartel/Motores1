@@ -5,8 +5,6 @@ using UnityEngine.InputSystem;
 
 public class Player : Character
 {
-    private Vector3 _direction;
-
     private void Start()
     {
         p_actualTime = 10;
@@ -20,7 +18,7 @@ public class Player : Character
 
     public void SetMoveValue(InputAction.CallbackContext inputContext)
     {
-        _direction = inputContext.ReadValue<Vector2>();
+        p_direction = inputContext.ReadValue<Vector2>();
     }
 
     public void SetShootValue(InputAction.CallbackContext inputContext)
@@ -34,6 +32,6 @@ public class Player : Character
 
     private void PlayerMovement()
     {
-        Move(_direction);
+        Move(p_direction);
     }
 }

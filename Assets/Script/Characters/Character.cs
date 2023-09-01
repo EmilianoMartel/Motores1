@@ -11,6 +11,7 @@ public class Character : MonoBehaviour
     //Movement
     [SerializeField] protected float p_speed;
     [SerializeField] protected Camera p_mainCamera;
+    public Vector3 p_direction;
     protected float p_upperLimit;
     protected float p_lowerLimit;
     protected float p_leftLimit;
