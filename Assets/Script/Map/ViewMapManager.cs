@@ -2,21 +2,27 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+public delegate void FloorPosition(Vector2 vector2);
 public class ViewMapManager : MonoBehaviour
 {
-    [SerializeField] int _row; //High
-    [SerializeField] int _column; //Width
+    public FloorPosition floorPosition;
+
+    [SerializeField] private int _row; //High
+    [SerializeField] private int _column; //Width
     private GameObject[,] _tableDimention => new GameObject[_row, _column];
-    [SerializeField] List<GameObject> _topWallList;
-    [SerializeField] List<GameObject> _rightWallList;
-    [SerializeField] List<GameObject> _leftWallList;
-    [SerializeField] List<GameObject> _downWallList;
-    [SerializeField] List<GameObject> _floorList;
-    [SerializeField] GameObject _leftDownWallCorner;
-    [SerializeField] GameObject _rightDownWallCorner;
+    [SerializeField] private List<GameObject> _topWallList;
+    [SerializeField] private List<GameObject> _rightWallList;
+    [SerializeField] private List<GameObject> _leftWallList;
+    [SerializeField] private List<GameObject> _downWallList;
+    [SerializeField] private List<GameObject> _floorList;
+    [SerializeField] private GameObject _leftDownWallCorner;
+    [SerializeField] private GameObject _rightDownWallCorner;
     private GameObject _wall;
 
-    private void Awake()
+    //Index
+    private int index;
+
+    private void Start()
     {
         SpawnTable();
     }
@@ -39,27 +45,32 @@ public class ViewMapManager : MonoBehaviour
                 }
                 else if (f_row == 0)
                 {
-                    _wall = Instantiate(_downWallList[0], transform.position + new Vector3(f_column, f_row, 10), Quaternion.identity);
+                    index = Random.Range(0,_downWallList.Count);
+                    _wall = Instantiate(_downWallList[index], transform.position + new Vector3(f_column, f_row, 10), Quaternion.identity);
                     _wall.transform.parent = transform;
                 }
                 else if (f_column == 0)
                 {
-                    _wall = Instantiate(_leftWallList[0], transform.position + new Vector3(f_column, f_row, 10), Quaternion.identity);
+                    index = Random.Range(0, _leftWallList.Count);
+                    _wall = Instantiate(_leftWallList[index], transform.position + new Vector3(f_column, f_row, 10), Quaternion.identity);
                     _wall.transform.parent = transform;
                 }
                 else if (f_column == _column - 1)
                 {
-                    _wall = Instantiate(_rightWallList[0], transform.position + new Vector3(f_column, f_row, 10), Quaternion.identity);
+                    index = Random.Range(0, _rightWallList.Count);
+                    _wall = Instantiate(_rightWallList[index], transform.position + new Vector3(f_column, f_row, 10), Quaternion.identity);
                     _wall.transform.parent = transform;
                 }
                 else if(f_row == _row - 1)
                 {
-                    _wall = Instantiate(_topWallList[0], transform.position + new Vector3(f_column, f_row, 10), Quaternion.identity);
+                    index = Random.Range(0, _topWallList.Count);
+                    _wall = Instantiate(_topWallList[index], transform.position + new Vector3(f_column, f_row, 10), Quaternion.identity);
                     _wall.transform.parent = transform;
                 }
                 else
                 {
-                    _wall = Instantiate(_floorList[0], transform.position + new Vector3(f_column, f_row, 10), Quaternion.identity);
+                    _wall = Instantiate(_floorList[index], transform.position + new Vector3(f_column, f_row, 10), Quaternion.identity);
+                    floorPosition?.Invoke(_wall.transform.position);
                     _wall.transform.parent = transform;
                 }
             }

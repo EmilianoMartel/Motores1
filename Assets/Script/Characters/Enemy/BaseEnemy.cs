@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.PlayerLoop;
 
 public delegate void EnemyKill(BaseEnemy enemy);
 public class BaseEnemy : Character
@@ -9,6 +10,7 @@ public class BaseEnemy : Character
 
     //Positions
     [SerializeField] private List<Vector2> _positionList= new List<Vector2>();
+    [SerializeField] private ViewMapManager _viewMapManager;
     private int _indexListPosition = 0;
     private int _currentIndexPosition;
     private Vector2 _currentPosition;
@@ -23,14 +25,14 @@ public class BaseEnemy : Character
     {
         p_mainCamera = FindAnyObjectByType<Camera>();
         CameraLimit();
-        //TimeShootSelection();
-        _indexListPosition = Random.Range(0, _positionList.Count);
-        _nextPosition = _positionList[_indexListPosition];
+        TimeShootSelection();
+        _viewMapManager.floorPosition += PositionListSpawner;
     }
 
     private void Start()
     {
-        
+        //_indexListPosition = Random.Range(0, _positionList.Count);
+        //_nextPosition = _positionList[_indexListPosition];
     }
 
     private void Update()
@@ -72,5 +74,10 @@ public class BaseEnemy : Character
         {
             RandomIndexPosition();
         }
+    }
+
+    private void PositionListSpawner(Vector2 position)
+    {
+        _positionList.Add(position);
     }
 }
