@@ -2,14 +2,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public delegate void FloorPosition(Vector2 vector2);
+public delegate void FloorPosition(Vector2 vector2, int column, int row);
 public class ViewMapManager : MonoBehaviour
 {
     public FloorPosition floorPosition;
 
-    [SerializeField] private int _row; //High
-    [SerializeField] private int _column; //Width
-    private GameObject[,] _tableDimention => new GameObject[_row, _column];
+    public int _row; //High
+    public int _column; //Width
+    private GameObject[,] _tableDimention => new GameObject[_column, _row];
     [SerializeField] private List<GameObject> _topWallList;
     [SerializeField] private List<GameObject> _rightWallList;
     [SerializeField] private List<GameObject> _leftWallList;
@@ -45,7 +45,7 @@ public class ViewMapManager : MonoBehaviour
                 }
                 else if (f_row == 0)
                 {
-                    index = Random.Range(0,_downWallList.Count);
+                    index = Random.Range(0, _downWallList.Count);
                     _wall = Instantiate(_downWallList[index], transform.position + new Vector3(f_column, f_row, 10), Quaternion.identity);
                     _wall.transform.parent = transform;
                 }
@@ -61,7 +61,7 @@ public class ViewMapManager : MonoBehaviour
                     _wall = Instantiate(_rightWallList[index], transform.position + new Vector3(f_column, f_row, 10), Quaternion.identity);
                     _wall.transform.parent = transform;
                 }
-                else if(f_row == _row - 1)
+                else if (f_row == _row - 1)
                 {
                     index = Random.Range(0, _topWallList.Count);
                     _wall = Instantiate(_topWallList[index], transform.position + new Vector3(f_column, f_row, 10), Quaternion.identity);
@@ -70,7 +70,7 @@ public class ViewMapManager : MonoBehaviour
                 else
                 {
                     _wall = Instantiate(_floorList[index], transform.position + new Vector3(f_column, f_row, 10), Quaternion.identity);
-                    floorPosition?.Invoke(_wall.transform.position);
+                    floorPosition?.Invoke(_wall.transform.position, f_column - 1, f_row - 1);
                     _wall.transform.parent = transform;
                 }
             }
