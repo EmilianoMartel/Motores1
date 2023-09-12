@@ -156,8 +156,8 @@ MonoBehaviour:
   direction: {x: 0, y: 0}
   activeBullet: 0
   _speed: 1
-  _damage: 0
-  _deleteTime: 6
+  _damage: 1
+  _deleteTime: 2
 --- !u!50 &8462164351675405881
 Rigidbody2D:
   serializedVersion: 4
@@ -167,7 +167,7 @@ Rigidbody2D:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1913380682993468123}
   m_BodyType: 1
-  m_Simulated: 1
+  m_Simulated: 0
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
   m_Mass: 1
