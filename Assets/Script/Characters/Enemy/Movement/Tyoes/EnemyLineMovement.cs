@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EnemyLineMovement : BaseEnemy
+public class EnemyLineMovement : EnemyMovement
 {
     void Update()
     {
@@ -45,7 +45,7 @@ public class EnemyLineMovement : BaseEnemy
         p_directionToNextPosition = p_nextPosition - p_currentPosition;
         p_directionToNextPosition.Normalize();
 
-        Move(p_directionToNextPosition);
+        DirectionAssigned(p_directionToNextPosition);
 
         if ((p_currentPosition - p_nextPosition).magnitude <= _treshold)
         {

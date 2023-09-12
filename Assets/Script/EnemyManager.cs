@@ -17,6 +17,12 @@ public class EnemyManager : MonoBehaviour
 
     private void Awake()
     {
+        if (_viewMapManager == null)
+        {
+            Debug.LogError(message: $"{name}: ViewManager is null\n Check and assigned one\nDisabling component");
+            enabled = false;
+            return;
+        }
         _row = _viewMapManager._row - 2;
         _column = _viewMapManager._column - 2;
         _positionMatriz = new Vector2[_column, _row];

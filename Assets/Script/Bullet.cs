@@ -21,8 +21,8 @@ public class Bullet : MonoBehaviour
         if (_actualTime >= _deleteTime)
         {
             _actualTime = 0;
-            activeBullet = false;
-            gameObject.SetActive(false);
+            DisableBullet();
+            
         }
     }
 
@@ -38,6 +38,11 @@ public class Bullet : MonoBehaviour
             _character = other.gameObject.GetComponent<Character>();
             _character.Damage(_damage);
         }
+        DisableBullet();
+    }
+
+    private void DisableBullet()
+    {
         activeBullet = false;
         gameObject.SetActive(false);
     }

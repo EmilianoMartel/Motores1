@@ -1,9 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class BulletManager : MonoBehaviour
 {
+    [SerializeField] private List<Transform> _pointShootList;
     [SerializeField] private int _minBullets = 5;
     [SerializeField] private Bullet _bulletPrefab;
     private Bullet _bullet;
@@ -11,6 +13,12 @@ public class BulletManager : MonoBehaviour
 
     void Start()
     {
+        if (_pointShootList.Count == 0)
+        {
+            Debug.LogError(message: $"{name}: ShootList is null\n Check and assigned one\nDisabling component");
+            enabled = false;
+            return;
+        }
         GenerateBaseList();
     }
 
@@ -18,34 +26,58 @@ public class BulletManager : MonoBehaviour
     {
         for (int i = 0; i < _minBullets; i++)
         {
-            _bullet = Instantiate(_bulletPrefab,transform.position,Quaternion.identity);
+            _bullet = Instantiate(_bulletPrefab, transform.position, Quaternion.identity);
             _bulletList.Add(_bullet);
             _bullet.activeBullet = false;
             _bullet.gameObject.SetActive(false);
         }
     }
 
-    public void Shoot(Vector3 direction)
+    public void Shoot(Vector2 direction)
     {
         for (int i = 0; i < _bulletList.Count; i++)
         {
             if (!_bulletList[i].activeBullet)
             {
                 _bullet = _bulletList[i];
-                _bullet.transform.position = transform.position;
+                GetPointShoot(direction);
+
                 _bullet.gameObject.SetActive(true);
                 _bullet.activeBullet = true;
-                _bullet.direction = direction;
                 break;
             }
-            if(i == _bulletList.Count - 1 && _bulletList[i].activeBullet)
+            if (i == _bulletList.Count - 1 && _bulletList[i].activeBullet)
             {
                 _bullet = Instantiate(_bulletPrefab, transform.position, Quaternion.identity);
                 _bulletList.Add(_bullet);
                 _bullet.activeBullet = true;
-                _bullet.direction = direction;
+                GetPointShoot(direction);
                 break;
             }
+        }
+    }
+
+    private void GetPointShoot(Vector2 direction)
+    {
+        if (direction == new Vector2(0, 1))
+        {
+            _bullet.transform.position = _pointShootList[0].transform.position;
+            _bullet.direction = _pointShootList[0].transform.up;
+        }
+        else if (direction == new Vector2(1, 0))
+        {
+            _bullet.transform.position = _pointShootList[1].transform.position;
+            _bullet.direction = _pointShootList[1].transform.up;
+        }
+        else if (direction == new Vector2(0, -1))
+        {
+            _bullet.transform.position = _pointShootList[2].transform.position;
+            _bullet.direction = _pointShootList[2].transform.up;
+        }
+        else if (direction == new Vector2(-1, 0))
+        {
+            _bullet.transform.position = _pointShootList[3].transform.position;
+            _bullet.direction = _pointShootList[3].transform.up;
         }
     }
 }

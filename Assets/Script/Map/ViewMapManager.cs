@@ -24,6 +24,12 @@ public class ViewMapManager : MonoBehaviour
 
     private void Start()
     {
+        if (_column <= 0 || _row <= 0)
+        {
+            Debug.LogError(message: $"{name}: The column and row is too small \n Check column and row\nDisabling component");
+            enabled = false;
+            return;
+        }
         SpawnTable();
     }
 

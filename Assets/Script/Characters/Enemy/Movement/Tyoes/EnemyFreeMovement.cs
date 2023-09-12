@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EnemyFreeMovement : BaseEnemy
+public class EnemyFreeMovement : EnemyMovement
 {
     private void Update()
     {
@@ -27,7 +27,8 @@ public class EnemyFreeMovement : BaseEnemy
         p_directionToNextPosition = p_nextPosition - p_currentPosition;
         p_directionToNextPosition.Normalize();
 
-        Move(p_directionToNextPosition);
+        p_direction = p_directionToNextPosition;
+        DirectionAssigned(p_directionToNextPosition);
 
         if ((p_currentPosition - p_nextPosition).magnitude <= _treshold)
         {

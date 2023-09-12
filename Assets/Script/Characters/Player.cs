@@ -5,6 +5,8 @@ using UnityEngine.InputSystem;
 
 public class Player : Character
 {
+    [SerializeField] private PlayerShooterManager _shooterManager;
+
     private void Start()
     {
         p_actualTime = 10;
@@ -26,12 +28,12 @@ public class Player : Character
         if (p_actualTime > p_shootTimeRest)
         {
             p_actualTime = 0;
-            CharacterShoot();
+            _shooterManager.GetValueShoot(inputContext.ReadValue<Vector2>());
         }
     }
 
     private void PlayerMovement()
     {
-        Move(p_direction);
+        MoveInCamera(p_direction);
     }
 }

@@ -11,7 +11,7 @@ public class Character : MonoBehaviour
     //Movement
     [SerializeField] protected float p_speed;
     [SerializeField] protected Camera p_mainCamera;
-    public Vector3 p_direction;
+    protected Vector3 p_direction;
     protected float p_upperLimit;
     protected float p_lowerLimit;
     protected float p_leftLimit;
@@ -19,10 +19,8 @@ public class Character : MonoBehaviour
     float yPos;
 
     //Shoot
-    [SerializeField] protected GameObject p_pointShoot;
+    [SerializeField] protected ShooterManager p_characterShoot;
     [SerializeField] protected float p_shootTimeRest;
-    [SerializeField] protected BulletManager p_bulletManager;
-    private Vector3 _bulletDirection;
 
     protected float p_actualTime;
     protected static float timeEndGame = 2f;
@@ -34,13 +32,8 @@ public class Character : MonoBehaviour
             CameraLimit();
         }
     }
-    
-    private void Update()
-    {
-        p_actualTime += Time.deltaTime;
-    }
-
-    protected void Move(Vector2 direction)
+   
+    protected void MoveInCamera(Vector2 direction)
     {
         Vector3 newPosition = transform.position + (Vector3)(direction * p_speed * Time.deltaTime);
         newPosition.x = Mathf.Clamp(newPosition.x, p_leftLimit, p_rightLimit);
@@ -57,12 +50,6 @@ public class Character : MonoBehaviour
         }
     }
 
-    protected virtual void CharacterShoot()
-    {
-        _bulletDirection = p_pointShoot.transform.position - transform.position;
-        p_bulletManager.Shoot(_bulletDirection);
-    }
-
     protected virtual void Kill()
     {
         gameObject.SetActive(false);
@@ -76,5 +63,10 @@ public class Character : MonoBehaviour
         p_lowerLimit = p_mainCamera.transform.position.y - height;
         p_leftLimit = p_mainCamera.transform.position.x - width;
         p_rightLimit = p_mainCamera.transform.position.x + width;
+    }
+
+    public Vector2 GetDirection()
+    {
+        return p_direction;
     }
 }

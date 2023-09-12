@@ -24,7 +24,7 @@ public class CharacterView : MonoBehaviour
 
     private void Update()
     {
-        _direction = _character.p_direction;
+        _direction = _character.GetDirection();
         _dirX = _direction.x;
         _dirY = _direction.y;
         _isMoving = _direction != Vector2.zero;
