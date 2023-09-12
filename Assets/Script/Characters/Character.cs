@@ -12,6 +12,7 @@ public class Character : MonoBehaviour
     [SerializeField] protected float p_speed;
     [SerializeField] protected Camera p_mainCamera;
     protected Vector3 p_direction;
+    protected Vector3 p_attackDirection;
     protected float p_upperLimit;
     protected float p_lowerLimit;
     protected float p_leftLimit;
@@ -19,8 +20,8 @@ public class Character : MonoBehaviour
     float yPos;
 
     //Shoot
-    [SerializeField] protected ShooterManager p_characterShoot;
     [SerializeField] protected float p_shootTimeRest;
+    [SerializeField] protected BulletManager p_bulletManager;
 
     protected float p_actualTime;
     protected static float timeEndGame = 2f;
@@ -68,5 +69,10 @@ public class Character : MonoBehaviour
     public Vector2 GetDirection()
     {
         return p_direction;
+    }
+
+    public Vector2 ShootDirection()
+    {
+        return p_attackDirection;
     }
 }

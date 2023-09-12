@@ -5,17 +5,22 @@ using UnityEngine;
 
 public class BulletManager : MonoBehaviour
 {
-    [SerializeField] private List<Transform> _pointShootList;
+    [SerializeField] private Transform _pointShoot;
     [SerializeField] private int _minBullets = 5;
     [SerializeField] private Bullet _bulletPrefab;
     private Bullet _bullet;
     private List<Bullet> _bulletList = new List<Bullet>();
 
+    private Vector2 _bulletDirection;
+    private Vector2 _realPointShoot;
+    private const float DIFF_X = 1.0f;
+    private const float DIFF_Y = 1.0f;
+
     void Start()
     {
-        if (_pointShootList.Count == 0)
+        if (_pointShoot == null)
         {
-            Debug.LogError(message: $"{name}: ShootList is null\n Check and assigned one\nDisabling component");
+            Debug.LogError(message: $"{name}: PointShoot is null\n Check and assigned one\nDisabling component");
             enabled = false;
             return;
         }
@@ -35,13 +40,20 @@ public class BulletManager : MonoBehaviour
 
     public void Shoot(Vector2 direction)
     {
+        _bulletDirection = direction;
+        ElectionBullet();
+        ElectionSpawn();
+        _bullet.transform.position = _realPointShoot;
+        _bullet.direction = direction;
+    }
+
+    private void ElectionBullet()
+    {
         for (int i = 0; i < _bulletList.Count; i++)
         {
             if (!_bulletList[i].activeBullet)
             {
                 _bullet = _bulletList[i];
-                GetPointShoot(direction);
-
                 _bullet.gameObject.SetActive(true);
                 _bullet.activeBullet = true;
                 break;
@@ -51,33 +63,30 @@ public class BulletManager : MonoBehaviour
                 _bullet = Instantiate(_bulletPrefab, transform.position, Quaternion.identity);
                 _bulletList.Add(_bullet);
                 _bullet.activeBullet = true;
-                GetPointShoot(direction);
                 break;
             }
         }
     }
 
-    private void GetPointShoot(Vector2 direction)
+    private void ElectionSpawn()
     {
-        if (direction == new Vector2(0, 1))
+        if (_bulletDirection.x > 0)
         {
-            _bullet.transform.position = _pointShootList[0].transform.position;
-            _bullet.direction = _pointShootList[0].transform.up;
+            _realPointShoot = _pointShoot.position;
+            _realPointShoot += new Vector2(DIFF_X, 0);
+        }else if (_bulletDirection.x < 0)
+        {
+            _realPointShoot = _pointShoot.position;
+            _realPointShoot += new Vector2(-DIFF_X, 0);
+        }else if (_bulletDirection.y < 1)
+        {
+            _realPointShoot = _pointShoot.position;
+            _realPointShoot += new Vector2(0, -DIFF_Y);
         }
-        else if (direction == new Vector2(1, 0))
+        else
         {
-            _bullet.transform.position = _pointShootList[1].transform.position;
-            _bullet.direction = _pointShootList[1].transform.up;
-        }
-        else if (direction == new Vector2(0, -1))
-        {
-            _bullet.transform.position = _pointShootList[2].transform.position;
-            _bullet.direction = _pointShootList[2].transform.up;
-        }
-        else if (direction == new Vector2(-1, 0))
-        {
-            _bullet.transform.position = _pointShootList[3].transform.position;
-            _bullet.direction = _pointShootList[3].transform.up;
+            _realPointShoot = _pointShoot.position;
+            _realPointShoot += new Vector2(0, DIFF_Y);
         }
     }
 }
