@@ -21,9 +21,8 @@ public class Character : MonoBehaviour
 
     //Shoot
     [SerializeField] protected float p_shootTimeRest;
-    [SerializeField] protected BulletManager p_bulletManager;
 
-    protected float p_actualTime;
+    protected float p_actualTime = 0;
     protected static float timeEndGame = 2f;
 
     private void Awake()
@@ -74,5 +73,10 @@ public class Character : MonoBehaviour
     public Vector2 ShootDirection()
     {
         return p_attackDirection;
+    }
+
+    public float GetShootColdDown()
+    {
+        return p_shootTimeRest;
     }
 }

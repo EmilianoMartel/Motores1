@@ -13,7 +13,6 @@ public class Bullet : MonoBehaviour
     private float _actualTime;
     private Character _character;
 
-
     void Update()
     {
         gameObject.transform.Translate(direction * _speed * Time.deltaTime);
@@ -28,12 +27,7 @@ public class Bullet : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.gameObject.layer == LayerMask.NameToLayer("Enemy"))
-        {
-            _character = other.gameObject.GetComponent<Character>();
-            _character.Damage(_damage);
-        }
-        else if (other.gameObject.layer == LayerMask.NameToLayer("Player"))
+        if (other.gameObject.layer == LayerMask.NameToLayer("Enemy") || other.gameObject.layer == LayerMask.NameToLayer("Player"))
         {
             _character = other.gameObject.GetComponent<Character>();
             _character.Damage(_damage);

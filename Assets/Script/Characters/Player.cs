@@ -5,6 +5,8 @@ using UnityEngine.InputSystem;
 
 public class Player : Character
 {
+
+    [SerializeField] protected BulletManager p_bulletManager;
     private void Start()
     {
         p_actualTime = 10;
