@@ -8,6 +8,8 @@ public class BaseEnemy : Character
 {
     public EnemyKill enemyKill;
 
+    public bool activateEnemy = true;
+
     //Managers
     [SerializeField] private EnemyMovement _enemyMovement;
     [SerializeField] private EnemyShoot _enemyShoot;
@@ -15,18 +17,16 @@ public class BaseEnemy : Character
     //Shooting
     [SerializeField] private float _maxTimeShoot = 5.0f;
     private float _timeShoot;
-
+    private bool _isShooting;
+    
     void Awake()
     {
-        p_mainCamera = FindAnyObjectByType<Camera>();
-        CameraLimit();
         TimeShootSelection();
         p_actualTime = 0;
     }
 
     private void Update()
     {
-        
         if (_enemyMovement != null)
         {
             _enemyMovement.Movement();
@@ -53,8 +53,13 @@ public class BaseEnemy : Character
         base.Kill();
     }
 
-    public float GetSpeed()
+    public float ReturnSpeed()
     {
         return p_speed;
+    }
+
+    public void GetEnemyManager(EnemyManager enemyManager)
+    {
+        _enemyMovement.GetValueEnemyManager(enemyManager);
     }
 }

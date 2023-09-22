@@ -8,10 +8,15 @@ public class Bullet : MonoBehaviour
     public Vector2 direction;
     public bool activeBullet;
     [SerializeField] private float _speed;
-    [SerializeField] private int _damage;
     [SerializeField] private float _deleteTime = 6f;
+    [SerializeField] HealthPoints _healthPoints;
     private float _actualTime;
     private Character _character;
+
+    private void Start()
+    {
+        _healthPoints.death += DisableBullet;
+    }
 
     void Update()
     {
@@ -21,23 +26,17 @@ public class Bullet : MonoBehaviour
         {
             _actualTime = 0;
             DisableBullet();
-            
         }
-    }
-
-    private void OnTriggerEnter2D(Collider2D other)
-    {
-        if (other.gameObject.layer == LayerMask.NameToLayer("Enemy") || other.gameObject.layer == LayerMask.NameToLayer("Player"))
-        {
-            _character = other.gameObject.GetComponent<Character>();
-            _character.Damage(_damage);
-        }
-        DisableBullet();
     }
 
     private void DisableBullet()
     {
         activeBullet = false;
         gameObject.SetActive(false);
+    }
+
+    private void OnDestroy()
+    {
+        _healthPoints.death -= DisableBullet;
     }
 }

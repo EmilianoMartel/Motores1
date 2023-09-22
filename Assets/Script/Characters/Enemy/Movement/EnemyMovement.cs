@@ -6,7 +6,7 @@ using UnityEngine;
 public class EnemyMovement : MonoBehaviour
 {
     [SerializeField] protected BaseEnemy _baseEnemy;
-    [SerializeField] protected EnemyManager _enemyManager;
+    protected EnemyManager _enemyManager;
 
     //Positions
     protected Vector2 p_currentPosition;
@@ -34,11 +34,16 @@ public class EnemyMovement : MonoBehaviour
 
     public void Movement()
     {
-        transform.Translate(p_direction * _baseEnemy.GetSpeed() * Time.deltaTime);
+        transform.Translate(p_direction * _baseEnemy.ReturnSpeed() * Time.deltaTime);
     }
 
     protected void DirectionAssigned(Vector2 direction)
     {
         p_direction = direction;
+    }
+
+    public void GetValueEnemyManager(EnemyManager enemyManager)
+    {
+        _enemyManager = enemyManager;
     }
 }

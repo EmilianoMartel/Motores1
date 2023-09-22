@@ -9,10 +9,11 @@ public class EnemyManager : MonoBehaviour
     [SerializeField] private int _row = 1;
     [SerializeField] private int _column = 1;
     public Vector2[,] _positionMatriz;
+    
 
     //EnemyList
     [SerializeField] private List<BaseEnemy> _enemyListPrefab;
-    private List<BaseEnemy> _enemyList;
+    private List<BaseEnemy> _enemyList = new List<BaseEnemy>();
     private BaseEnemy _enemy;
 
     private void Awake()
@@ -29,6 +30,11 @@ public class EnemyManager : MonoBehaviour
         _viewMapManager.floorPosition += PositionListSpawner;
     }
 
+    private void Start()
+    {
+        InvokeEnemyList();
+    }
+
     private void PositionListSpawner(Vector2 position, int column, int row)
     {
         if (column > _column || row > _row || column < 0 || row < 0)
@@ -40,8 +46,23 @@ public class EnemyManager : MonoBehaviour
         _positionMatriz[column,row] = position;
     }
 
-    private void InvokeEnemy()
+    [ContextMenu("InvokeEnemyList")]
+    private void InvokeEnemyList()
     {
+        for (int i = 0; i < _enemyListPrefab.Count; i++)
+        {
+            _enemy = Instantiate(_enemyListPrefab[i], transform.position, Quaternion.identity);
+            _enemy.GetEnemyManager(this);
+            _enemyList.Add(_enemy);
+            _enemy.activateEnemy = false;
+            _enemy.gameObject.SetActive(false);
+        }
+    }
 
+    [ContextMenu("SpawnEnemy")]
+    private void SpawnEnemy()
+    {
+        _enemyList[0].activateEnemy = true;
+        _enemyList[0].gameObject.SetActive(true);
     }
 }

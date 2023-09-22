@@ -35,7 +35,7 @@ public class Player : Character
 
     private void PlayerMovement()
     {
-        MoveInCamera(p_direction);
+        Movement(p_direction);
     }
 
     private void PlayerShoot()
