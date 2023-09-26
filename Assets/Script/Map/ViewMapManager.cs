@@ -45,6 +45,7 @@ public class ViewMapManager : MonoBehaviour
             return;
         }
         SpawnTable();
+        ViewData();
     }
 
     private void SpawnTable()
@@ -109,5 +110,17 @@ public class ViewMapManager : MonoBehaviour
         spriteRenderer.sprite = _mapData.FloorList[index];
         floorPosition?.Invoke(_spawnMap.transform.position, f_column - 1, f_row - 1);
         _spawnMap.transform.parent = _floorListParent.transform;
+    }
+
+    private void ViewData()
+    {
+        for (int i = 0; i < data.rows.Length; i++)
+        {
+            for (int f = 0; f < data.rows[i].row.Length; f++)
+            {
+                ArrayLayout.State state = data.rows[i].row[f];
+                Debug.Log($"Fila {i}, Columna {f}: {state}");
+            }
+        }
     }
 }

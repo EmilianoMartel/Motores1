@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 2517884726169867439}
   - component: {fileID: 6166001439592483065}
   - component: {fileID: 663633755044645572}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: viewBullet
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -120,7 +120,7 @@ GameObject:
   - component: {fileID: 3922087031374847545}
   - component: {fileID: -2964102238259486351}
   - component: {fileID: -4939861013915559140}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Bullet
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -158,7 +158,6 @@ MonoBehaviour:
   direction: {x: 0, y: 0}
   activeBullet: 0
   _speed: 1
-  _damage: 1
   _deleteTime: 2
   _healthPoints: {fileID: -2964102238259486351}
 --- !u!50 &8462164351675405881

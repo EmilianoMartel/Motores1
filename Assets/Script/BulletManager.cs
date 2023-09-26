@@ -43,7 +43,7 @@ public class BulletManager : MonoBehaviour
         _bulletDirection = direction;
         ElectionBullet();
         ElectionSpawn();
-        _bullet.transform.position = _realPointShoot;
+        _bullet.transform.position = new Vector3(_realPointShoot.x,_realPointShoot.y,-1);
         _bullet.direction = direction;
     }
 

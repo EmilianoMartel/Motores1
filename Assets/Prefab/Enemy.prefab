@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4093501843558151253}
   - component: {fileID: 4093501843558151252}
-  m_Layer: 6
+  m_Layer: 8
   m_Name: viewEnemy
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -101,7 +101,7 @@ GameObject:
   - component: {fileID: 4093501843917922087}
   - component: {fileID: 654379792144347464}
   - component: {fileID: 8242030846564989498}
-  m_Layer: 6
+  m_Layer: 8
   m_Name: Enemy
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -198,7 +198,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f7fd34dba040cc14093de05f598a2630, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  p_life: 1
+  healthPoints: {fileID: 0}
   p_speed: 1
   p_shootTimeRest: 2
   activateEnemy: 1
@@ -268,7 +268,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4093501844365752219}
-  m_Layer: 6
+  m_Layer: 8
   m_Name: pointShoot
   m_TagString: Untagged
   m_Icon: {fileID: 0}

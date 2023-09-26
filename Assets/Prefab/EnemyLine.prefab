@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2796134743318363858}
-  m_Layer: 6
+  m_Layer: 8
   m_Name: pointShoot
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -41,7 +41,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2796134743477821145}
   - component: {fileID: 2796134743477821126}
-  m_Layer: 6
+  m_Layer: 8
   m_Name: viewEnemy
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -132,7 +132,7 @@ GameObject:
   - component: {fileID: 2796134744829502548}
   - component: {fileID: -2742110792295736917}
   - component: {fileID: -3857567317574026206}
-  m_Layer: 6
+  m_Layer: 8
   m_Name: EnemyLine
   m_TagString: Untagged
   m_Icon: {fileID: 0}
