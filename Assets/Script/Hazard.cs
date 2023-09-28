@@ -8,8 +8,10 @@ public class Hazard : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D col)
     {
-        if (col.gameObject.GetComponent<HealthPoints>())
+        Debug.Log($"{name} collided with {col.name}");
+        if (col.gameObject.GetComponent<HealthPoints>() != null)
         {
+            Debug.Log($"{name} damaged {col.name}");
             HealthPoints healthPoints = col.gameObject.GetComponent<HealthPoints>();
             healthPoints.GetDamage(_damage);
         }

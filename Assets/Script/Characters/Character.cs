@@ -20,6 +20,12 @@ public abstract class Character : MonoBehaviour
 
     private void Start()
     {
+        if (healthPoints == null)
+        {
+            Debug.LogError(message: $"{name}: HealthPoints is null\n Check and assigned one\nDisabling component");
+            enabled = false;
+            return;
+        }
         healthPoints.death += Kill;
     }
 

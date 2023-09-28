@@ -39,6 +39,7 @@ public class EnemyLineMovement : EnemyMovement
         }
         
     }
+
     protected void PatrolMovement()
     {
         p_currentPosition = transform.position;

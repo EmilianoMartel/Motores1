@@ -11,10 +11,15 @@ public class Bullet : MonoBehaviour
     [SerializeField] private float _deleteTime = 6f;
     [SerializeField] HealthPoints _healthPoints;
     private float _actualTime;
-    private Character _character;
 
     private void Start()
     {
+        if (_healthPoints == null)
+        {
+            Debug.LogError(message: $"{name}: HealthPoints is null\n Check and assigned one\nDisabling component");
+            enabled = false;
+            return;
+        }
         _healthPoints.death += DisableBullet;
     }
 
