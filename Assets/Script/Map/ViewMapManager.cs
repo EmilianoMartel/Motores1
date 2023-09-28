@@ -12,7 +12,12 @@ public class ViewMapManager : MonoBehaviour
         Rock,
         Spawner,
         ObjectSpawner,
-        Wall
+        WallRight,
+        WallLeft,
+        WallDown,
+        WallTop,
+        WallLeftDown,
+        WallRightDown
     }
 
     //Delegates
@@ -28,7 +33,10 @@ public class ViewMapManager : MonoBehaviour
     [SerializeField] private GameObject _floorPrefab;
     private GameObject _spawnMap;
     [SerializeField] private MapDataSO _mapData;
-    public ArrayLayout data;
+    [SerializeField] private ArrayLayout data;
+    [SerializeField] private List<GameObject> _dataPrefabList;
+    private List<ArrayLayout> _dataList;
+    private ArrayLayout.State _state;
 
     //FloorList
     [SerializeField] private GameObject _floorListParent;
@@ -45,60 +53,46 @@ public class ViewMapManager : MonoBehaviour
             return;
         }
         SpawnTable();
-        ViewData();
+        FirstSpawnData();
     }
 
     private void SpawnTable()
     {
-        for (int f_row = 0; f_row < _row; f_row++)
-        {
-            for (int f_column = 0; f_column < _column; f_column++)
-            {
-                if (f_column == 0 || f_row == 0 || f_column == _column - 1 || f_row == _row - 1)
-                {
-                    SpawnWalls(f_column, f_row);
-                }
-                else
-                {
-                    SpawnFloor(f_column,f_row);
-                }
-            }
-        }
+        FirstSpawnData();
     }
 
-    private void SpawnWalls(int f_column,int f_row)
+    private void SpawnWalls(int f_column, int f_row, ArrayLayout.State stateFunction)
     {
         _spawnMap = Instantiate(_wallPrefab, transform.position + _grid.CellToWorld(new Vector3Int(f_column, f_row, 10)), Quaternion.identity);
         _spawnMap.transform.parent = transform;
 
         SpriteRenderer spriteRenderer = _spawnMap.GetComponent<SpriteRenderer>();
-        if (f_column == 0 && f_row == 0)
+        switch (stateFunction)
         {
-            spriteRenderer.sprite = _mapData.LeftDownWallCorner;
-        }
-        else if (f_column == _column - 1 && f_row == 0)
-        {
-            spriteRenderer.sprite = _mapData.RightDownWallCorner;
-        }
-        else if (f_row == 0)
-        {
-            index = Random.Range(0, _mapData.DownWallList.Count);
-            spriteRenderer.sprite = _mapData.DownWallList[index];
-        }
-        else if (f_column == 0)
-        {
-            index = Random.Range(0, _mapData.LeftWallList.Count);
-            spriteRenderer.sprite = _mapData.LeftWallList[index];
-        }
-        else if (f_column == _column - 1)
-        {
-            index = Random.Range(0, _mapData.RightWallList.Count);
-            spriteRenderer.sprite = _mapData.RightWallList[index];
-        }
-        else if (f_row == _row - 1)
-        {
-            index = Random.Range(0, _mapData.TopWallList.Count);
-            spriteRenderer.sprite = _mapData.TopWallList[index];
+            case ArrayLayout.State.WallRight:
+                index = Random.Range(0, _mapData.RightWallList.Count);
+                spriteRenderer.sprite = _mapData.RightWallList[index];
+                break;
+            case ArrayLayout.State.WallLeft:
+                index = Random.Range(0, _mapData.LeftWallList.Count);
+                spriteRenderer.sprite = _mapData.LeftWallList[index];
+                break;
+            case ArrayLayout.State.WallDown:
+                index = Random.Range(0, _mapData.DownWallList.Count);
+                spriteRenderer.sprite = _mapData.DownWallList[index];
+                break;
+            case ArrayLayout.State.WallTop:
+                index = Random.Range(0, _mapData.TopWallList.Count);
+                spriteRenderer.sprite = _mapData.TopWallList[index];
+                break;
+            case ArrayLayout.State.WallLeftDown:
+                spriteRenderer.sprite = _mapData.LeftDownWallCorner;
+                break;
+            case ArrayLayout.State.WallRightDown:
+                spriteRenderer.sprite = _mapData.RightDownWallCorner;
+                break;
+            default:
+                break;
         }
     }
 
@@ -112,14 +106,47 @@ public class ViewMapManager : MonoBehaviour
         _spawnMap.transform.parent = _floorListParent.transform;
     }
 
-    private void ViewData()
+    private void FirstSpawnData()
     {
-        for (int i = 0; i < data.rows.Length; i++)
+        for (int f_row = 0; f_row < data.rows.Length; f_row++)
         {
-            for (int f = 0; f < data.rows[i].row.Length; f++)
+            for (int f_column = 0; f_column < data.rows[f_row].row.Length; f_column++)
             {
-                ArrayLayout.State state = data.rows[i].row[f];
-                Debug.Log($"Fila {i}, Columna {f}: {state}");
+                //Debug.Log($"Fila {i}, Columna {f}: {state}");
+                _state = data.rows[f_row].row[f_column];
+                switch (_state)
+                {
+                    case ArrayLayout.State.EmptyFloor:
+                        SpawnFloor(f_column, f_row);
+                        break;
+                    case ArrayLayout.State.Rock:
+                        SpawnFloor(f_column, f_row);
+                        break;
+                    case ArrayLayout.State.Spawner:
+                        SpawnFloor(f_column, f_row);
+                        break;
+                    case ArrayLayout.State.ObjectSpawner:
+                        SpawnFloor(f_column, f_row);
+                        break;
+                    case ArrayLayout.State.WallRight:
+                        SpawnWalls(f_column, f_row, _state);
+                        break;
+                    case ArrayLayout.State.WallLeft:
+                        SpawnWalls(f_column, f_row, _state);
+                        break;
+                    case ArrayLayout.State.WallDown:
+                        SpawnWalls(f_column, f_row, _state);
+                        break;
+                    case ArrayLayout.State.WallTop:
+                        SpawnWalls(f_column, f_row, _state);
+                        break;
+                    case ArrayLayout.State.WallLeftDown:
+                        SpawnWalls(f_column, f_row, _state);
+                        break;
+                    case ArrayLayout.State.WallRightDown:
+                        SpawnWalls(f_column, f_row, _state);
+                        break;
+                }
             }
         }
     }

@@ -10,7 +10,12 @@ public class ArrayLayout
         Rock,
         Spawner,
         ObjectSpawner,
-        Wall
+        WallRight,
+        WallLeft,
+        WallDown,
+        WallTop,
+        WallLeftDown,
+        WallRightDown
     }
 
     [System.Serializable]
@@ -19,6 +24,5 @@ public class ArrayLayout
         public State[] row;
     }
 
-    public rowData[] rows = new rowData[7];
+    public rowData[] rows = new rowData[10];
 }
-
