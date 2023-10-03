@@ -5,7 +5,7 @@ using UnityEngine;
 
 public abstract class EnemyShoot : MonoBehaviour
 {
-    private BulletManager _bulletManager;
+    [SerializeField] private BulletManager _bulletManager;
     protected Vector2 _directionShoot;
     protected int p_randomY = 0;
     protected int p_randomX = 0;

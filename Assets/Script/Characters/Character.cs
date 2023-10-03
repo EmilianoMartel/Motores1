@@ -30,7 +30,7 @@ public abstract class Character : MonoBehaviour
     private void Start()
     {
         NullReferenceController();
-        
+        SuscriptionsDelegates();
     }
 
     protected void NullReferenceController()
