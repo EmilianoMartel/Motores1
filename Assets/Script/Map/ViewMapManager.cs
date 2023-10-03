@@ -4,31 +4,18 @@ using UnityEngine;
 using UnityEngine.Tilemaps;
 
 public delegate void FloorPosition(Vector2 vector2, int column, int row);
+public delegate void StairObject(Stair stair);
 public class ViewMapManager : MonoBehaviour
 {
-    public enum State
-    {
-        EmptyFloor,
-        Rock,
-        Spawner,
-        ObjectSpawner,
-        WallRight,
-        WallLeft,
-        WallDown,
-        WallTop,
-        WallLeftDown,
-        WallRightDown
-    }
-
     //Delegates
     public FloorPosition floorPosition;
+    public StairObject stairObject;
 
     public int _row; //High
     public int _column; //Width
 
     //Table
     [SerializeField] private Grid _grid;
-    private State[,] _tableDimention => new State[_column, _row];
     [SerializeField] private GameObject _wallPrefab;
     [SerializeField] private GameObject _floorPrefab;
     private GameObject _spawnMap;
@@ -38,6 +25,10 @@ public class ViewMapManager : MonoBehaviour
     private List<ArrayLayout> _dataList;
     private ArrayLayout.State _state;
 
+    //Spawner
+    [SerializeField] private Stair _StairPrefab;
+    private Stair _stair;
+
     //FloorList
     [SerializeField] private GameObject _floorListParent;
 
@@ -46,19 +37,43 @@ public class ViewMapManager : MonoBehaviour
 
     private void Start()
     {
+        NullReferenceControll();
+        FirstSpawnData();
+        InstantiateStairSpawner();
+    }
+
+    private void NullReferenceControll()
+    {
         if (_column <= 0 || _row <= 0)
         {
             Debug.LogError(message: $"{name}: The column and row is too small \n Check column and row\nDisabling component");
             enabled = false;
             return;
         }
-        SpawnTable();
-        FirstSpawnData();
-    }
-
-    private void SpawnTable()
-    {
-        FirstSpawnData();
+        if (_wallPrefab == null)
+        {
+            Debug.LogError(message: $"{name}: WallPrefab is null \n Check the parameter\nDisabling component");
+            enabled = false;
+            return;
+        }
+        if (_floorPrefab == null)
+        {
+            Debug.LogError(message: $"{name}: FloorPrefab is null \n Check the parameter\nDisabling component");
+            enabled = false;
+            return;
+        }
+        if (_mapData == null)
+        {
+            Debug.LogError(message: $"{name}: MapData is null \n Check the parameter\nDisabling component");
+            enabled = false;
+            return;
+        }
+        if (_StairPrefab == null)
+        {
+            Debug.LogError(message: $"{name}: StairPrefab is null \n Check the parameter\nDisabling component");
+            enabled = false;
+            return;
+        }
     }
 
     private void SpawnWalls(int f_column, int f_row, ArrayLayout.State stateFunction)
@@ -149,5 +164,12 @@ public class ViewMapManager : MonoBehaviour
                 }
             }
         }
+    }
+
+    public void InstantiateStairSpawner()
+    {
+        _stair = Instantiate(_StairPrefab, transform.position + _grid.CellToWorld(new Vector3Int(5, 5, 10)), Quaternion.identity);
+        _stair.transform.parent = transform;
+        stairObject?.Invoke(_stair);
     }
 }

@@ -13,14 +13,15 @@ public class CustPropertyDrawer : PropertyDrawer
         Rect newposition = position;
         newposition.y += 18f;
         SerializedProperty data = property.FindPropertyRelative("rows");
-        for (int j = 0; j < 10; j++)
+        for (int j = 10 - 1; j >= 0; j--)
         {
             SerializedProperty row = data.GetArrayElementAtIndex(j).FindPropertyRelative("row");
             newposition.height = 18f;
             if (row.arraySize != 18)
                 row.arraySize = 18;
             newposition.width = position.width / 18;
-            for (int i = 0; i < 18; i++)
+
+            for (int i = 18 - 1; i >= 0; i--)
             {
                 EditorGUI.PropertyField(newposition, row.GetArrayElementAtIndex(i), GUIContent.none);
                 newposition.x += newposition.width;
