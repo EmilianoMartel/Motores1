@@ -62,4 +62,9 @@ public class BaseEnemy : Character
     {
         _enemyMovement.GetValueEnemyManager(enemyManager);
     }
+
+    public void GetBulletManager(BulletManager bulletManager)
+    {
+        _enemyShoot.GetBulletManager(bulletManager);
+    }
 }

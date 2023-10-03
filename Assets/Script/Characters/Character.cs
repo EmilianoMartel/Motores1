@@ -3,9 +3,14 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
+public delegate void StartAttack();
 public abstract class Character : MonoBehaviour
 {
-    [SerializeField] private HealthPoints healthPoints;
+    //Delegates
+    public StartAttack startAttack;
+
+    [SerializeField] protected HealthPoints p_healthPoints;
+    [SerializeField] protected CharacterView p_characterView;
 
     //Movement
     [SerializeField] protected float p_speed = 1.0f;
@@ -14,19 +19,39 @@ public abstract class Character : MonoBehaviour
 
     //Shoot
     [SerializeField] protected float p_shootTimeRest;
+    [SerializeField] protected bool p_isAttacking = false;
 
     protected float p_actualTime = 0;
     protected static float timeEndGame = 2f;
 
+    public Vector3 attackDirection { get { return p_attackDirection; } }
+    public Vector3 direction { get { return p_direction; } }
+
     private void Start()
     {
-        if (healthPoints == null)
+        NullReferenceController();
+        
+    }
+
+    protected void NullReferenceController()
+    {
+        if (p_healthPoints == null)
         {
             Debug.LogError(message: $"{name}: HealthPoints is null\n Check and assigned one\nDisabling component");
             enabled = false;
             return;
         }
-        healthPoints.death += Kill;
+        if (p_characterView == null)
+        {
+            Debug.LogError(message: $"{name}: CharacterView is null\n Check and assigned one\nDisabling component");
+            enabled = false;
+            return;
+        }
+    }
+
+    protected void SuscriptionsDelegates()
+    {
+        p_healthPoints.death += Kill;
     }
 
     protected void Movement(Vector2 direction)
@@ -39,18 +64,14 @@ public abstract class Character : MonoBehaviour
         gameObject.SetActive(false);
     }
 
-    public Vector2 GetDirection()
+    protected virtual void StartAttack()
     {
-        return p_direction;
+        p_isAttacking = true;
+        startAttack?.Invoke();
     }
 
-    public Vector2 ShootDirection()
+    protected virtual void EndAttack()
     {
-        return p_attackDirection;
-    }
-
-    public float GetShootColdDown()
-    {
-        return p_shootTimeRest;
+        p_isAttacking = false;
     }
 }

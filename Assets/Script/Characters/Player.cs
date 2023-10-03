@@ -5,19 +5,25 @@ using UnityEngine.InputSystem;
 
 public class Player : Character
 {
-
     [SerializeField] protected BulletManager p_bulletManager;
+    private Vector3 _inputAttack;
+
     private void Start()
     {
+        NullReferenceController();
+        SuscriptionsDelegates();
+        p_characterView.shootMoment += SetShootDirection;
+        p_characterView.endAttack += EndAttack;
         p_actualTime = 10;
     }
 
     void Update()
     {
         PlayerMovement();
-        if (p_actualTime > p_shootTimeRest && (p_attackDirection.x != 0 || p_attackDirection.y != 0))
+        if (p_actualTime > p_shootTimeRest && (_inputAttack.x != 0 || _inputAttack.y != 0) && p_isAttacking == false)
         {
-            PlayerShoot();
+            p_attackDirection = _inputAttack;
+            StartAttack();
             p_actualTime = 0;
         }
         p_actualTime += Time.deltaTime;
@@ -30,7 +36,7 @@ public class Player : Character
 
     public void SetShootValue(InputAction.CallbackContext inputContext)
     {
-        p_attackDirection = inputContext.ReadValue<Vector2>();
+        _inputAttack = inputContext.ReadValue<Vector2>();
     }
 
     private void PlayerMovement()
@@ -38,8 +44,14 @@ public class Player : Character
         Movement(p_direction);
     }
 
-    private void PlayerShoot()
+    private void SetShootDirection()
     {
         p_bulletManager.Shoot(p_attackDirection);
+    }
+
+    protected override void StartAttack()
+    {
+        p_attackDirection.Normalize();
+        base.StartAttack();
     }
 }
