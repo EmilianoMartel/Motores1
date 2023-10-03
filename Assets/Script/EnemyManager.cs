@@ -1,8 +1,19 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
+public delegate void SpawnedEnemyCount(BaseEnemy enemy);
 public class EnemyManager : MonoBehaviour
 {
+    //Struct
+    private struct EnemyType{
+        public string name;
+        public List<BaseEnemy> enemyList;
+    }
+
+    //Delegates
+    public SpawnedEnemyCount spawnedEnemies;
+
     //Managers
     [SerializeField] private ViewMapManager _viewMapManager;
     [SerializeField] private LevelManager _levelManager;
@@ -14,8 +25,11 @@ public class EnemyManager : MonoBehaviour
 
     //EnemyList
     [SerializeField] private List<BaseEnemy> _enemyListPrefab;
-    private List<BaseEnemy> _enemyList = new List<BaseEnemy>();
+    private List<EnemyType> _enemyTypeList = new List<EnemyType>();
+    private EnemyType _enemyType;
     private BaseEnemy _enemy;
+
+    private System.Random _random;
 
     private void Awake()
     {
@@ -62,54 +76,61 @@ public class EnemyManager : MonoBehaviour
         {
             _enemy = Instantiate(_enemyListPrefab[i], transform.position, Quaternion.identity);
             _enemy.GetEnemyManager(this);
-            _enemyList.Add(_enemy);
+            _enemyType.name = _enemy.name;
+            _enemyType.enemyList = new List<BaseEnemy>();
+            _enemyType.enemyList.Add(_enemy);
+            _enemyTypeList.Add(_enemyType);
             _enemy.activateEnemy = false;
             _enemy.gameObject.SetActive(false);
         }
     }
 
     [ContextMenu("SpawnEnemy")]
-    private void SpawnEnemyLogic(int f_column = 0, int f_row = 0)
+    private void SpawnEnemyLogic(int f_column = 0, int f_row = 0, int seed = 0)
     {
-        CheckEnemyListActive();
-        SpawnRandomEnemy(f_column, f_row);
-    }
-
-    [ContextMenu("SpawnRandomEnemy")]
-    private void SpawnRandomEnemy(int f_column = 0, int f_row = 0)
-    {
+        SetSeed(seed);
         int index = RandomIndexEnemy();
-        while (_enemyList[index].activateEnemy)
+        CheckEnemyListActive(index);
+        for (int i = 0; i < _enemyTypeList[index].enemyList.Count; i++)
         {
-            index = RandomIndexEnemy();
+            if (_enemyTypeList[index].enemyList[i].activateEnemy == false)
+            {
+                _enemy = _enemyTypeList[index].enemyList[i];
+                _enemy.transform.position = new Vector3(_positionMatriz[f_column,f_row].x , _positionMatriz[f_column, f_row].y, -2);
+                _enemy.activateEnemy = true;
+                _enemy.gameObject.SetActive(true);
+                spawnedEnemies?.Invoke(_enemy);
+            }
         }
-        _enemyList[index].gameObject.transform.position = _positionMatriz[f_column,f_row];
-        _enemyList[index].activateEnemy = true;
-        _enemyList[index].gameObject.SetActive(true);
     }
 
     private int RandomIndexEnemy()
     {
-        return Random.Range(0, _enemyList.Count);
+        return _random.Next(0, _enemyTypeList.Count);
     }
 
-    private void CheckEnemyListActive()
+    private void CheckEnemyListActive(int index)
     {
         int count = 0;
-        foreach (BaseEnemy enemy in _enemyList)
+        foreach (BaseEnemy enemy in _enemyTypeList[index].enemyList)
         {
             if (enemy.activateEnemy)
             {
                 count++;
             }
         }
-        if (count == _enemyList.Count)
+        if (count == _enemyTypeList[index].enemyList.Count)
         {
-            _enemy = Instantiate(_enemyListPrefab[Random.Range(0, _enemyListPrefab.Count)], transform.position, Quaternion.identity);
+            _enemy = Instantiate(_enemyTypeList[index].enemyList[0], transform.position, Quaternion.identity);
             _enemy.GetEnemyManager(this);
-            _enemyList.Add(_enemy);
+            _enemyTypeList[index].enemyList.Add(_enemy);
             _enemy.activateEnemy = false;
             _enemy.gameObject.SetActive(false);
         }
+    }
+
+    public void SetSeed(int seed)
+    {
+        _random = new System.Random(seed);
     }
 }
