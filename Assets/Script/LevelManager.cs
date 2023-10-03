@@ -1,14 +1,17 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using UnityEngine;
 
-public delegate void SpawnEnemy(int column, int row);
+public delegate void SpawnEnemy(int column, int row, int seed);
+public delegate void EndLevel();
 public class LevelManager : MonoBehaviour
 {
     const int DIFF_MATRIX_ENEMY = 2;
 
     //Delegates
     public SpawnEnemy spawnEnemy;
+    public EndLevel endLevel;
 
     //Level variables for dificult
     [SerializeField] private int _minEnemy = 1;
@@ -17,11 +20,27 @@ public class LevelManager : MonoBehaviour
 
     //Managers
     [SerializeField] private EnemyManager _enemyManager;
+    [SerializeField] private ViewMapManager _viewMapManager;
+
+    [SerializeField] private Stair _stair;
 
     private List<ArrayLayout> _dataList = new List<ArrayLayout>();
     private ArrayLayout _dataLayout;
 
-    private void Start()
+    //Variables for start and end game
+    private int _enemyKillCount = 0;
+
+    private void Awake()
+    {
+        NullReferenceControll();
+        SetDataList();
+
+        //Delegate
+        _viewMapManager.stairObject += SetStair;
+        _enemyManager.spawnedEnemies += SpawnedEnemiesCount;
+    }
+
+    private void NullReferenceControll()
     {
         if (_enemyManager == null)
         {
@@ -35,7 +54,18 @@ public class LevelManager : MonoBehaviour
             enabled = false;
             return;
         }
-        SetDataList();
+        /*if (_stair == null)
+        {
+            Debug.LogError(message: $"{name}: Stair is null \n Check and assigned one\nDisabling component");
+            enabled = false;
+            return;
+        }*/
+        if (_viewMapManager == null)
+        {
+            Debug.LogError(message: $"{name}: ViewMapManager is null \n Check and assigned one\nDisabling component");
+            enabled = false;
+            return;
+        }
     }
 
     private void SetDataList()
@@ -61,10 +91,10 @@ public class LevelManager : MonoBehaviour
         }
     }
 
-    [ContextMenu("StartLevel")]
-    private void StartLevel()
+    private void SpawnEnemies()
     {
         ArrayLayout.State state;
+        int seed = Random.Range(0, 100);
         RandomLevel();
         for (int f_row = _dataLayout.rows.Length - 1; f_row >= 0; f_row--)
         {
@@ -78,7 +108,7 @@ public class LevelManager : MonoBehaviour
                     case ArrayLayout.State.Rock:
                         break;
                     case ArrayLayout.State.Spawner:
-                        spawnEnemy?.Invoke(f_column - DIFF_MATRIX_ENEMY, f_row - DIFF_MATRIX_ENEMY);
+                        spawnEnemy?.Invoke(f_column - DIFF_MATRIX_ENEMY, f_row - DIFF_MATRIX_ENEMY, seed);
                         break;
                     case ArrayLayout.State.ObjectSpawner:
                         break;
@@ -103,5 +133,52 @@ public class LevelManager : MonoBehaviour
     {
         int index = Random.Range(0, _dataList.Count);
         _dataLayout = _dataList[index];
+    }
+
+    [ContextMenu("StartLevel")]
+    private void StartLevel()
+    {
+        _stair.isActiveStair = false;
+        _stair.gameObject.SetActive(false);
+        Debug.Log($"{name}: Event StartLevel is called");
+        SpawnEnemies();
+    }
+
+    private void EndLevel()
+    {
+        endLevel?.Invoke();
+        ReSpawnStair();
+    }
+
+    private void SpawnedEnemiesCount(BaseEnemy enemy)
+    {
+        Debug.Log($"{enemy.name} was spawned.");
+        _enemyKillCount++;
+        enemy.enemyKill += KilledEnemiesCount;
+    }
+
+    private void KilledEnemiesCount(BaseEnemy enemy)
+    {
+        Debug.Log($"{enemy.name} was killed and call KilledEnemiesCount event.");
+        enemy.enemyKill -= KilledEnemiesCount;
+        _enemyKillCount--;
+        if (_enemyKillCount <= 0)
+        {
+            Debug.Log("Next level");
+            _enemyKillCount = 0;
+            EndLevel();
+        }
+    }
+
+    private void SetStair(Stair stair)
+    {
+        _stair = stair;
+        _stair.nextLevel += StartLevel;
+    }
+
+    private void ReSpawnStair()
+    {
+        _stair.isActiveStair = true;
+        _stair.gameObject.SetActive(true);
     }
 }
