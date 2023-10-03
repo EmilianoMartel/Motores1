@@ -41,6 +41,8 @@ GameObject:
   m_Component:
   - component: {fileID: 2796134743477821145}
   - component: {fileID: 2796134743477821126}
+  - component: {fileID: 7726056866177993313}
+  - component: {fileID: 3635193948966077097}
   m_Layer: 8
   m_Name: viewEnemy
   m_TagString: Untagged
@@ -115,6 +117,47 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!95 &7726056866177993313
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2796134743477821144}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 6952950144975f242a6a723310499281, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &3635193948966077097
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2796134743477821144}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 393b30a0b3179064382fa32baa835fec, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _animator: {fileID: 7726056866177993313}
+  _character: {fileID: 0}
+  _animatorParameterDirX: dir_x
+  _animatorParameterDirY: dir_y
+  _animatorParameterIsMoving: isMoving
+  _animatorParameterAttackDirX: attack_dir_x
+  _animatorParameterAttackDirY: attack_dir_y
+  _animatorParameterIsAttacking: isAttacking
 --- !u!1 &2796134744829502570
 GameObject:
   m_ObjectHideFlags: 0
@@ -129,7 +172,6 @@ GameObject:
   - component: {fileID: 2796134744829502571}
   - component: {fileID: 2796134744829502551}
   - component: {fileID: 2796134744829502549}
-  - component: {fileID: 2796134744829502548}
   - component: {fileID: -2742110792295736917}
   - component: {fileID: -3857567317574026206}
   m_Layer: 8
@@ -229,7 +271,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f7fd34dba040cc14093de05f598a2630, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  healthPoints: {fileID: -3857567317574026206}
+  p_healthPoints: {fileID: -3857567317574026206}
+  p_characterView: {fileID: 3635193948966077097}
   p_speed: 1
   p_shootTimeRest: 2
   activateEnemy: 1
@@ -248,22 +291,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3f57ebbb7e7d1494c916b0f8eac44844, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _bulletManager: {fileID: 2796134744829502548}
---- !u!114 &2796134744829502548
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2796134744829502570}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d6b1a419364227e4c974780f7c420849, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _pointShoot: {fileID: 2796134743318363858}
-  _minBullets: 5
-  _bulletPrefab: {fileID: 1786968653925389603, guid: b6b8f4725c8682d4da52fcfcd18a7a82, type: 3}
+  _bulletManager: {fileID: 0}
 --- !u!114 &-2742110792295736917
 MonoBehaviour:
   m_ObjectHideFlags: 0
