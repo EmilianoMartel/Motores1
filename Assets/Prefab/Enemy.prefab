@@ -263,6 +263,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _bulletManager: {fileID: 238870006130011255}
+  p_characterView: {fileID: 6749301598340494745}
 --- !u!114 &654379792144347464
 MonoBehaviour:
   m_ObjectHideFlags: 0

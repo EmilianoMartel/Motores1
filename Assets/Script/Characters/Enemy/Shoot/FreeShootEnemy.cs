@@ -17,5 +17,21 @@ public class FreeShootEnemy : EnemyShoot
     {
         p_randomY = Random.Range(-2, 3);
         p_randomX = Random.Range(-2, 3);
+        if (p_randomX == 0 && p_randomY == 0)
+        {
+            int direction = Random.Range(0, 2);
+            switch (direction)
+            {
+                case 0:
+                    p_randomY++;
+                    break;
+                case 1:
+                    p_randomY--;
+                    break;
+                default:
+                    p_randomX++;
+                    break;
+            }
+        }
     }
 }

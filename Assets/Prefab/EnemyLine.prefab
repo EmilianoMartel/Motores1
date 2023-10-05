@@ -151,12 +151,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _animator: {fileID: 7726056866177993313}
-  _character: {fileID: 0}
-  _animatorParameterDirX: dir_x
-  _animatorParameterDirY: dir_y
+  _character: {fileID: 2796134744829502551}
+  _animatorParameterDirX: dirX
+  _animatorParameterDirY: dirY
   _animatorParameterIsMoving: isMoving
-  _animatorParameterAttackDirX: attack_dir_x
-  _animatorParameterAttackDirY: attack_dir_y
+  _animatorParameterAttackDirX: attackDirX
+  _animatorParameterAttackDirY: attackDirY
   _animatorParameterIsAttacking: isAttacking
 --- !u!1 &2796134744829502570
 GameObject:
@@ -294,6 +294,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _bulletManager: {fileID: -7486364379230623679}
+  p_characterView: {fileID: 3635193948966077097}
 --- !u!114 &-2742110792295736917
 MonoBehaviour:
   m_ObjectHideFlags: 0

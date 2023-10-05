@@ -66,12 +66,14 @@ public abstract class Character : MonoBehaviour
 
     protected virtual void StartAttack()
     {
+        Debug.Log($"{name}: Start attack event");
         p_isAttacking = true;
         startAttack?.Invoke();
     }
 
     protected virtual void EndAttack()
     {
+        Debug.Log($"{name}: End Attack event");
         p_isAttacking = false;
     }
 }

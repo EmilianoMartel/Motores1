@@ -23,6 +23,10 @@ public class BaseEnemy : Character
     {
         TimeShootSelection();
         p_actualTime = 0;
+        if (_enemyShoot != null)
+        {
+            p_characterView.endAttack += EndAttack;
+        }
     }
 
     private void Update()
@@ -34,9 +38,10 @@ public class BaseEnemy : Character
         if (_enemyShoot != null)
         {
             p_actualTime += Time.deltaTime;
-            if (p_shootTimeRest < p_actualTime)
+            if (p_shootTimeRest < p_actualTime && !p_isAttacking)
             {
                 p_actualTime = 0;
+                StartAttack();
                 _enemyShoot.Shoot();
             }
         }

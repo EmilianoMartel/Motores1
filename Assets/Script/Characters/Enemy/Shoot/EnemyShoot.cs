@@ -6,23 +6,36 @@ using UnityEngine;
 public abstract class EnemyShoot : MonoBehaviour
 {
     [SerializeField] private BulletManager _bulletManager;
+
+    [SerializeField] protected CharacterView p_characterView;
     protected Vector2 _directionShoot;
     protected int p_randomY = 0;
     protected int p_randomX = 0;
 
     private void Start()
     {
-        /*if (_bulletManager == null)
+        if (_bulletManager == null)
         {
             Debug.LogError(message: $"{name}: BulletManager is null\n Check and assigned one\nDisabling component");
             enabled = false;
             return;
-        }*/
+        }
+        if (p_characterView == null)
+        {
+            Debug.LogError(message: $"{name}: CharacterView is null\n Check and assigned one\nDisabling component");
+            enabled = false;
+            return;
+        }
+        p_characterView.shootMoment += ShootMoment;
     }
 
     public void Shoot()
     {
         _directionShoot = GetRandomDirection();
+    }
+
+    private void ShootMoment()
+    {
         _bulletManager.Shoot(_directionShoot);
     }
 

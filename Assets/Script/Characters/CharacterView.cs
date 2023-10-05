@@ -51,13 +51,11 @@ public class CharacterView : MonoBehaviour
         _attackX = _attackDirection.x;
         _attackY = _attackDirection.y;
         _isMoving = _direction != Vector2.zero;
-        //_isAttacking = _attackDirection != Vector2.zero;
         _animator.SetFloat(_animatorParameterDirX, _dirX);
         _animator.SetFloat(_animatorParameterDirY, _dirY);
         _animator.SetBool(_animatorParameterIsMoving, _isMoving);
         _animator.SetFloat(_animatorParameterAttackDirX, _attackX);
         _animator.SetFloat(_animatorParameterAttackDirY, _attackY);
-        _animator.SetBool(_animatorParameterIsAttacking, _isAttacking);
     }
 
     private void AttackingMoment()
@@ -68,12 +66,14 @@ public class CharacterView : MonoBehaviour
     private void StartAttack()
     {
         _isAttacking = true;
+        _animator.SetBool(_animatorParameterIsAttacking, _isAttacking);
     }
 
     private void EndAttack()
     {
         Debug.Log($"{name} EndAttack animator Event called");
         _isAttacking = false;
+        _animator.SetBool(_animatorParameterIsAttacking, _isAttacking);
         endAttack?.Invoke();
     }
 }
