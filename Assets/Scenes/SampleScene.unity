@@ -768,6 +768,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   p_healthPoints: {fileID: 1219007407}
   p_characterView: {fileID: 1339377425}
+  p_stateController: {fileID: 0}
   p_speed: 1.5
   p_shootTimeRest: 2
   p_isAttacking: 0
@@ -877,6 +878,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _originalLife: 10
+  _controller: {fileID: 0}
 --- !u!1 &1339377421
 GameObject:
   m_ObjectHideFlags: 0
@@ -996,14 +998,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 393b30a0b3179064382fa32baa835fec, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _animator: {fileID: 1339377423}
-  _character: {fileID: 1219007399}
-  _animatorParameterDirX: dirX
-  _animatorParameterDirY: dirY
-  _animatorParameterIsMoving: isMoving
-  _animatorParameterAttackDirX: attackDirX
-  _animatorParameterAttackDirY: attackDirY
-  _animatorParameterIsAttacking: isAttacking
+  p_animator: {fileID: 1339377423}
+  p_character: {fileID: 1219007399}
+  p_animatorParameterDirX: dirX
+  p_animatorParameterDirY: dirY
+  p_animatorParameterIsMoving: isMoving
+  p_animatorParameterAttackDirX: attackDirX
+  p_animatorParameterAttackDirY: attackDirY
+  p_animatorParameterIsAttacking: isAttacking
 --- !u!1 &1656527557
 GameObject:
   m_ObjectHideFlags: 0
