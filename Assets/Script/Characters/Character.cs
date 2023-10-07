@@ -22,6 +22,7 @@ public abstract class Character : MonoBehaviour
 
     protected float p_actualTime = 0;
     protected static float timeEndGame = 2f;
+    public float speed { get { return p_speed; } }
 
     public Vector3 attackDirection { get { return p_attackDirection; } }
     public Vector3 direction { get { return p_direction; } }

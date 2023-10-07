@@ -97,6 +97,8 @@ public class EnemyManager : MonoBehaviour
             {
                 _enemy = _enemyTypeList[index].enemyList[i];
                 _enemy.transform.position = new Vector3(_positionMatriz[f_column,f_row].x , _positionMatriz[f_column, f_row].y, -2);
+                _enemy.row = f_row;
+                _enemy.col = f_column;
                 _enemy.activateEnemy = true;
                 _enemy.gameObject.SetActive(true);
                 spawnedEnemies?.Invoke(_enemy);

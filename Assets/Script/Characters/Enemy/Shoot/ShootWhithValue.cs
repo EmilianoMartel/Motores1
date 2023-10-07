@@ -10,7 +10,7 @@ public class ShootWhithValue : EnemyShoot
     private void Start()
     {
         _searchLogic.getDirection += GetShootDirection;
-        _searchLogic.foundPlayer += CanAttack;
+        p_characterView.shootMoment += ShootMoment;
     }
 
     private void GetShootDirection(Vector2 direction)
@@ -21,10 +21,5 @@ public class ShootWhithValue : EnemyShoot
     protected override Vector2 GetDirection()
     {
         return _valueDirection;
-    }
-
-    private void CanAttack(bool found)
-    {
-
     }
 }

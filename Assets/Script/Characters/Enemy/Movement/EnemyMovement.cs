@@ -30,11 +30,14 @@ public class EnemyMovement : MonoBehaviour
         }
         p_row = _enemyManager._positionMatriz.GetLength(1);
         p_column = _enemyManager._positionMatriz.GetLength(0);
+        p_currentColumnPosition = _baseEnemy.col;
+        p_currentRowPosition = _baseEnemy.row;
+        GetRandomNextPosition();
     }
 
     public void Movement()
     {
-        transform.Translate(p_direction * _baseEnemy.ReturnSpeed() * Time.deltaTime);
+        transform.Translate(p_direction * _baseEnemy.speed * Time.deltaTime);
     }
 
     protected void DirectionAssigned(Vector2 direction)
@@ -45,5 +48,10 @@ public class EnemyMovement : MonoBehaviour
     public void GetValueEnemyManager(EnemyManager enemyManager)
     {
         _enemyManager = enemyManager;
+    }
+
+    protected virtual void GetRandomNextPosition()
+    {
+
     }
 }

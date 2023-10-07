@@ -34,7 +34,7 @@ public abstract class EnemyShoot : MonoBehaviour
         p_directionShoot = GetDirection();
     }
 
-    private void ShootMoment()
+    protected void ShootMoment()
     {
         _bulletManager.Shoot(p_directionShoot);
     }

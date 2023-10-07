@@ -4,12 +4,13 @@ using UnityEngine;
 
 public class EnemyLineMovement : EnemyMovement
 {
+
     void Update()
     {
         PatrolMovement();
     }
 
-    private void GetRandomLineIndex()
+    protected override void GetRandomNextPosition()
     {
         int randomSwitch = Random.Range(0, 2);
         int counter = 0;
@@ -50,7 +51,7 @@ public class EnemyLineMovement : EnemyMovement
 
         if ((p_currentPosition - p_nextPosition).magnitude <= _treshold)
         {
-            GetRandomLineIndex();
+            GetRandomNextPosition();
         }
     }
 }

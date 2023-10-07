@@ -25,8 +25,15 @@ public class BaseEnemy : Character
     [SerializeField] private float _maxTimeShoot = 5.0f;
     private float _timeShoot;
     private bool _canAttack = true;
-    public bool canAttack {  get { return _canAttack; }  }
-    
+
+    //SpawnedPosition Matrix
+    private int _row;
+    private int _col;
+    public int row { get { return _row; } set { _row = value; } }
+    public int col { get { return _col; } set { _col = value; } }
+
+    public bool canAttack { get { return _canAttack; } }
+
     void Awake()
     {
         TimeShootSelection();
@@ -77,11 +84,6 @@ public class BaseEnemy : Character
     {
         enemyKill?.Invoke(this);
         base.Kill();
-    }
-
-    public float ReturnSpeed()
-    {
-        return p_speed;
     }
 
     public void GetEnemyManager(EnemyManager enemyManager)

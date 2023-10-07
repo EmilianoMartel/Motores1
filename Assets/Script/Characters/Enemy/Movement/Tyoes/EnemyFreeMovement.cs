@@ -4,12 +4,13 @@ using UnityEngine;
 
 public class EnemyFreeMovement : EnemyMovement
 {
+
     private void Update()
     {
         PatrolMovement();
     }
 
-    public void GetRandomPointInMatrix()
+    protected override void GetRandomNextPosition()
     {
         int randomRow = Random.Range(0, p_row);
         int randomColumn = Random.Range(0, p_column);
@@ -32,7 +33,7 @@ public class EnemyFreeMovement : EnemyMovement
 
         if ((p_currentPosition - p_nextPosition).magnitude <= _treshold)
         {
-            GetRandomPointInMatrix();
+            GetRandomNextPosition();
         }
     }
 }
