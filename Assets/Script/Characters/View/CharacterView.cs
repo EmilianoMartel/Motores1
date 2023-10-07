@@ -14,23 +14,23 @@ public class CharacterView : MonoBehaviour
     public EndAttack endAttack;
 
     [SerializeField] protected Animator p_animator;
-    [SerializeField] private Character _character;
-    private Vector2 _direction;
-    private Vector2 _attackDirection;
-    private float _dirX;
-    private float _dirY;
-    private float _attackX;
-    private float _attackY;
-    private bool _isMoving;
-    private bool _isAttacking;
+    [SerializeField] protected Character p_character;
+    protected Vector2 p_direction;
+    protected Vector2 p_attackDirection;
+    protected float p_dirX;
+    protected float p_dirY;
+    protected float p_attackX;
+    protected float p_attackY;
+    protected bool p_isMoving;
+    protected bool p_isAttacking;
 
     //Parameters
-    [SerializeField] private string _animatorParameterDirX = "dir_x";
-    [SerializeField] private string _animatorParameterDirY = "dir_y";
-    [SerializeField] private string _animatorParameterIsMoving = "isMoving";
-    [SerializeField] private string _animatorParameterAttackDirX = "attack_dir_x";
-    [SerializeField] private string _animatorParameterAttackDirY = "attack_dir_y";
-    [SerializeField] private string _animatorParameterIsAttacking = "isAttacking";
+    [SerializeField] protected string p_animatorParameterDirX = "dir_x";
+    [SerializeField] protected string p_animatorParameterDirY = "dir_y";
+    [SerializeField] protected string p_animatorParameterIsMoving = "isMoving";
+    [SerializeField] protected string p_animatorParameterAttackDirX = "attack_dir_x";
+    [SerializeField] protected string p_animatorParameterAttackDirY = "attack_dir_y";
+    [SerializeField] protected string p_animatorParameterIsAttacking = "isAttacking";
 
     private void Reset()
     {
@@ -39,47 +39,41 @@ public class CharacterView : MonoBehaviour
 
     private void Start()
     {
-        if (_character == null)
+        if (p_character == null)
         {
             Debug.LogError(message: $"{name}: Character is null\n Check and assigned one\nDisabling component");
             enabled = false;
             return;
         }
-        _character.startAttack += StartAttack;
     }
 
     private void Update()
     {
-        _direction = _character.direction;
-        _attackDirection = _character.attackDirection;
-        _dirX = _direction.x;
-        _dirY = _direction.y;
-        _attackX = _attackDirection.x;
-        _attackY = _attackDirection.y;
-        _isMoving = _direction != Vector2.zero;
-        p_animator.SetFloat(_animatorParameterDirX, _dirX);
-        p_animator.SetFloat(_animatorParameterDirY, _dirY);
-        p_animator.SetBool(_animatorParameterIsMoving, _isMoving);
-        p_animator.SetFloat(_animatorParameterAttackDirX, _attackX);
-        p_animator.SetFloat(_animatorParameterAttackDirY, _attackY);
+        p_direction = p_character.direction;
+        p_attackDirection = p_character.attackDirection;
+        p_dirX = p_direction.x;
+        p_dirY = p_direction.y;
+        p_attackX = p_attackDirection.x;
+        p_attackY = p_attackDirection.y;
+        p_isMoving = p_direction != Vector2.zero;
+        p_isAttacking = p_character.isAttacking;
+        p_animator.SetFloat(p_animatorParameterDirX, p_dirX);
+        p_animator.SetFloat(p_animatorParameterDirY, p_dirY);
+        p_animator.SetBool(p_animatorParameterIsMoving, p_isMoving);
+        p_animator.SetFloat(p_animatorParameterAttackDirX, p_attackX);
+        p_animator.SetFloat(p_animatorParameterAttackDirY, p_attackY);
+        p_animator.SetBool(p_animatorParameterIsAttacking, p_isAttacking);
     }
 
-    private void AttackingMoment()
+    protected void AttackingMoment()
     {
         shootMoment?.Invoke();
     }
 
-    private void StartAttack()
-    {
-        _isAttacking = true;
-        p_animator.SetBool(_animatorParameterIsAttacking, _isAttacking);
-    }
-
-    private void EndAttack()
+    protected void EndAttack()
     {
         Debug.Log($"{name} EndAttack animator Event called");
-        _isAttacking = false;
-        p_animator.SetBool(_animatorParameterIsAttacking, _isAttacking);
+        p_isAttacking = false;
         endAttack?.Invoke();
     }
 }

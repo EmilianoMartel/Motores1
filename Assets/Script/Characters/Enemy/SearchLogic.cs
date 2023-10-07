@@ -4,17 +4,18 @@ using UnityEditor.U2D.Animation;
 using UnityEngine;
 using static UnityEngine.UI.Image;
 
-public class SearchShoot : EnemyShoot
+public delegate void PlayerFound(bool foundPlayer);
+public delegate void GetDirection(Vector2 direction);
+public class SearchLogic : MonoBehaviour
 {
+    //Delegates
+    public PlayerFound foundPlayer;
+    public GetDirection getDirection;
+
     [SerializeField] private LayerMask _collisionLayer;
     [SerializeField] private float _rayLength = 1.0f;
     private bool _isHitting = false;
     private Vector2 _direction;
-
-    private void Start()
-    {
-        isObserver?.Invoke(true);
-    }
 
     private void Update()
     {
@@ -29,7 +30,6 @@ public class SearchShoot : EnemyShoot
         {
             SearchPlayer(_direction);
         }
-
     }
 
     private void SearchPlayer(Vector2 direction)
@@ -40,14 +40,15 @@ public class SearchShoot : EnemyShoot
 
         if (hit.collider != null)
         {
-            Debug.Log($"{name}: detected {hit.collider.gameObject.name}");
+            foundPlayer?.Invoke(true);
+            getDirection?.Invoke(direction);
             _direction = direction;
             _isHitting = true;
         }
         else
         {
-            Debug.Log($"{name}: not detected");
             _isHitting = false;
+            foundPlayer?.Invoke(false);
         }
     }
 }

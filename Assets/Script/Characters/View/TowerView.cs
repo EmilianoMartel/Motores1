@@ -2,33 +2,31 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public delegate void UpState();
-public delegate void DownState();
 
 public class TowerView : CharacterView
 {
-    //Delegates
-    public UpState upState;
-    public DownState downState;
-    private bool _isVulnerable;
+    [SerializeField] private BaseEnemy _enemy;
+
+    private bool _canAttack;
 
     //Parameters
-    [SerializeField] private string _animatorParameterIsVulnerable = "isVulnerable";
+    [SerializeField] private string _animatorParameterCanAttack = "canAttack";
+
+    private void Start()
+    {
+        if (_enemy == null)
+        {
+            Debug.LogError(message: $"{name}: Enemy is null\n Check and assigned one\nDisabling component");
+            enabled = false;
+            return;
+        }
+    }
 
     private void Update()
     {
-        p_animator.SetBool(_animatorParameterIsVulnerable, _isVulnerable);
-    }
-
-    private void UpState()
-    {
-        upState?.Invoke();
-        _isVulnerable = true;
-    }
-
-    private void DownState()
-    {
-        downState?.Invoke();
-        _isVulnerable = false;
+        _canAttack = _enemy.canAttack;
+        p_animator.SetBool(_animatorParameterCanAttack, _canAttack);
+        p_isAttacking = p_character.isAttacking;
+        p_animator.SetBool(p_animatorParameterIsAttacking, p_isAttacking);
     }
 }

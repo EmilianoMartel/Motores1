@@ -10,14 +10,22 @@ public class BaseEnemy : Character
 
     public bool activateEnemy = true;
 
-    //Managers
+    //Constructors
     [SerializeField] private EnemyMovement _enemyMovement;
     [SerializeField] private EnemyShoot _enemyShoot;
+    private SearchLogic _searchLogic;
+    private VulnerableStateController _vulnerabilityController;
+
+    //EnemyType State
+    [SerializeField] private bool _isObserverShootEnemy = false;
+    [SerializeField] private bool _isObserverMoveEnemy = false;
+    [SerializeField] private bool _isVulnerableEnemyIfSee = false;
 
     //Shooting
     [SerializeField] private float _maxTimeShoot = 5.0f;
     private float _timeShoot;
-    private bool _isObserver = false;
+    private bool _canAttack = true;
+    public bool canAttack {  get { return _canAttack; }  }
     
     void Awake()
     {
@@ -26,7 +34,16 @@ public class BaseEnemy : Character
         if (_enemyShoot != null)
         {
             p_characterView.endAttack += EndAttack;
-            _enemyShoot.isObserver += ObserverStateEnemy;
+        }
+        if (_isObserverShootEnemy)
+        {
+            _canAttack = false;
+            _searchLogic = gameObject.GetComponent<SearchLogic>();
+            _searchLogic.foundPlayer += CanAttackChanger;
+        }
+        if (_isVulnerableEnemyIfSee)
+        {
+            _vulnerabilityController = gameObject.GetComponent<VulnerableStateController>();
         }
     }
 
@@ -39,7 +56,7 @@ public class BaseEnemy : Character
         if (_enemyShoot != null)
         {
             p_actualTime += Time.deltaTime;
-            if (!_isObserver)
+            if (_canAttack)
             {
                 if (_timeShoot < p_actualTime && !p_isAttacking)
                 {
@@ -48,11 +65,6 @@ public class BaseEnemy : Character
                     _enemyShoot.Shoot();
                 }
             }
-            else
-            {
-
-            }
-            
         }
     }
 
@@ -82,8 +94,12 @@ public class BaseEnemy : Character
         _enemyShoot.GetBulletManager(bulletManager);
     }
 
-    private void ObserverStateEnemy(bool isObserver)
+    private void CanAttackChanger(bool canAttack)
     {
-        _isObserver = isObserver;
+        _canAttack = canAttack;
+        if (_isVulnerableEnemyIfSee)
+        {
+            _vulnerabilityController.isVulnerable?.Invoke(_canAttack);
+        }
     }
 }

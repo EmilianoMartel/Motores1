@@ -3,14 +3,13 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public delegate void StartAttack();
+
 public abstract class Character : MonoBehaviour
 {
-    //Delegates
-    public StartAttack startAttack;
 
     [SerializeField] protected HealthPoints p_healthPoints;
     [SerializeField] protected CharacterView p_characterView;
+    [SerializeField] protected VulnerableStateController p_stateController;
 
     //Movement
     [SerializeField] protected float p_speed = 1.0f;
@@ -26,6 +25,7 @@ public abstract class Character : MonoBehaviour
 
     public Vector3 attackDirection { get { return p_attackDirection; } }
     public Vector3 direction { get { return p_direction; } }
+    public bool isAttacking { get { return p_isAttacking; } }
 
     private void Start()
     {
@@ -68,7 +68,6 @@ public abstract class Character : MonoBehaviour
     {
         Debug.Log($"{name}: Start attack event");
         p_isAttacking = true;
-        startAttack?.Invoke();
     }
 
     protected virtual void EndAttack()

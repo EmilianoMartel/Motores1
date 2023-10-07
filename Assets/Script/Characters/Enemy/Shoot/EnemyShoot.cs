@@ -3,16 +3,12 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 
-public delegate void ObserverStateEnemy(bool isObserver);
 public abstract class EnemyShoot : MonoBehaviour
 {
-    //Delegates
-    public ObserverStateEnemy isObserver;
-
     [SerializeField] private BulletManager _bulletManager;
 
     [SerializeField] protected CharacterView p_characterView;
-    protected Vector2 _directionShoot;
+    protected Vector2 p_directionShoot;
     protected int p_randomY = 0;
     protected int p_randomX = 0;
 
@@ -35,15 +31,15 @@ public abstract class EnemyShoot : MonoBehaviour
 
     public void Shoot()
     {
-        _directionShoot = GetRandomDirection();
+        p_directionShoot = GetDirection();
     }
 
     private void ShootMoment()
     {
-        _bulletManager.Shoot(_directionShoot);
+        _bulletManager.Shoot(p_directionShoot);
     }
 
-    protected virtual Vector2 GetRandomDirection()
+    protected virtual Vector2 GetDirection()
     {
         Vector2 direction = new Vector2(0,0);
         return direction;

@@ -6,7 +6,7 @@ public class LineShootEnemy : EnemyShoot
 {
     private int _randomDirection;
 
-    protected override Vector2 GetRandomDirection()
+    protected override Vector2 GetDirection()
     {
         ChooseDirection();
         Vector2 direction = new Vector2(p_randomX, p_randomY);
