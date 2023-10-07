@@ -13,7 +13,7 @@ public class CharacterView : MonoBehaviour
     public ShootMoment shootMoment;
     public EndAttack endAttack;
 
-    [SerializeField] private Animator _animator;
+    [SerializeField] protected Animator p_animator;
     [SerializeField] private Character _character;
     private Vector2 _direction;
     private Vector2 _attackDirection;
@@ -34,11 +34,17 @@ public class CharacterView : MonoBehaviour
 
     private void Reset()
     {
-        _animator = GetComponent<Animator>();
+        p_animator = GetComponent<Animator>();
     }
 
     private void Start()
     {
+        if (_character == null)
+        {
+            Debug.LogError(message: $"{name}: Character is null\n Check and assigned one\nDisabling component");
+            enabled = false;
+            return;
+        }
         _character.startAttack += StartAttack;
     }
 
@@ -51,11 +57,11 @@ public class CharacterView : MonoBehaviour
         _attackX = _attackDirection.x;
         _attackY = _attackDirection.y;
         _isMoving = _direction != Vector2.zero;
-        _animator.SetFloat(_animatorParameterDirX, _dirX);
-        _animator.SetFloat(_animatorParameterDirY, _dirY);
-        _animator.SetBool(_animatorParameterIsMoving, _isMoving);
-        _animator.SetFloat(_animatorParameterAttackDirX, _attackX);
-        _animator.SetFloat(_animatorParameterAttackDirY, _attackY);
+        p_animator.SetFloat(_animatorParameterDirX, _dirX);
+        p_animator.SetFloat(_animatorParameterDirY, _dirY);
+        p_animator.SetBool(_animatorParameterIsMoving, _isMoving);
+        p_animator.SetFloat(_animatorParameterAttackDirX, _attackX);
+        p_animator.SetFloat(_animatorParameterAttackDirY, _attackY);
     }
 
     private void AttackingMoment()
@@ -66,14 +72,14 @@ public class CharacterView : MonoBehaviour
     private void StartAttack()
     {
         _isAttacking = true;
-        _animator.SetBool(_animatorParameterIsAttacking, _isAttacking);
+        p_animator.SetBool(_animatorParameterIsAttacking, _isAttacking);
     }
 
     private void EndAttack()
     {
         Debug.Log($"{name} EndAttack animator Event called");
         _isAttacking = false;
-        _animator.SetBool(_animatorParameterIsAttacking, _isAttacking);
+        p_animator.SetBool(_animatorParameterIsAttacking, _isAttacking);
         endAttack?.Invoke();
     }
 }

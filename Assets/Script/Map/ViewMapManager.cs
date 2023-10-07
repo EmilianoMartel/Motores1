@@ -117,7 +117,7 @@ public class ViewMapManager : MonoBehaviour
         SpriteRenderer spriteRenderer = _spawnMap.GetComponent<SpriteRenderer>();
         index = Random.Range(0, _mapData.FloorList.Count);
         spriteRenderer.sprite = _mapData.FloorList[index];
-        floorPosition?.Invoke(_spawnMap.transform.position, f_column - 1, f_row - 1);
+        floorPosition?.Invoke(_spawnMap.transform.position, f_column -1, f_row -1);
         _spawnMap.transform.parent = _floorListParent.transform;
     }
 

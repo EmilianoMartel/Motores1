@@ -17,7 +17,7 @@ public class BaseEnemy : Character
     //Shooting
     [SerializeField] private float _maxTimeShoot = 5.0f;
     private float _timeShoot;
-    private bool _isShooting;
+    private bool _isObserver = false;
     
     void Awake()
     {
@@ -26,6 +26,7 @@ public class BaseEnemy : Character
         if (_enemyShoot != null)
         {
             p_characterView.endAttack += EndAttack;
+            _enemyShoot.isObserver += ObserverStateEnemy;
         }
     }
 
@@ -38,12 +39,20 @@ public class BaseEnemy : Character
         if (_enemyShoot != null)
         {
             p_actualTime += Time.deltaTime;
-            if (p_shootTimeRest < p_actualTime && !p_isAttacking)
+            if (!_isObserver)
             {
-                p_actualTime = 0;
-                StartAttack();
-                _enemyShoot.Shoot();
+                if (_timeShoot < p_actualTime && !p_isAttacking)
+                {
+                    p_actualTime = 0;
+                    StartAttack();
+                    _enemyShoot.Shoot();
+                }
             }
+            else
+            {
+
+            }
+            
         }
     }
 
@@ -71,5 +80,10 @@ public class BaseEnemy : Character
     public void GetBulletManager(BulletManager bulletManager)
     {
         _enemyShoot.GetBulletManager(bulletManager);
+    }
+
+    private void ObserverStateEnemy(bool isObserver)
+    {
+        _isObserver = isObserver;
     }
 }

@@ -9,6 +9,7 @@ public class HealthPoints : MonoBehaviour
 
     [SerializeField] private int _originalLife = 10;
     private int _life;
+    private bool _isDamagable = true;
 
     private void Start()
     {
@@ -17,10 +18,13 @@ public class HealthPoints : MonoBehaviour
 
     public void GetDamage(int damage)
     {
-        _life -= damage;
-        if(_life <= 0)
+        if (_isDamagable)
         {
-            Death();
+            _life -= damage;
+            if (_life <= 0)
+            {
+                Death();
+            }
         }
     }
 

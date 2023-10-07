@@ -3,8 +3,12 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 
+public delegate void ObserverStateEnemy(bool isObserver);
 public abstract class EnemyShoot : MonoBehaviour
 {
+    //Delegates
+    public ObserverStateEnemy isObserver;
+
     [SerializeField] private BulletManager _bulletManager;
 
     [SerializeField] protected CharacterView p_characterView;

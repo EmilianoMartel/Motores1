@@ -7,7 +7,7 @@ public delegate void SpawnEnemy(int column, int row, int seed);
 public delegate void EndLevel();
 public class LevelManager : MonoBehaviour
 {
-    const int DIFF_MATRIX_ENEMY = 2;
+    const int DIFF_MATRIX_ENEMY = 1;
 
     //Delegates
     public SpawnEnemy spawnEnemy;
@@ -66,6 +66,12 @@ public class LevelManager : MonoBehaviour
             enabled = false;
             return;
         }
+        if (_minEnemy < 0)
+        {
+            Debug.LogError(message: $"{name}: Min enemy is negative \n Check that and assigned positive number\nChange value to 1");
+            _minEnemy = 1;
+            return;
+        }
     }
 
     private void SetDataList()
@@ -91,7 +97,22 @@ public class LevelManager : MonoBehaviour
         }
     }
 
-    private void SpawnEnemies()
+    private void SpawnEnemiesControll(int f_column, int f_row, int seed)
+    {
+        if (_minEnemy == 1)
+        {
+            spawnEnemy?.Invoke(f_column - DIFF_MATRIX_ENEMY, f_row - DIFF_MATRIX_ENEMY, seed);
+        }
+        else
+        {
+            for (int i = 0; i <= _minEnemy; i++)
+            {
+                spawnEnemy?.Invoke(f_column - DIFF_MATRIX_ENEMY, f_row - DIFF_MATRIX_ENEMY, seed);
+            }
+        }
+    }
+
+    private void SearchSpawnEnemies()
     {
         ArrayLayout.State state;
         int seed = Random.Range(0, 100);
@@ -108,7 +129,7 @@ public class LevelManager : MonoBehaviour
                     case ArrayLayout.State.Rock:
                         break;
                     case ArrayLayout.State.Spawner:
-                        spawnEnemy?.Invoke(f_column - DIFF_MATRIX_ENEMY, f_row - DIFF_MATRIX_ENEMY, seed);
+                        SpawnEnemiesControll(f_column, f_row, seed);
                         break;
                     case ArrayLayout.State.ObjectSpawner:
                         break;
@@ -141,7 +162,7 @@ public class LevelManager : MonoBehaviour
         _stair.isActiveStair = false;
         _stair.gameObject.SetActive(false);
         Debug.Log($"{name}: Event StartLevel is called");
-        SpawnEnemies();
+        SearchSpawnEnemies();
     }
 
     private void EndLevel()
