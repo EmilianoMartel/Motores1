@@ -15,6 +15,8 @@ GameObject:
   - component: {fileID: 7524849006491545422}
   - component: {fileID: 7524849006491544754}
   - component: {fileID: 7524849006491544753}
+  - component: {fileID: 2754763630728339446}
+  - component: {fileID: 4795909926746027186}
   m_Layer: 8
   m_Name: NoMoveEnemy
   m_TagString: Untagged
@@ -78,13 +80,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   p_healthPoints: {fileID: 7524849006491544754}
-  p_characterView: {fileID: 0}
+  p_characterView: {fileID: 6359102246570833659}
+  p_stateController: {fileID: 4795909926746027186}
   p_speed: 1
   p_shootTimeRest: 0
   p_isAttacking: 0
   activateEnemy: 1
   _enemyMovement: {fileID: 0}
-  _enemyShoot: {fileID: 7524849006491545423}
+  _enemyShoot: {fileID: 2754763630728339446}
+  _isObserverShootEnemy: 1
+  _isObserverMoveEnemy: 0
+  _isVulnerableEnemyIfSee: 1
   _maxTimeShoot: 5
 --- !u!114 &7524849006491545423
 MonoBehaviour:
@@ -98,8 +104,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 166a91553d166e440a2d20256646c040, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _bulletManager: {fileID: 7524849006491545422}
-  p_characterView: {fileID: 0}
   _collisionLayer:
     serializedVersion: 2
     m_Bits: 128
@@ -132,6 +136,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _originalLife: 10
+  _controller: {fileID: 4795909926746027186}
 --- !u!114 &7524849006491544753
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -145,6 +150,33 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _damage: 1
+--- !u!114 &2754763630728339446
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7524849006491545419}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9123930c766e3144e9f834c866368692, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _bulletManager: {fileID: 7524849006491545422}
+  p_characterView: {fileID: 6359102246570833659}
+  _searchLogic: {fileID: 7524849006491545423}
+--- !u!114 &4795909926746027186
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7524849006491545419}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5a28e0d5a93093a4189c11521e623597, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &7524849007748788793
 GameObject:
   m_ObjectHideFlags: 0
@@ -296,11 +328,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   p_animator: {fileID: 7524849007753269902}
-  _character: {fileID: 7524849006491544752}
-  _animatorParameterDirX: dirX
-  _animatorParameterDirY: dirY
-  _animatorParameterIsMoving: isMoving
-  _animatorParameterAttackDirX: attackDirX
-  _animatorParameterAttackDirY: attackDirY
-  _animatorParameterIsAttacking: isAttacking
-  _animatorParameterIsVulnerable: isVulnerable
+  p_character: {fileID: 7524849006491544752}
+  p_animatorParameterDirX: dir_x
+  p_animatorParameterDirY: dir_y
+  p_animatorParameterIsMoving: isMoving
+  p_animatorParameterAttackDirX: attack_dir_x
+  p_animatorParameterAttackDirY: attack_dir_y
+  p_animatorParameterIsAttacking: isAttacking
+  _enemy: {fileID: 7524849006491544752}
+  _animatorParameterCanAttack: canAttack
