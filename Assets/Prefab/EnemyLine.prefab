@@ -152,11 +152,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   p_animator: {fileID: 7726056866177993313}
   p_character: {fileID: 2796134744829502551}
-  p_animatorParameterDirX: dir_x
-  p_animatorParameterDirY: dir_y
+  p_animatorParameterDirX: dirX
+  p_animatorParameterDirY: dirY
   p_animatorParameterIsMoving: isMoving
-  p_animatorParameterAttackDirX: attack_dir_x
-  p_animatorParameterAttackDirY: attack_dir_y
+  p_animatorParameterAttackDirX: attackDirX
+  p_animatorParameterAttackDirY: attackDirY
   p_animatorParameterIsAttacking: isAttacking
 --- !u!1 &2796134744829502570
 GameObject:
@@ -278,9 +278,13 @@ MonoBehaviour:
   p_speed: 1
   p_shootTimeRest: 2
   p_isAttacking: 0
+  p_shootDelay: 1
+  p_bulletManager: {fileID: 0}
   activateEnemy: 1
   _enemyMovement: {fileID: 2796134744829502571}
   _enemyShoot: {fileID: 2796134744829502549}
+  _isShootEnemy: 0
+  _isMoveEnemy: 0
   _isObserverShootEnemy: 0
   _isObserverMoveEnemy: 0
   _isVulnerableEnemyIfSee: 0
@@ -297,7 +301,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3f57ebbb7e7d1494c916b0f8eac44844, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _bulletManager: {fileID: -7486364379230623679}
   p_characterView: {fileID: 3635193948966077097}
 --- !u!114 &-2742110792295736917
 MonoBehaviour:

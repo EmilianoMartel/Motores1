@@ -121,11 +121,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   p_animator: {fileID: 6003113332203233321}
   p_character: {fileID: 4093501843917922084}
-  p_animatorParameterDirX: dir_x
-  p_animatorParameterDirY: dir_y
+  p_animatorParameterDirX: dirX
+  p_animatorParameterDirY: dirY
   p_animatorParameterIsMoving: isMoving
-  p_animatorParameterAttackDirX: attack_dir_x
-  p_animatorParameterAttackDirY: attack_dir_y
+  p_animatorParameterAttackDirX: attackDirX
+  p_animatorParameterAttackDirY: attackDirY
   p_animatorParameterIsAttacking: isAttacking
 --- !u!1 &4093501843917922095
 GameObject:
@@ -145,7 +145,7 @@ GameObject:
   - component: {fileID: 8242030846564989498}
   - component: {fileID: 238870006130011255}
   m_Layer: 8
-  m_Name: Enemy
+  m_Name: FreeMoveEnemy
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -247,9 +247,13 @@ MonoBehaviour:
   p_speed: 1
   p_shootTimeRest: 2
   p_isAttacking: 0
+  p_shootDelay: 1
+  p_bulletManager: {fileID: 238870006130011255}
   activateEnemy: 1
   _enemyMovement: {fileID: 4093501843917922085}
   _enemyShoot: {fileID: 4093501843917922086}
+  _isShootEnemy: 1
+  _isMoveEnemy: 1
   _isObserverShootEnemy: 0
   _isObserverMoveEnemy: 0
   _isVulnerableEnemyIfSee: 0
@@ -266,7 +270,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 439e3c2dd94d5c7419235286b86a382b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _bulletManager: {fileID: 238870006130011255}
   p_characterView: {fileID: 6749301598340494745}
 --- !u!114 &654379792144347464
 MonoBehaviour:

@@ -10,7 +10,6 @@ public class ShootWhithValue : EnemyShoot
     private void Start()
     {
         _searchLogic.getDirection += GetShootDirection;
-        p_characterView.shootMoment += ShootMoment;
     }
 
     private void GetShootDirection(Vector2 direction)

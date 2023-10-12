@@ -5,15 +5,12 @@ using UnityEngine.InputSystem;
 
 public class Player : Character
 {
-    [SerializeField] protected BulletManager p_bulletManager;
     private Vector3 _inputAttack;
 
     private void Start()
     {
         NullReferenceController();
         SuscriptionsDelegates();
-        p_characterView.shootMoment += SetShootDirection;
-        p_characterView.endAttack += EndAttack;
         p_actualTime = 10;
     }
 
@@ -23,7 +20,7 @@ public class Player : Character
         if (p_actualTime > p_shootTimeRest && (_inputAttack.x != 0 || _inputAttack.y != 0) && p_isAttacking == false)
         {
             p_attackDirection = _inputAttack;
-            StartAttack();
+            StartCoroutine(Shoot());
             p_actualTime = 0;
         }
         p_actualTime += Time.deltaTime;
@@ -47,11 +44,5 @@ public class Player : Character
     private void SetShootDirection()
     {
         p_bulletManager.Shoot(p_attackDirection);
-    }
-
-    protected override void StartAttack()
-    {
-        p_attackDirection.Normalize();
-        base.StartAttack();
     }
 }

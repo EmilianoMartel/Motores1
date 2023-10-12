@@ -3,16 +3,9 @@ using System.Collections.Generic;
 using UnityEditor.XR;
 using UnityEngine;
 
-public delegate void ShootMoment();
-public delegate void EndAttack();
-
 [RequireComponent(typeof(Animator))]
 public class CharacterView : MonoBehaviour
 {
-    //Delegates
-    public ShootMoment shootMoment;
-    public EndAttack endAttack;
-
     [SerializeField] protected Animator p_animator;
     [SerializeField] protected Character p_character;
     protected Vector2 p_direction;
@@ -63,17 +56,5 @@ public class CharacterView : MonoBehaviour
         p_animator.SetFloat(p_animatorParameterAttackDirX, p_attackX);
         p_animator.SetFloat(p_animatorParameterAttackDirY, p_attackY);
         p_animator.SetBool(p_animatorParameterIsAttacking, p_isAttacking);
-    }
-
-    protected void AttackingMoment()
-    {
-        shootMoment?.Invoke();
-    }
-
-    protected void EndAttack()
-    {
-        Debug.Log($"{name} EndAttack animator Event called");
-        p_isAttacking = false;
-        endAttack?.Invoke();
     }
 }

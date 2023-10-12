@@ -2,9 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+public delegate void Damaged(int actualLife);
 public delegate void Death();
 public class HealthPoints : MonoBehaviour
 {
+    //Delegates
+    public Damaged damaged;
     public Death death;
 
     [SerializeField] private int _originalLife = 10;
@@ -26,6 +29,7 @@ public class HealthPoints : MonoBehaviour
         if (_isVulnerable)
         {
             _life -= damage;
+            damaged?.Invoke(_life);
             if (_life <= 0)
             {
                 Death();

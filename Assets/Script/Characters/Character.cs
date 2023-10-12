@@ -19,12 +19,14 @@ public abstract class Character : MonoBehaviour
     //Shoot
     [SerializeField] protected float p_shootTimeRest;
     [SerializeField] protected bool p_isAttacking = false;
+    [SerializeField] protected float p_shootDelay = 1.0f;
+    [SerializeField] protected BulletManager p_bulletManager;
 
     protected float p_actualTime = 0;
     protected static float timeEndGame = 2f;
-    public float speed { get { return p_speed; } }
 
-    public Vector3 attackDirection { get { return p_attackDirection; } }
+    public float speed { get { return p_speed; } }
+    public Vector3 attackDirection { get { return p_attackDirection; } set { p_attackDirection = value; } }
     public Vector3 direction { get { return p_direction; } }
     public bool isAttacking { get { return p_isAttacking; } }
 
@@ -65,15 +67,11 @@ public abstract class Character : MonoBehaviour
         gameObject.SetActive(false);
     }
 
-    protected virtual void StartAttack()
+    protected IEnumerator Shoot()
     {
-        Debug.Log($"{name}: Start attack event");
         p_isAttacking = true;
-    }
-
-    protected virtual void EndAttack()
-    {
-        Debug.Log($"{name}: End Attack event");
+        yield return new WaitForSeconds(p_shootDelay);
+        p_bulletManager.Shoot(p_attackDirection);
         p_isAttacking = false;
     }
 }
