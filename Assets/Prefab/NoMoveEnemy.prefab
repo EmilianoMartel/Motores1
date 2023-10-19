@@ -12,7 +12,6 @@ GameObject:
   - component: {fileID: 7524849006491545420}
   - component: {fileID: 7524849006491544752}
   - component: {fileID: 7524849006491545423}
-  - component: {fileID: 7524849006491545422}
   - component: {fileID: 7524849006491544754}
   - component: {fileID: 7524849006491544753}
   - component: {fileID: 2754763630728339446}
@@ -54,7 +53,7 @@ BoxCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: -0.6189089}
+  m_Offset: {x: 0, y: 0.29741442}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -65,7 +64,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 1, y: 0.91998386}
+  m_Size: {x: 1, y: 1.4042583}
   m_EdgeRadius: 0
 --- !u!114 &7524849006491544752
 MonoBehaviour:
@@ -86,14 +85,19 @@ MonoBehaviour:
   p_shootTimeRest: 0
   p_isAttacking: 0
   p_shootDelay: 0
+  p_delayBetweenShoots: 1
+  p_multipleShoot: 2
   p_bulletManager: {fileID: 0}
+  p_pointShoot: {fileID: 7524849007748788794}
   activateEnemy: 1
   _enemyMovement: {fileID: 0}
   _enemyShoot: {fileID: 2754763630728339446}
+  _isSingleShootEnemy: 1
+  _isMoveEnemy: 0
   _isObserverShootEnemy: 1
   _isObserverMoveEnemy: 0
   _isVulnerableEnemyIfSee: 1
-  _isShootEnemy: 0
+  _isMultipleShootEnemy: 0
   _maxTimeShoot: 5
 --- !u!114 &7524849006491545423
 MonoBehaviour:
@@ -110,22 +114,7 @@ MonoBehaviour:
   _collisionLayer:
     serializedVersion: 2
     m_Bits: 128
-  _rayLength: 4
---- !u!114 &7524849006491545422
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7524849006491545419}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d6b1a419364227e4c974780f7c420849, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _pointShoot: {fileID: 7524849007748788794}
-  _minBullets: 5
-  _bulletPrefab: {fileID: 1786968653925389603, guid: b6b8f4725c8682d4da52fcfcd18a7a82, type: 3}
+  _rayLength: 3
 --- !u!114 &7524849006491544754
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -237,7 +226,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7524849007753269899}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0.66, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
