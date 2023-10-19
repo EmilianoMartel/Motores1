@@ -1,10 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 
 public delegate void SpawnEnemy(int column, int row, int seed);
 public delegate void EndLevel();
+public delegate void ShowActualWave(int waveNum);
+public delegate void BossFight();
 public class LevelManager : MonoBehaviour
 {
     const int DIFF_MATRIX_ENEMY = 1;
@@ -12,6 +15,8 @@ public class LevelManager : MonoBehaviour
     //Delegates
     public SpawnEnemy spawnEnemy;
     public EndLevel endLevel;
+    public ShowActualWave showActualWave;
+    public BossFight bossFight;
 
     //Level variables for dificult
     [SerializeField] private int _minEnemy = 1;
@@ -29,6 +34,8 @@ public class LevelManager : MonoBehaviour
 
     //Variables for start and end game
     private int _enemyKillCount = 0;
+    [SerializeField] private int _maxWave = 10;
+    private int _actualWave = 0;
 
     private void Awake()
     {
@@ -159,10 +166,16 @@ public class LevelManager : MonoBehaviour
     [ContextMenu("StartLevel")]
     private void StartLevel()
     {
+        _actualWave++;
         _stair.isActiveStair = false;
         _stair.gameObject.SetActive(false);
         Debug.Log($"{name}: Event StartLevel is called");
-        SearchSpawnEnemies();
+        if (_actualWave == _maxWave+1) SpawnBoss();
+        else
+        {
+            showActualWave?.Invoke(_actualWave);
+            SearchSpawnEnemies();
+        }
     }
 
     private void EndLevel()
@@ -173,7 +186,6 @@ public class LevelManager : MonoBehaviour
 
     private void SpawnedEnemiesCount(BaseEnemy enemy)
     {
-        Debug.Log($"{enemy.name} was spawned.");
         _enemyKillCount++;
         enemy.enemyKill += KilledEnemiesCount;
     }
@@ -201,5 +213,10 @@ public class LevelManager : MonoBehaviour
     {
         _stair.isActiveStair = true;
         _stair.gameObject.SetActive(true);
+    }
+
+    private void SpawnBoss()
+    {
+        bossFight?.Invoke();
     }
 }
