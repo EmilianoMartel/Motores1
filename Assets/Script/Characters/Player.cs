@@ -40,9 +40,4 @@ public class Player : Character
     {
         Movement(p_direction);
     }
-
-    private void SetShootDirection()
-    {
-        p_bulletManager.Shoot(p_attackDirection);
-    }
 }

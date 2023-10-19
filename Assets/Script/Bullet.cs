@@ -25,7 +25,7 @@ public class Bullet : MonoBehaviour
 
     void Update()
     {
-        gameObject.transform.Translate(direction * _speed * Time.deltaTime);
+        transform.Translate(direction * _speed * Time.deltaTime);
         _actualTime += Time.deltaTime;
         if (_actualTime >= _deleteTime)
         {

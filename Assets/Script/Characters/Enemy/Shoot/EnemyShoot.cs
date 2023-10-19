@@ -4,10 +4,12 @@ using Unity.VisualScripting;
 using UnityEngine;
 
 public delegate void StartAttack(Vector2 directionShoot);
+public delegate void StartMultipleAttack(List<Vector2> listDirection);
 public abstract class EnemyShoot : MonoBehaviour
 {
     //Delegates
     public StartAttack startAttack;
+    public StartMultipleAttack startMultipleAttack;
 
     [SerializeField] protected CharacterView p_characterView;
     protected Vector2 p_directionShoot;
@@ -22,6 +24,17 @@ public abstract class EnemyShoot : MonoBehaviour
             enabled = false;
             return;
         }
+    }
+
+    public void Shoot(int numShoot)
+    {
+        List<Vector2> list = new List<Vector2>();
+        for (int i = 0; i < numShoot; i++)
+        {
+            p_directionShoot = GetDirection();
+            list.Add(p_directionShoot);
+        }
+        startMultipleAttack?.Invoke(list);
     }
 
     public void Shoot()

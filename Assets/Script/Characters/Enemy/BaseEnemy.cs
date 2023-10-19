@@ -18,11 +18,12 @@ public class BaseEnemy : Character
     private VulnerableStateController _vulnerabilityController;
 
     //EnemyType State
-    [SerializeField] private bool _isShootEnemy = false;
+    [SerializeField] private bool _isSingleShootEnemy = false;
     [SerializeField] private bool _isMoveEnemy = false;
     [SerializeField] private bool _isObserverShootEnemy = false;
     [SerializeField] private bool _isObserverMoveEnemy = false;
     [SerializeField] private bool _isVulnerableEnemyIfSee = false;
+    [SerializeField] private bool _isMultipleShootEnemy = false;
 
     //Shooting
     [SerializeField] private float _maxTimeShoot = 5.0f;
@@ -57,7 +58,15 @@ public class BaseEnemy : Character
                 if (_timeShoot < p_actualTime && !p_isAttacking)
                 {
                     p_actualTime = 0;
-                    _enemyShoot.Shoot();
+                    if (_isMultipleShootEnemy)
+                    {
+                        _enemyShoot.Shoot(p_multipleShoot);
+                    }
+                    else
+                    {
+                        _enemyShoot.Shoot();
+                    }
+                    
                 }
             }
         }
@@ -76,7 +85,10 @@ public class BaseEnemy : Character
 
     public void GetEnemyManager(EnemyManager enemyManager)
     {
-        _enemyMovement.GetValueEnemyManager(enemyManager);
+        if (_enemyMovement != null)
+        {
+            _enemyMovement.GetValueEnemyManager(enemyManager);
+        }
     }
 
     private void CanAttackChanger(bool canAttack)
@@ -94,6 +106,11 @@ public class BaseEnemy : Character
         StartCoroutine(Shoot());
     }
 
+    private void GetShootDirection(List<Vector2> listDirection)
+    {
+        StartCoroutine(Shoot(p_multipleShoot,listDirection));
+    }
+
     private void OnEnable()
     {
         if (_isObserverShootEnemy)
@@ -106,7 +123,7 @@ public class BaseEnemy : Character
         {
             _vulnerabilityController = gameObject.GetComponent<VulnerableStateController>();
         }
-        if (_isShootEnemy)
+        if (_isSingleShootEnemy)
         {
             if (_enemyShoot == null)
             {
@@ -125,6 +142,10 @@ public class BaseEnemy : Character
                 return;
             }
         }
+        if (_isMultipleShootEnemy)
+        {
+            _enemyShoot.startMultipleAttack += GetShootDirection;
+        }
     }
 
     private void OnDisable()
@@ -133,9 +154,13 @@ public class BaseEnemy : Character
         {
             _searchLogic.foundPlayer -= CanAttackChanger;
         }
-        if (_isShootEnemy)
+        if (_isSingleShootEnemy)
         {
             _enemyShoot.startAttack -= GetShootDirection;
+        }
+        if (_isMultipleShootEnemy)
+        {
+            _enemyShoot.startMultipleAttack -= GetShootDirection;
         }
     }
 }

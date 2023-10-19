@@ -1,12 +1,14 @@
 using System;
 using System.Collections.Generic;
+using System.Reflection;
 using UnityEngine;
 
 public delegate void SpawnedEnemyCount(BaseEnemy enemy);
 public class EnemyManager : MonoBehaviour
 {
     //Struct
-    private struct EnemyType{
+    private struct EnemyType
+    {
         public string name;
         public List<BaseEnemy> enemyList;
     }
@@ -17,14 +19,16 @@ public class EnemyManager : MonoBehaviour
     //Managers
     [SerializeField] private ViewMapManager _viewMapManager;
     [SerializeField] private LevelManager _levelManager;
+    [SerializeField] private BulletManager _bulletManager;
 
     private int _row = 1;
     private int _column = 1;
     public Vector2[,] _positionMatriz;
-    
+
 
     //EnemyList
     [SerializeField] private List<BaseEnemy> _enemyListPrefab;
+    [SerializeField] private List<BaseEnemy> _bossPrefab;
     private List<EnemyType> _enemyTypeList = new List<EnemyType>();
     private EnemyType _enemyType;
     private BaseEnemy _enemy;
@@ -52,6 +56,7 @@ public class EnemyManager : MonoBehaviour
         //Delegates suscriptions
         _viewMapManager.floorPosition += PositionListSpawner;
         _levelManager.spawnEnemy += SpawnEnemyLogic;
+        _levelManager.bossFight += SpawnBossLogic;
     }
 
     private void Start()
@@ -63,11 +68,11 @@ public class EnemyManager : MonoBehaviour
     {
         if (column > _column || row > _row || column < 0 || row < 0)
         {
-            Debug.LogError(message:$"{name}: Out of range \n Check column and row\nDisabling component");
+            Debug.LogError(message: $"{name}: Out of range \n Check column and row\nDisabling component");
             enabled = false;
             return;
         }
-        _positionMatriz[column,row] = position;
+        _positionMatriz[column, row] = position;
     }
 
     private void InvokeEnemyList()
@@ -76,6 +81,7 @@ public class EnemyManager : MonoBehaviour
         {
             _enemy = Instantiate(_enemyListPrefab[i], transform.position, Quaternion.identity);
             _enemy.GetEnemyManager(this);
+            _enemy.bulletManager = _bulletManager;
             _enemyType.name = _enemy.name;
             _enemyType.enemyList = new List<BaseEnemy>();
             _enemyType.enemyList.Add(_enemy);
@@ -96,7 +102,7 @@ public class EnemyManager : MonoBehaviour
             if (_enemyTypeList[index].enemyList[i].activateEnemy == false)
             {
                 _enemy = _enemyTypeList[index].enemyList[i];
-                _enemy.transform.position = new Vector3(_positionMatriz[f_column,f_row].x , _positionMatriz[f_column, f_row].y, -2);
+                _enemy.transform.position = new Vector3(_positionMatriz[f_column, f_row].x, _positionMatriz[f_column, f_row].y, -2);
                 _enemy.row = f_row;
                 _enemy.col = f_column;
                 _enemy.activateEnemy = true;
@@ -125,6 +131,7 @@ public class EnemyManager : MonoBehaviour
         {
             _enemy = Instantiate(_enemyTypeList[index].enemyList[0], transform.position, Quaternion.identity);
             _enemy.GetEnemyManager(this);
+            _enemy.bulletManager = _bulletManager;
             _enemyTypeList[index].enemyList.Add(_enemy);
             _enemy.activateEnemy = false;
             _enemy.gameObject.SetActive(false);
@@ -134,5 +141,20 @@ public class EnemyManager : MonoBehaviour
     public void SetSeed(int seed)
     {
         _random = new System.Random(seed);
+    }
+
+    private void SpawnBossLogic()
+    {
+        Debug.Log($"{name}: Boss Fight");
+        int index = _random.Next(0, _bossPrefab.Count);
+        _enemy = Instantiate(_bossPrefab[index], transform.position, Quaternion.identity);
+        _enemy.transform.position = new Vector3(_positionMatriz[0, 0].x, _positionMatriz[0, 0].y, -2);
+        _enemy.row = 0;
+        _enemy.col = 0;
+        _enemy.bulletManager = _bulletManager;
+        _enemy.GetEnemyManager(this);
+        _enemy.activateEnemy = true;
+        _enemy.gameObject.SetActive(true);
+        spawnedEnemies?.Invoke(_enemy);
     }
 }
