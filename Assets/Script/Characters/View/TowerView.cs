@@ -27,7 +27,6 @@ public class TowerView : CharacterView
     {
         _canAttack = _enemy.canAttack;
         p_animator.SetBool(_animatorParameterCanAttack, _canAttack);
-        p_isAttacking = p_character.isAttacking;
         p_animator.SetBool(p_animatorParameterIsAttacking, p_isAttacking);
     }
 }

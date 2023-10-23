@@ -1,15 +1,22 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-
 public abstract class Character : MonoBehaviour
 {
+    //Delagates
+    public Action<bool> isDeathEvent;
+    public Action<bool> isAttackingEvent;
 
     [SerializeField] protected HealthPoints p_healthPoints;
     [SerializeField] protected CharacterView p_characterView;
     [SerializeField] protected VulnerableStateController p_stateController;
+
+    //Death
+    [SerializeField] protected float p_deathDelay = 1.0f;
+    protected bool p_isDeath = false;
 
     //Movement
     [SerializeField] protected float p_speed = 1.0f;
@@ -24,8 +31,8 @@ public abstract class Character : MonoBehaviour
     [SerializeField] protected int p_multipleShoot = 2;
     [SerializeField] protected BulletManager p_bulletManager;
     [SerializeField] protected Transform p_pointShoot;
-    private Vector2 _realPointShoot;
-    [SerializeField] protected const float DIFF_X = 1.0f;
+    private Vector3 _realPointShoot;
+    [SerializeField] private const float DIFF_X = 1.0f;
     [SerializeField] private const float DIFF_Y = 1.0f;
 
     protected float p_actualTime = 0;
@@ -34,7 +41,6 @@ public abstract class Character : MonoBehaviour
     public float speed { get { return p_speed; } }
     public Vector3 attackDirection { get { return p_attackDirection; } set { p_attackDirection = value; } }
     public Vector3 direction { get { return p_direction; } }
-    public bool isAttacking { get { return p_isAttacking; } }
     public int multipleShootValue { get { return p_multipleShoot; } set { p_multipleShoot = value; } }
     public BulletManager bulletManager { set { p_bulletManager = value; } }
 
@@ -78,21 +84,34 @@ public abstract class Character : MonoBehaviour
 
     protected virtual void Kill()
     {
+        isDeathEvent?.Invoke(true);
+        p_isDeath = true;
+        StartCoroutine(Death());
+    }
+
+    private IEnumerator Death()
+    {
+        yield return new WaitForSeconds(p_deathDelay);
         gameObject.SetActive(false);
+        p_isDeath = false;
+        isDeathEvent?.Invoke(false);
     }
 
     protected IEnumerator Shoot()
     {
         p_isAttacking = true;
+        isAttackingEvent?.Invoke(true);
         ElectionSpawnShoot(p_attackDirection);
         yield return new WaitForSeconds(p_shootDelay);
         p_bulletManager.Shoot(p_attackDirection, _realPointShoot);
         p_isAttacking = false;
+        isAttackingEvent?.Invoke(false);
     }
 
     protected IEnumerator Shoot(int cantShoot, List<Vector2> directionsList)
     {
         p_isAttacking = true;
+        isAttackingEvent?.Invoke(true);
         yield return new WaitForSeconds(p_shootDelay);
         for (int i = 0; i < cantShoot; i++)
         {
@@ -101,29 +120,30 @@ public abstract class Character : MonoBehaviour
             yield return new WaitForSeconds(p_delayBetweenShoots);
         }
         p_isAttacking = false;
+        isAttackingEvent?.Invoke(false);
     }
 
-    private void ElectionSpawnShoot(Vector2 direction)
+    private void ElectionSpawnShoot(Vector3 direction)
     {
         if (direction.x > 0)
         {
             _realPointShoot = p_pointShoot.position;
-            _realPointShoot += new Vector2(DIFF_X, 0);
+            _realPointShoot += new Vector3(DIFF_X, 0);
         }
         else if (direction.x < 0)
         {
             _realPointShoot = p_pointShoot.position;
-            _realPointShoot += new Vector2(-DIFF_X, 0);
+            _realPointShoot += new Vector3(-DIFF_X, 0);
         }
         else if (direction.y < 1)
         {
             _realPointShoot = p_pointShoot.position;
-            _realPointShoot += new Vector2(0, -DIFF_Y);
+            _realPointShoot += new Vector3(0, -DIFF_Y);
         }
         else
         {
             _realPointShoot = p_pointShoot.position;
-            _realPointShoot += new Vector2(0, DIFF_Y);
+            _realPointShoot += new Vector3(0, DIFF_Y);
         }
     }
 }

@@ -46,27 +46,30 @@ public class BaseEnemy : Character
 
     private void Update()
     {
-        if (_enemyMovement != null)
+        if (!p_isDeath)
         {
-            _enemyMovement.Movement();
-        }
-        if (_enemyShoot != null)
-        {
-            p_actualTime += Time.deltaTime;
-            if (_canAttack)
+            if (_enemyMovement != null)
             {
-                if (_timeShoot < p_actualTime && !p_isAttacking)
+                _enemyMovement.Movement();
+            }
+            if (_enemyShoot != null)
+            {
+                p_actualTime += Time.deltaTime;
+                if (_canAttack)
                 {
-                    p_actualTime = 0;
-                    if (_isMultipleShootEnemy)
+                    if (_timeShoot < p_actualTime && !p_isAttacking)
                     {
-                        _enemyShoot.Shoot(p_multipleShoot);
+                        p_actualTime = 0;
+                        if (_isMultipleShootEnemy)
+                        {
+                            _enemyShoot.Shoot(p_multipleShoot);
+                        }
+                        else
+                        {
+                            _enemyShoot.Shoot();
+                        }
+
                     }
-                    else
-                    {
-                        _enemyShoot.Shoot();
-                    }
-                    
                 }
             }
         }
