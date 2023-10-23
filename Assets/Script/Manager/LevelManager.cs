@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
@@ -17,6 +18,7 @@ public class LevelManager : MonoBehaviour
     public EndLevel endLevel;
     public ShowActualWave showActualWave;
     public BossFight bossFight;
+    public Action endBossFight;
 
     //Level variables for dificult
     [SerializeField] private int _minEnemy = 1;
@@ -35,10 +37,12 @@ public class LevelManager : MonoBehaviour
     //Variables for start and end game
     private int _enemyKillCount = 0;
     [SerializeField] private int _maxWave = 10;
+    private int bossWave;
     private int _actualWave = 0;
 
     private void Awake()
     {
+        bossWave = _maxWave + 2;
         NullReferenceControll();
         SetDataList();
 
@@ -122,7 +126,7 @@ public class LevelManager : MonoBehaviour
     private void SearchSpawnEnemies()
     {
         ArrayLayout.State state;
-        int seed = Random.Range(0, 100);
+        int seed = UnityEngine.Random.Range(0, 100);
         RandomLevel();
         for (int f_row = _dataLayout.rows.Length - 1; f_row >= 0; f_row--)
         {
@@ -159,7 +163,7 @@ public class LevelManager : MonoBehaviour
 
     private void RandomLevel()
     {
-        int index = Random.Range(0, _dataList.Count);
+        int index = UnityEngine.Random.Range(0, _dataList.Count);
         _dataLayout = _dataList[index];
     }
 
@@ -197,9 +201,10 @@ public class LevelManager : MonoBehaviour
         _enemyKillCount--;
         if (_enemyKillCount <= 0)
         {
-            Debug.Log("Next level");
+            Debug.Log("Last enemy killed, start end level moment.");
             _enemyKillCount = 0;
-            EndLevel();
+            if (_actualWave == _maxWave + 1) endBossFight?.Invoke();
+            else EndLevel();
         }
     }
 

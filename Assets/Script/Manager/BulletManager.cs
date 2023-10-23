@@ -32,7 +32,7 @@ public class BulletManager : MonoBehaviour
         }
     }
 
-    public void Shoot(Vector2 direction, Vector2 pointShoot)
+    public void Shoot(Vector2 direction, Vector3 pointShoot)
     {
         ElectionBullet();
         _bullet.transform.position = pointShoot;

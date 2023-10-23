@@ -4,15 +4,22 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    [SerializeField] private HealthPoints _playerHealth;
+    [SerializeField] private LevelManager _levelManager;
+
+    private void Awake()
     {
-        
+        _playerHealth.death += PlayerDeath;
+        _levelManager.endBossFight += BossDeath;
     }
 
-    // Update is called once per frame
-    void Update()
+    private void PlayerDeath()
     {
-        
+        Debug.Log("player lose");
+    }
+
+    private void BossDeath()
+    {
+        Debug.Log("player win");
     }
 }

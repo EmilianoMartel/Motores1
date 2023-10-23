@@ -26,9 +26,11 @@ public class HealthPoints : MonoBehaviour
 
     public void GetDamage(int damage)
     {
+        
         if (_isVulnerable)
         {
             _life -= damage;
+            Debug.Log($"{name} was damaged, life: {_life}");
             damaged?.Invoke(_life);
             if (_life <= 0)
             {

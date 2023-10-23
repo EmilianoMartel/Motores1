@@ -11,7 +11,7 @@ public class Hazard : MonoBehaviour
         Debug.Log($"{name} collided with {col.name}");
         if (col.gameObject.GetComponent<HealthPoints>() != null)
         {
-            Debug.Log($"{name} damaged {col.name}");
+            Debug.Log($"{name} try damaged {col.name}");
             HealthPoints healthPoints = col.gameObject.GetComponent<HealthPoints>();
             healthPoints.GetDamage(_damage);
         }

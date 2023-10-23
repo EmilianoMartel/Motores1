@@ -9,7 +9,8 @@ public class Bullet : MonoBehaviour
     public bool activeBullet;
     [SerializeField] private float _speed;
     [SerializeField] private float _deleteTime = 6f;
-    [SerializeField] HealthPoints _healthPoints;
+    [SerializeField] private HealthPoints _healthPoints;
+    [SerializeField] private LayerMask _wallLayerMask;
     private float _actualTime;
 
     private void Start()
@@ -43,5 +44,13 @@ public class Bullet : MonoBehaviour
     private void OnDestroy()
     {
         _healthPoints.death -= DisableBullet;
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if ((_wallLayerMask & (1 << collision.gameObject.layer)) != 0)
+        {
+            DisableBullet();
+        }
     }
 }
