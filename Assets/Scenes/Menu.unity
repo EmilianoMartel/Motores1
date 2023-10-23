@@ -990,9 +990,17 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7971806440893731714, guid: 306507fc497e8a44fab82da7ea6940bb, type: 3}
+      propertyPath: m_Camera
+      value: 
+      objectReference: {fileID: 1936321089}
+    - target: {fileID: 7971806440893731714, guid: 306507fc497e8a44fab82da7ea6940bb, type: 3}
       propertyPath: m_UIInputModule
       value: 
       objectReference: {fileID: 1725928442}
+    - target: {fileID: 7971806440893731714, guid: 306507fc497e8a44fab82da7ea6940bb, type: 3}
+      propertyPath: m_DefaultActionMap
+      value: Player
+      objectReference: {fileID: 0}
     - target: {fileID: 7971806440893731714, guid: 306507fc497e8a44fab82da7ea6940bb, type: 3}
       propertyPath: m_ActionEvents.Array.data[3].m_PersistentCalls.m_Calls.Array.size
       value: 0
@@ -1045,7 +1053,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 76c392e42b5098c458856cdf6ecaaaa1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_FirstSelected: {fileID: 0}
+  m_FirstSelected: {fileID: 1850141422}
   m_sendNavigationEvents: 1
   m_DragThreshold: 10
 --- !u!4 &1725928441
