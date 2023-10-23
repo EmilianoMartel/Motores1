@@ -7,16 +7,16 @@ using UnityEngine.InputSystem;
 public abstract class Character : MonoBehaviour
 {
     //Delagates
-    public Action<bool> isDeathEvent;
+    public Action<bool> isDeadEvent;
     public Action<bool> isAttackingEvent;
 
     [SerializeField] protected HealthPoints p_healthPoints;
     [SerializeField] protected CharacterView p_characterView;
     [SerializeField] protected VulnerableStateController p_stateController;
 
-    //Death
-    [SerializeField] protected float p_deathDelay = 1.0f;
-    protected bool p_isDeath = false;
+    //Dead
+    [SerializeField] protected float p_deadDelay = 1.0f;
+    protected bool p_isDead = false;
 
     //Movement
     [SerializeField] protected float p_speed = 1.0f;
@@ -74,7 +74,7 @@ public abstract class Character : MonoBehaviour
 
     protected void SuscriptionsDelegates()
     {
-        p_healthPoints.death += Kill;
+        p_healthPoints.dead += Kill;
     }
 
     protected void Movement(Vector2 direction)
@@ -84,17 +84,17 @@ public abstract class Character : MonoBehaviour
 
     protected virtual void Kill()
     {
-        isDeathEvent?.Invoke(true);
-        p_isDeath = true;
+        isDeadEvent?.Invoke(true);
+        p_isDead = true;
         StartCoroutine(Death());
     }
 
     private IEnumerator Death()
     {
-        yield return new WaitForSeconds(p_deathDelay);
+        yield return new WaitForSeconds(p_deadDelay);
         gameObject.SetActive(false);
-        p_isDeath = false;
-        isDeathEvent?.Invoke(false);
+        p_isDead = false;
+        isDeadEvent?.Invoke(false);
     }
 
     protected IEnumerator Shoot()

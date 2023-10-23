@@ -3,12 +3,12 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public delegate void Damaged(int actualLife);
-public delegate void Death();
+public delegate void Dead();
 public class HealthPoints : MonoBehaviour
 {
     //Delegates
     public Damaged damaged;
-    public Death death;
+    public Dead dead;
 
     [SerializeField] private int _originalLife = 10;
     [SerializeField] private VulnerableStateController _controller;
@@ -41,7 +41,7 @@ public class HealthPoints : MonoBehaviour
 
     private void Death()
     {
-        death?.Invoke();
+        dead?.Invoke();
         _life = _originalLife;
     }
 

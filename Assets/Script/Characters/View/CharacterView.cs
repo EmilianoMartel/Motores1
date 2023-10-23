@@ -42,7 +42,7 @@ public class CharacterView : MonoBehaviour
             return;
         }
         p_character.isAttackingEvent += IsAttacking;
-        p_character.isDeathEvent += IsDeath;
+        p_character.isDeadEvent += IsDeath;
     }
 
     private void Update()

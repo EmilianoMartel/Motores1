@@ -21,7 +21,7 @@ public class Bullet : MonoBehaviour
             enabled = false;
             return;
         }
-        _healthPoints.death += DisableBullet;
+        _healthPoints.dead += DisableBullet;
     }
 
     void Update()
@@ -43,7 +43,7 @@ public class Bullet : MonoBehaviour
 
     private void OnDestroy()
     {
-        _healthPoints.death -= DisableBullet;
+        _healthPoints.dead -= DisableBullet;
     }
 
     private void OnTriggerEnter2D(Collider2D collision)

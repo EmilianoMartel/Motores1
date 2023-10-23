@@ -46,7 +46,7 @@ public class BaseEnemy : Character
 
     private void Update()
     {
-        if (!p_isDeath)
+        if (!p_isDead)
         {
             if (_enemyMovement != null)
             {
