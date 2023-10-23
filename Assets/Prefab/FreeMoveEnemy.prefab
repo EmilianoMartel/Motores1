@@ -127,6 +127,7 @@ MonoBehaviour:
   p_animatorParameterAttackDirX: attackDirX
   p_animatorParameterAttackDirY: attackDirY
   p_animatorParameterIsAttacking: isAttacking
+  p_animatorParameterIsDeath: isDeath
 --- !u!1 &4093501843917922095
 GameObject:
   m_ObjectHideFlags: 0
@@ -243,10 +244,11 @@ MonoBehaviour:
   p_healthPoints: {fileID: 8242030846564989498}
   p_characterView: {fileID: 6749301598340494745}
   p_stateController: {fileID: 0}
+  p_deathDelay: 4
   p_speed: 1
   p_shootTimeRest: 2
   p_isAttacking: 0
-  p_shootDelay: 1
+  p_shootDelay: 0.4
   p_delayBetweenShoots: 1
   p_multipleShoot: 2
   p_bulletManager: {fileID: 0}
