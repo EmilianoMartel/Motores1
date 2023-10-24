@@ -9,7 +9,7 @@ public class Player : Character
 
     private void OnEnable()
     {
-        transform.position = new Vector2(0,0);
+        transform.position = new Vector3(0,0,-5);
     }
 
     private void Start()
