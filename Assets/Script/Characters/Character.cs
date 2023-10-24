@@ -44,6 +44,12 @@ public abstract class Character : MonoBehaviour
     public int multipleShootValue { get { return p_multipleShoot; } set { p_multipleShoot = value; } }
     public BulletManager bulletManager { set { p_bulletManager = value; } }
 
+    private void OnEnable()
+    {
+        p_isDead = false;
+        isDeadEvent?.Invoke(false);
+    }
+
     private void Start()
     {
         NullReferenceController();
@@ -86,10 +92,10 @@ public abstract class Character : MonoBehaviour
     {
         isDeadEvent?.Invoke(true);
         p_isDead = true;
-        StartCoroutine(Death());
+        StartCoroutine(Dead());
     }
 
-    private IEnumerator Death()
+    private IEnumerator Dead()
     {
         yield return new WaitForSeconds(p_deadDelay);
         gameObject.SetActive(false);

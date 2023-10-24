@@ -14,6 +14,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private LevelManager _levelManager;
 
     [SerializeField] private GameObject _gamePlay;
+    [SerializeField] private float _endGameDelay = 1f;
 
     private void Awake()
     {
@@ -23,18 +24,24 @@ public class GameManager : MonoBehaviour
 
     private void PlayerDeath()
     {
-        _gamePlay.SetActive(false);
-        endGame?.Invoke(false);
+        StartCoroutine(EndGame(false));
     }
 
     private void BossDeath()
     {
-        _gamePlay.SetActive(false);
-        endGame?.Invoke(true);
+        StartCoroutine(EndGame(true));
     }
 
-    private void ResetGame()
+    public void ResetGame()
     {
         resetGame?.Invoke();
+        _gamePlay.SetActive(true);
+    }
+
+    private IEnumerator EndGame(bool isPlayerWin)
+    {
+        yield return new WaitForSeconds(_endGameDelay);
+        endGame?.Invoke(isPlayerWin);
+        _gamePlay.SetActive(false);
     }
 }

@@ -30,6 +30,7 @@ public class LevelManager : MonoBehaviour
     [SerializeField] private ViewMapManager _viewMapManager;
 
     [SerializeField] private Stair _stair;
+    [SerializeField] private float _stairSpawnDelay = 1f;
 
     private List<ArrayLayout> _dataList = new List<ArrayLayout>();
     private ArrayLayout _dataLayout;
@@ -39,6 +40,13 @@ public class LevelManager : MonoBehaviour
     [SerializeField] private int _maxWave = 10;
     private int bossWave;
     private int _actualWave = 0;
+
+    private void OnEnable()
+    {
+        ReSpawnStair();
+        _actualWave = 0;
+        bossWave = _maxWave + 2;
+    }
 
     private void Awake()
     {
@@ -65,12 +73,12 @@ public class LevelManager : MonoBehaviour
             enabled = false;
             return;
         }
-        /*if (_stair == null)
+        if (_stair == null)
         {
             Debug.LogError(message: $"{name}: Stair is null \n Check and assigned one\nDisabling component");
             enabled = false;
             return;
-        }*/
+        }
         if (_viewMapManager == null)
         {
             Debug.LogError(message: $"{name}: ViewMapManager is null \n Check and assigned one\nDisabling component");
@@ -216,12 +224,18 @@ public class LevelManager : MonoBehaviour
 
     private void ReSpawnStair()
     {
-        _stair.isActiveStair = true;
-        _stair.gameObject.SetActive(true);
+        StartCoroutine(SpawnStair());
     }
 
     private void SpawnBoss()
     {
         bossFight?.Invoke();
+    }
+
+    private IEnumerator SpawnStair()
+    {
+        _stair.isActiveStair = true;
+        yield return new WaitForSeconds(_stairSpawnDelay);
+        _stair.gameObject.SetActive(true);
     }
 }

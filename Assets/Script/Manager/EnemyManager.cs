@@ -28,12 +28,36 @@ public class EnemyManager : MonoBehaviour
 
     //EnemyList
     [SerializeField] private List<BaseEnemy> _enemyListPrefab;
-    [SerializeField] private List<BaseEnemy> _bossPrefab;
+    [SerializeField] private List<BaseEnemy> _bossListPrefab;
     private List<EnemyType> _enemyTypeList = new List<EnemyType>();
+    private List<BaseEnemy> _bossList = new List<BaseEnemy>();
     private EnemyType _enemyType;
     private BaseEnemy _enemy;
 
     private System.Random _random;
+
+    private void OnEnable()
+    {
+        for (int i = 0; i < _enemyTypeList.Count; i++)
+        {
+            foreach (BaseEnemy enemy in _enemyTypeList[i].enemyList)
+            {
+                if (enemy.activateEnemy)
+                {
+                    enemy.gameObject.SetActive(false);
+                    enemy.activateEnemy = false;
+                }
+            }
+        }
+        for (int i = 0; i < _bossList.Count; i++)
+        {
+            if (_bossList[i].activateEnemy)
+            {
+                _bossList[i].activateEnemy = false;
+                _bossList[i].gameObject.SetActive(false);
+            }
+        }
+    }
 
     private void Awake()
     {
@@ -88,6 +112,18 @@ public class EnemyManager : MonoBehaviour
             _enemyTypeList.Add(_enemyType);
             _enemy.activateEnemy = false;
             _enemy.gameObject.SetActive(false);
+        }
+        for (int i = 0; i < _bossListPrefab.Count; i++)
+        {
+            _enemy = Instantiate(_bossListPrefab[i], transform.position, Quaternion.identity);
+            _enemy.transform.position = new Vector3(_positionMatriz[0, 0].x, _positionMatriz[0, 0].y, -2);
+            _enemy.row = 0;
+            _enemy.col = 0;
+            _enemy.bulletManager = _bulletManager;
+            _enemy.GetEnemyManager(this);
+            _enemy.activateEnemy = false;
+            _enemy.gameObject.SetActive(false);
+            _bossList.Add(_enemy);
         }
     }
 
@@ -146,13 +182,8 @@ public class EnemyManager : MonoBehaviour
     private void SpawnBossLogic()
     {
         Debug.Log($"{name}: Boss Fight");
-        int index = _random.Next(0, _bossPrefab.Count);
-        _enemy = Instantiate(_bossPrefab[index], transform.position, Quaternion.identity);
-        _enemy.transform.position = new Vector3(_positionMatriz[0, 0].x, _positionMatriz[0, 0].y, -2);
-        _enemy.row = 0;
-        _enemy.col = 0;
-        _enemy.bulletManager = _bulletManager;
-        _enemy.GetEnemyManager(this);
+        int index = _random.Next(0, _bossList.Count);
+        _enemy = _bossList[index];
         _enemy.activateEnemy = true;
         _enemy.gameObject.SetActive(true);
         spawnedEnemies?.Invoke(_enemy);

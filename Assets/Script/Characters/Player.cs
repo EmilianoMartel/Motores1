@@ -7,6 +7,11 @@ public class Player : Character
 {
     private Vector3 _inputAttack;
 
+    private void OnEnable()
+    {
+        transform.position = new Vector2(0,0);
+    }
+
     private void Start()
     {
         NullReferenceController();
