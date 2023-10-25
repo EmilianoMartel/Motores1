@@ -1,8 +1,6 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Runtime.CompilerServices;
-using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 
 public delegate void SpawnEnemy(int column, int row, int seed);
@@ -22,7 +20,6 @@ public class LevelManager : MonoBehaviour
 
     //Level variables for dificult
     [SerializeField] private int _minEnemy = 1;
-    [SerializeField] private float _levelDificult = 1.0f;
     [SerializeField] private List<GameObject> _dataPrefabList;
 
     //Managers

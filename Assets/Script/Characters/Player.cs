@@ -6,6 +6,7 @@ using UnityEngine.InputSystem;
 public class Player : Character
 {
     private Vector3 _inputAttack;
+    [SerializeField] private GameManager _gameManger;
 
     private void OnEnable()
     {
@@ -17,6 +18,16 @@ public class Player : Character
         NullReferenceController();
         SuscriptionsDelegates();
         p_actualTime = 10;
+        try
+        {
+            _gameManger.resetGame += ActivePlayer;
+        }
+        catch (System.Exception)
+        {
+            Debug.LogError(message: $"{name}: GameManager is null\n Check and assigned one\nDisabling component");
+            enabled = false;
+            return;
+        }
     }
 
     void Update()
@@ -44,5 +55,10 @@ public class Player : Character
     private void PlayerMovement()
     {
         Movement(p_direction);
+    }
+
+    private void ActivePlayer()
+    {
+        gameObject.SetActive(true);
     }
 }

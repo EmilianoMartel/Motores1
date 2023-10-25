@@ -47,10 +47,6 @@ public class UiManager : MonoBehaviour
             enabled = false;
             return;
         }
-        if (_playerHealthPoints == null)
-        {
-            
-        }
         if (_lifeSpriteList.Count != 7)
         {
             Debug.LogError(message: $"{name}: LifeSprite list should be 6\n Check the list, remember 0 is 0 lifepoints\nDisabling component");
@@ -116,6 +112,8 @@ public class UiManager : MonoBehaviour
 
     private void ResetGame()
     {
+        _waveText.text = "0";
+        _lifeImage.sprite = _lifeSpriteList[_lifeSpriteList.Count - 1];
         _panelEndGame.SetActive(false);
     }
 }

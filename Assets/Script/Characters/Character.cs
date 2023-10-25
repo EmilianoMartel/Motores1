@@ -13,6 +13,7 @@ public abstract class Character : MonoBehaviour
     [SerializeField] protected HealthPoints p_healthPoints;
     [SerializeField] protected CharacterView p_characterView;
     [SerializeField] protected VulnerableStateController p_stateController;
+    [SerializeField] protected Hazard p_hazard;
 
     //Dead
     [SerializeField] protected float p_deadDelay = 1.0f;
@@ -46,6 +47,7 @@ public abstract class Character : MonoBehaviour
 
     private void OnEnable()
     {
+        p_hazard.canHazard = true;
         p_isDead = false;
         isDeadEvent?.Invoke(false);
     }
@@ -58,6 +60,12 @@ public abstract class Character : MonoBehaviour
 
     protected void NullReferenceController()
     {
+        if (p_hazard == null)
+        {
+            Debug.LogError(message: $"{name}: Hazard is null\n Check and assigned one\nDisabling component");
+            enabled = false;
+            return;
+        }
         if (p_healthPoints == null)
         {
             Debug.LogError(message: $"{name}: HealthPoints is null\n Check and assigned one\nDisabling component");
@@ -97,6 +105,7 @@ public abstract class Character : MonoBehaviour
 
     private IEnumerator Dead()
     {
+        p_hazard.canHazard = false;
         yield return new WaitForSeconds(p_deadDelay);
         gameObject.SetActive(false);
         p_isDead = false;

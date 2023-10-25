@@ -18,8 +18,31 @@ public class GameManager : MonoBehaviour
 
     private void Awake()
     {
-        _playerHealth.dead += PlayerDeath;
-        _levelManager.endBossFight += BossDeath;
+        NullController();
+    }
+
+    private void NullController()
+    {
+        try
+        {
+            _playerHealth.dead += PlayerDeath;
+        }
+        catch (System.Exception)
+        {
+            Debug.LogError(message: $"{name}: PlayerHealth is null\n Check and assigned one\nDisabling component");
+            enabled = false;
+            return;
+        }
+        try
+        {
+            _levelManager.endBossFight += BossDeath;
+        }
+        catch (System.Exception)
+        {
+            Debug.LogError(message: $"{name}: LevelManagers is null\n Check and assigned one\nDisabling component");
+            enabled = false;
+            return;
+        }
     }
 
     private void PlayerDeath()
