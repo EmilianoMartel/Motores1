@@ -127,6 +127,7 @@ MonoBehaviour:
   p_animatorParameterAttackDirX: attackDirX
   p_animatorParameterAttackDirY: attackDirY
   p_animatorParameterIsAttacking: isAttacking
+  p_animatorParameterIsDeath: isDeath
 --- !u!1 &4093501843917922095
 GameObject:
   m_ObjectHideFlags: 0
@@ -243,6 +244,8 @@ MonoBehaviour:
   p_healthPoints: {fileID: 8242030846564989498}
   p_characterView: {fileID: 6749301598340494745}
   p_stateController: {fileID: 0}
+  p_hazard: {fileID: 654379792144347464}
+  p_deadDelay: 1
   p_speed: 1
   p_shootTimeRest: 2
   p_isAttacking: 0
@@ -299,7 +302,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1c6fc341e9383f24291ef32c4dd34e58, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _originalLife: 10
+  _originalLife: 50
   _controller: {fileID: 0}
 --- !u!1 &4093501844365752216
 GameObject:

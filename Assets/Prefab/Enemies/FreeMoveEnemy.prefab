@@ -244,7 +244,8 @@ MonoBehaviour:
   p_healthPoints: {fileID: 8242030846564989498}
   p_characterView: {fileID: 6749301598340494745}
   p_stateController: {fileID: 0}
-  p_deathDelay: 4
+  p_hazard: {fileID: 654379792144347464}
+  p_deadDelay: 1
   p_speed: 1
   p_shootTimeRest: 2
   p_isAttacking: 0
