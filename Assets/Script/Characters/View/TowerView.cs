@@ -21,12 +21,13 @@ public class TowerView : CharacterView
             enabled = false;
             return;
         }
+        p_character.isAttackingEvent += IsAttacking;
+        p_character.isDeadEvent += IsDeath;
     }
 
     private void Update()
     {
         _canAttack = _enemy.canAttack;
         p_animator.SetBool(_animatorParameterCanAttack, _canAttack);
-        p_animator.SetBool(p_animatorParameterIsAttacking, p_isAttacking);
     }
 }

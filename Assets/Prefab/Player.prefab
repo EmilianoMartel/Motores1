@@ -15,6 +15,7 @@ GameObject:
   - component: {fileID: 1761288347183207833}
   - component: {fileID: 1761288347183207835}
   - component: {fileID: 1761288347183207834}
+  - component: {fileID: 5712143310086443867}
   m_Layer: 7
   m_Name: Player
   m_TagString: Untagged
@@ -65,6 +66,9 @@ MonoBehaviour:
   p_bulletManager: {fileID: 1761288347183207832}
   p_pointShoot: {fileID: 1761288347627639541}
   _gameManger: {fileID: 0}
+  _vulnerabilityController: {fileID: 5712143310086443867}
+  _isDamaged: 0
+  _damagedDelay: 2
 --- !u!114 &1761288347183207832
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -139,7 +143,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _originalLife: 6
-  _controller: {fileID: 0}
+  _controller: {fileID: 5712143310086443867}
 --- !u!114 &1761288347183207834
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -153,6 +157,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _damage: 1
+--- !u!114 &5712143310086443867
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1761288347183207826}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5a28e0d5a93093a4189c11521e623597, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1761288347296071993
 GameObject:
   m_ObjectHideFlags: 0
@@ -274,6 +290,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   p_animator: {fileID: 1761288347296071995}
   p_character: {fileID: 1761288347183207827}
+  p_spriteRenderer: {fileID: 1761288347296071972}
+  _damagedAnimation: 3
+  _cantDamagedAnimation: 2
+  _damagedColor: {r: 1, g: 0, b: 0, a: 1}
+  _baseColor: {r: 1, g: 1, b: 1, a: 1}
   p_animatorParameterDirX: dirX
   p_animatorParameterDirY: dirY
   p_animatorParameterIsMoving: isMoving

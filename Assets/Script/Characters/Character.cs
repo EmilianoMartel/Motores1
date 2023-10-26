@@ -9,6 +9,7 @@ public abstract class Character : MonoBehaviour
     //Delagates
     public Action<bool> isDeadEvent;
     public Action<bool> isAttackingEvent;
+    public Action<bool> isDamagedEvent;
 
     [SerializeField] protected HealthPoints p_healthPoints;
     [SerializeField] protected CharacterView p_characterView;

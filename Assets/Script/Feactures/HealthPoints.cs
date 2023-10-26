@@ -14,6 +14,7 @@ public class HealthPoints : MonoBehaviour
     [SerializeField] private VulnerableStateController _controller;
     private int _life;
     private bool _isVulnerable = true;
+
     private void OnEnable()
     {
         _life = _originalLife;

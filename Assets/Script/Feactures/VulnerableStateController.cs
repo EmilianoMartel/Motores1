@@ -17,4 +17,16 @@ public class VulnerableStateController : MonoBehaviour
     {
         isVulnerable?.Invoke(false);
     }
+
+    private void CallInvulnerability(bool isVulnerable)
+    {
+        if (isVulnerable)
+        {
+            InvensibleState();
+        }
+        else
+        {
+            VulnerableState();
+        }
+    }
 }

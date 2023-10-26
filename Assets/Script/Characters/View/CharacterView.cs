@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 [RequireComponent(typeof(Animator))]
@@ -5,6 +6,8 @@ public class CharacterView : MonoBehaviour
 {
     [SerializeField] protected Animator p_animator;
     [SerializeField] protected Character p_character;
+    [SerializeField] protected SpriteRenderer p_spriteRenderer;
+
     protected Vector2 p_direction;
     protected Vector2 p_attackDirection;
     protected float p_dirX;
@@ -14,6 +17,12 @@ public class CharacterView : MonoBehaviour
     protected bool p_isMoving;
     protected bool p_isAttacking;
     protected bool p_isDeath;
+    protected bool p_isDamaged;
+
+    [SerializeField] private float _timeBetweenColors = 0.3f;
+    [SerializeField] private int _cantDamagedAnimation = 2;
+    [SerializeField] private Color _damagedColor;
+    [SerializeField] private Color _baseColor;
 
     //Parameters
     [SerializeField] protected string p_animatorParameterDirX = "dir_x";
@@ -55,18 +64,33 @@ public class CharacterView : MonoBehaviour
         p_animator.SetBool(p_animatorParameterIsMoving, p_isMoving);
         p_animator.SetFloat(p_animatorParameterAttackDirX, p_attackX);
         p_animator.SetFloat(p_animatorParameterAttackDirY, p_attackY);
-        //p_animator.SetBool(p_animatorParameterIsAttacking, p_isAttacking);
     }
 
-    private void IsAttacking(bool isAttacking)
+    protected void IsAttacking(bool isAttacking)
     {
         p_isAttacking = isAttacking;
         p_animator.SetBool(p_animatorParameterIsAttacking, p_isAttacking);
     }
 
-    private void IsDeath(bool isDeath)
+    protected void IsDeath(bool isDeath)
     {
         p_isDeath = isDeath;
         p_animator.SetBool(p_animatorParameterIsDeath, p_isDeath);
+    }
+
+    public void IsDamaged()
+    {
+        StartCoroutine(Damaged());
+    }
+    
+    private IEnumerator Damaged()
+    {
+        for (int i = 0; i < _cantDamagedAnimation; i++)
+        {
+            p_spriteRenderer.color = _damagedColor;
+            yield return new WaitForSeconds(_timeBetweenColors);
+            p_spriteRenderer.color = _baseColor;
+            yield return new WaitForSeconds(_timeBetweenColors);
+        }
     }
 }
