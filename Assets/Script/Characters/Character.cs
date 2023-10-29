@@ -56,6 +56,7 @@ public abstract class Character : MonoBehaviour
     private void Start()
     {
         NullReferenceController();
+        //TODO: TP2 - Should be done in OnEnable
         SuscriptionsDelegates();
     }
 
@@ -87,6 +88,7 @@ public abstract class Character : MonoBehaviour
         }
     }
 
+    //TODO: TP2 - Spelling error/Code in spanish/Code in spanglish
     protected void SuscriptionsDelegates()
     {
         p_healthPoints.dead += Kill;
@@ -129,6 +131,7 @@ public abstract class Character : MonoBehaviour
         p_isAttacking = true;
         isAttackingEvent?.Invoke(true);
         yield return new WaitForSeconds(p_shootDelay);
+        //TODO: TP2 - Spelling error/Code in spanish/Code in spanglish
         for (int i = 0; i < cantShoot; i++)
         {
             ElectionSpawnShoot(directionsList[i]);

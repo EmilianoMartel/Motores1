@@ -29,6 +29,8 @@ public class Player : Character
         }
         catch (System.Exception)
         {
+        //TODO: TP2 - Fix - Don't use try-catch blocks where a simple null-check is enough (for performance reasons)
+            //TODO: TP2 - Should be done in OnEnable
             Debug.LogError(message: $"{name}: GameManager is null\n Check and assigned one\nDisabling component");
             enabled = false;
             return;
@@ -51,6 +53,7 @@ public class Player : Character
         }
     }
 
+    //TODO: TP2 - Syntax - Consistency in access modifiers (private/protected/public/etc)
     void Update()
     {
         PlayerMovement();

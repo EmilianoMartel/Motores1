@@ -57,10 +57,12 @@ public class EnemyManager : MonoBehaviour
                 _bossList[i].gameObject.SetActive(false);
             }
         }
+        //TODO: TP2 - Fix - foreach (var enemyType in _enemyTypeList)
     }
 
     private void Awake()
     {
+        //TODO: TP2 - Fix - These null checks should all be in awake (you sometimes have them in start/OnEnable)
         if (_viewMapManager == null)
         {
             Debug.LogError(message: $"{name}: ViewManager is null\n Check and assigned one\nDisabling component");
@@ -77,6 +79,7 @@ public class EnemyManager : MonoBehaviour
         _column = _viewMapManager._column - 2;
         _positionMatriz = new Vector2[_column, _row];
 
+        //TODO: TP2 - Spelling error/Code in spanish/Code in spanglish
         //Delegates suscriptions
         _viewMapManager.floorPosition += PositionListSpawner;
         _levelManager.spawnEnemy += SpawnEnemyLogic;

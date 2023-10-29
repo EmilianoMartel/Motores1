@@ -4,6 +4,7 @@ using System.Collections;
 [System.Serializable]
 public class ArrayLayout
 {
+    //TODO: TP2 - You could replace these enums with scriptableObjects.
     public enum State
     {
         EmptyFloor,

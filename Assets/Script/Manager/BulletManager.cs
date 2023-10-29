@@ -21,6 +21,7 @@ public class BulletManager : MonoBehaviour
         GenerateBaseList();
     }
 
+    //TODO: TP2 - Unclear name
     private void GenerateBaseList()
     {
         for (int i = 0; i < _minBullets; i++)

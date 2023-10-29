@@ -29,6 +29,7 @@ public class HealthPoints : MonoBehaviour
         }
     }
 
+    //TODO: TP2 - Unclear name
     public void GetDamage(int damage)
     {
         

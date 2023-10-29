@@ -21,12 +21,15 @@ public class Bullet : MonoBehaviour
             enabled = false;
             return;
         }
+        //TODO: TP2 - Should be done in OnEnable
         _healthPoints.dead += DisableBullet;
     }
 
+    //TODO: TP2 - Syntax - Consistency in access modifiers (private/protected/public/etc)
     void Update()
     {
         transform.Translate(direction * _speed * Time.deltaTime);
+        //TODO: TP2 - Could be a coroutine/Invoke
         _actualTime += Time.deltaTime;
         if (_actualTime >= _deleteTime)
         {
@@ -43,6 +46,7 @@ public class Bullet : MonoBehaviour
 
     private void OnDestroy()
     {
+        //TODO: TP2 - Should be done in OnDisable
         _healthPoints.dead -= DisableBullet;
     }
 

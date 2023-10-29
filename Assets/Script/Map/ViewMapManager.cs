@@ -42,6 +42,7 @@ public class ViewMapManager : MonoBehaviour
         InstantiateStairSpawner();
     }
 
+    //TODO: TP2 - Unclear name
     private void NullReferenceControll()
     {
         if (_column <= 0 || _row <= 0)

@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
 
+//TODO: TP2 - Unclear name
 public class ButtonManager : MonoBehaviour
 {
     public void ChangeScene(string name)
