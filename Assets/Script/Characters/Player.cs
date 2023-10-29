@@ -66,6 +66,7 @@ public class Player : Character
         p_actualTime += Time.deltaTime;
     }
 
+    //TODO: TP2 - Move all input reads to specific class
     public void SetMoveValue(InputAction.CallbackContext inputContext)
     {
         p_direction = inputContext.ReadValue<Vector2>();
