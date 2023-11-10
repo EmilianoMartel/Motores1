@@ -1,35 +1,65 @@
 using System.Collections;
 using System.Collections.Generic;
+using System;
 using UnityEngine;
 
-public delegate void Damaged(int actualLife);
-public delegate void Dead();
 public class HealthPoints : MonoBehaviour
 {
     //Delegates
-    public Damaged damaged;
-    public Dead dead;
+    public Action<int> damaged;
+    public Action dead;
 
-    [SerializeField] private int _originalLife = 10;
+    [SerializeField] private int _maxLife = 10;
     [SerializeField] private VulnerableStateController _controller;
+    private DropController _dropController;
     private int _life;
     private bool _isVulnerable = true;
 
+    public int maxLife { set { _maxLife = value; } }
+
     private void OnEnable()
     {
-        _life = _originalLife;
+        _life = _maxLife;
+        if (TryGetComponent(out _controller))
+        {
+            _controller.isVulnerable += VulnerableStateChange;
+        }
+        if (TryGetComponent(out _dropController))
+        {
+            _dropController.DelegateSuscriptionDrop(this);
+        }
+    }
+
+    private void OnDisable()
+    {
+        if (TryGetComponent(out _controller))
+        {
+            _controller.isVulnerable -= VulnerableStateChange;
+        }
     }
 
     private void Start()
     {
-        _life = _originalLife;
-        if (_controller)
+        _life = _maxLife;
+        if (TryGetComponent(out _controller))
         {
-            _controller.isVulnerable = VulnerableStateChange;
+            _controller.isVulnerable += VulnerableStateChange;
+        }
+        if (TryGetComponent(out _dropController))
+        {
+            _dropController.DelegateSuscriptionDrop(this);
         }
     }
 
-    public void GetDamage(int damage)
+    public void Health(int health)
+    {
+        if (_life + health <= _maxLife)
+        {
+            _life = health;
+        }
+    }
+
+    public void TakeDamage(int damage)
     {
         
         if (_isVulnerable)
@@ -39,19 +69,30 @@ public class HealthPoints : MonoBehaviour
             damaged?.Invoke(_life);
             if (_life <= 0)
             {
-                Death();
+                Dead();
             }
         }
     }
 
-    private void Death()
+    [ContextMenu("Take total damage")]
+    private void TakeTotalDamage()
+    {
+        TakeDamage(_life);
+    }
+
+    private void Dead()
     {
         dead?.Invoke();
-        _life = _originalLife;
+        _life = _maxLife;
     }
 
     private void VulnerableStateChange(bool isVulnerable)
     {
         _isVulnerable = isVulnerable;
+    }
+
+    public void IncrementFullLife(int incrementedLife)
+    {
+        _maxLife += incrementedLife;
     }
 }

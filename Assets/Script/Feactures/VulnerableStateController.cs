@@ -1,12 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
-public delegate void IsVulnerable(bool isVulnerable);
 public class VulnerableStateController : MonoBehaviour
 {
     //Delegates
-    public IsVulnerable isVulnerable;
+    public Action<bool> isVulnerable;
 
     private void VulnerableState()
     {
