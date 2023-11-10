@@ -16,6 +16,7 @@ GameObject:
   - component: {fileID: 1761288347183207835}
   - component: {fileID: 1761288347183207834}
   - component: {fileID: 5712143310086443867}
+  - component: {fileID: -192516883030229656}
   m_Layer: 7
   m_Name: Player
   m_TagString: Untagged
@@ -54,8 +55,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   p_healthPoints: {fileID: 1761288347183207835}
   p_characterView: {fileID: 1761288347296071973}
-  p_stateController: {fileID: 0}
+  p_stateController: {fileID: 5712143310086443867}
   p_hazard: {fileID: 1761288347183207834}
+  p_characterData: {fileID: 11400000, guid: 9438cb88ea1fc604886bd8f22d2e55a7, type: 2}
   p_deadDelay: 1
   p_speed: 1.5
   p_shootTimeRest: 2
@@ -142,7 +144,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1c6fc341e9383f24291ef32c4dd34e58, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _originalLife: 6
+  _maxLife: 10
   _controller: {fileID: 5712143310086443867}
 --- !u!114 &1761288347183207834
 MonoBehaviour:
@@ -169,6 +171,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5a28e0d5a93093a4189c11521e623597, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &-192516883030229656
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1761288347183207826}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe98e278f3504d848a050047e0439d20, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _player: {fileID: 1761288347183207827}
 --- !u!1 &1761288347296071993
 GameObject:
   m_ObjectHideFlags: 0
@@ -291,7 +306,7 @@ MonoBehaviour:
   p_animator: {fileID: 1761288347296071995}
   p_character: {fileID: 1761288347183207827}
   p_spriteRenderer: {fileID: 1761288347296071972}
-  _damagedAnimation: 3
+  _timeBetweenColors: 0.3
   _cantDamagedAnimation: 2
   _damagedColor: {r: 1, g: 0, b: 0, a: 1}
   _baseColor: {r: 1, g: 1, b: 1, a: 1}
