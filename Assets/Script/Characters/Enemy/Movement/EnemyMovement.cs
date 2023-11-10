@@ -20,6 +20,8 @@ public class EnemyMovement : MonoBehaviour
 
     [SerializeField] protected float _treshold = 0.0001f;
 
+    public Vector2 direction { get { return p_direction; } }
+
     private void Start()
     {
         if (_enemyManager == null)
@@ -33,11 +35,6 @@ public class EnemyMovement : MonoBehaviour
         p_currentColumnPosition = _baseEnemy.col;
         p_currentRowPosition = _baseEnemy.row;
         GetRandomNextPosition();
-    }
-
-    public void Movement()
-    {
-        transform.Translate(p_direction * _baseEnemy.speed * Time.deltaTime);
     }
 
     protected void DirectionAssigned(Vector2 direction)

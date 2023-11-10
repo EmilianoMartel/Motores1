@@ -16,7 +16,7 @@ public class CharacterView : MonoBehaviour
     protected float p_attackY;
     protected bool p_isMoving;
     protected bool p_isAttacking;
-    protected bool p_isDeath;
+    protected bool p_isDead;
     protected bool p_isDamaged;
 
     [SerializeField] private float _timeBetweenColors = 0.3f;
@@ -38,6 +38,18 @@ public class CharacterView : MonoBehaviour
         p_animator = GetComponent<Animator>();
     }
 
+    private void OnEnable()
+    {
+        p_character.isAttackingEvent += IsAttacking;
+        p_character.isDeadEvent += IsDead;
+    }
+
+    private void OnDisable()
+    {
+        p_character.isAttackingEvent -= IsAttacking;
+        p_character.isDeadEvent -= IsDead;
+    }
+
     private void Start()
     {
         if (p_character == null)
@@ -46,8 +58,6 @@ public class CharacterView : MonoBehaviour
             enabled = false;
             return;
         }
-        p_character.isAttackingEvent += IsAttacking;
-        p_character.isDeadEvent += IsDeath;
     }
 
     private void Update()
@@ -72,10 +82,10 @@ public class CharacterView : MonoBehaviour
         p_animator.SetBool(p_animatorParameterIsAttacking, p_isAttacking);
     }
 
-    protected void IsDeath(bool isDeath)
+    protected void IsDead(bool isDead)
     {
-        p_isDeath = isDeath;
-        p_animator.SetBool(p_animatorParameterIsDeath, p_isDeath);
+        p_isDead = isDead;
+        p_animator.SetBool(p_animatorParameterIsDeath, p_isDead);
     }
 
     public void IsDamaged()
