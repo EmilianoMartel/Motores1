@@ -74,20 +74,7 @@ public class Player : Character
         p_actualTime += Time.deltaTime;
     }
 
-<<<<<<< HEAD
-    //TODO: TP2 - Move all input reads to specific class
-    public void SetMoveValue(InputAction.CallbackContext inputContext)
-    {
-        p_direction = inputContext.ReadValue<Vector2>();
-    }
 
-    public void SetShootValue(InputAction.CallbackContext inputContext)
-    {
-        _inputAttack = inputContext.ReadValue<Vector2>();
-    }
-
-=======
->>>>>>> Martel/main
     private void PlayerMovement()
     {
         Movement(p_direction);

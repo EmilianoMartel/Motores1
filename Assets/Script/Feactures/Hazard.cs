@@ -14,12 +14,8 @@ public class Hazard : MonoBehaviour
     {
         HealthPoints hp;
         Debug.Log($"{name} collided with {col.name}");
-<<<<<<< HEAD
-        //TODO: TP2 - Optimization - TryGetComponent
-        if (col.gameObject.GetComponent<HealthPoints>() != null && _canHazard)
-=======
+
         if (col.gameObject.TryGetComponent(out hp) && _canHazard)
->>>>>>> Martel/main
         {
             Debug.Log($"{name} try damaged {col.name}");
             hp.TakeDamage(_damage);

@@ -45,6 +45,7 @@ public abstract class Character : MonoBehaviour
     public int multipleShootValue { get { return p_multipleShoot; } set { p_multipleShoot = value; } }
     public BulletManager bulletManager { set { p_bulletManager = value; } }
 
+    //TODO: TP2 - Should be done in OnEnable
     private void OnEnable()
     {
         p_hazard.canHazard = true;
@@ -63,12 +64,7 @@ public abstract class Character : MonoBehaviour
     private void Start()
     {
         NullReferenceController();
-<<<<<<< HEAD
-        //TODO: TP2 - Should be done in OnEnable
-        SuscriptionsDelegates();
-=======
         p_healthPoints.maxLife = p_characterData.maxLife;
->>>>>>> Martel/main
     }
 
     protected void NullReferenceController()
@@ -97,21 +93,12 @@ public abstract class Character : MonoBehaviour
             enabled = false;
             return;
         }
-<<<<<<< HEAD
-    }
-
-    //TODO: TP2 - Spelling error/Code in spanish/Code in spanglish
-    protected void SuscriptionsDelegates()
-    {
-        p_healthPoints.dead += Kill;
-=======
         if (p_characterData == null)
         {
             Debug.LogError(message: $"{name}: Character Data is null\n Check and assigned one\nDisabling component");
             enabled = false;
             return;
         }
->>>>>>> Martel/main
     }
 
     protected void Movement(Vector2 direction)

@@ -39,6 +39,7 @@ public class CharacterView : MonoBehaviour
         p_animator = GetComponent<Animator>();
     }
 
+    //TODO: TP2 - Should be done in OnEnable
     private void OnEnable()
     {
         p_character.isAttackingEvent += IsAttacking;
@@ -59,12 +60,6 @@ public class CharacterView : MonoBehaviour
             enabled = false;
             return;
         }
-<<<<<<< HEAD
-        //TODO: TP2 - Should be done in OnEnable
-        p_character.isAttackingEvent += IsAttacking;
-        p_character.isDeadEvent += IsDeath;
-=======
->>>>>>> Martel/main
     }
 
     private void Update()
