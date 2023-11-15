@@ -33,6 +33,7 @@ public class UiManager : MonoBehaviour
         _lifeImage.sprite = _lifeSpriteList[actualLife];
     }
 
+    //TODO: TP2 - Unclear name
     private void NullReferenceControll()
     {
         if (_lifeImage == null)
@@ -58,6 +59,7 @@ public class UiManager : MonoBehaviour
             Debug.LogError(message: $"{name}: Panel end game is null \n Check and assigned one\nDisabling component");
             enabled = false;
             return;
+        //TODO: TP2 - Fix - Avoid try-catch blocks
         }
         try
         {

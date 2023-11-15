@@ -51,6 +51,7 @@ public class HealthPoints : MonoBehaviour
         }
     }
 
+    //TODO: TP2 - Unclear name
     public bool Health(int health)
     {
         if (_life + health <= _maxLife)
@@ -62,8 +63,7 @@ public class HealthPoints : MonoBehaviour
         return false;
     }
 
-    [ContextMenu("Take 1 point of damage")]
-    public void TakeDamage(int damage = 1)
+    public void TakeDamage(int damage)
     {
         if (_isVulnerable)
         {

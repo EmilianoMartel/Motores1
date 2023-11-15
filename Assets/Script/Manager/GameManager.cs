@@ -29,6 +29,7 @@ public class GameManager : MonoBehaviour
         }
         catch (System.Exception)
         {
+        //TODO: TP2 - Fix - Avoid Try-catch blocks
             Debug.LogError(message: $"{name}: PlayerHealth is null\n Check and assigned one\nDisabling component");
             enabled = false;
             return;
@@ -66,5 +67,6 @@ public class GameManager : MonoBehaviour
         yield return new WaitForSeconds(_endGameDelay);
         endGame?.Invoke(isPlayerWin);
         _gamePlay.SetActive(false);
+    //TODO: TP2 - Unclear name - didPlayerWin / playerWon
     }
 }

@@ -20,6 +20,7 @@ public class CharacterView : MonoBehaviour
     protected bool p_isDamaged;
 
     [SerializeField] private float _timeBetweenColors = 0.3f;
+    //TODO: TP2 - Spelling error/Code in spanish/Code in spanglish
     [SerializeField] private int _cantDamagedAnimation = 2;
     [SerializeField] private Color _damagedColor;
     [SerializeField] private Color _baseColor;
@@ -58,6 +59,12 @@ public class CharacterView : MonoBehaviour
             enabled = false;
             return;
         }
+<<<<<<< HEAD
+        //TODO: TP2 - Should be done in OnEnable
+        p_character.isAttackingEvent += IsAttacking;
+        p_character.isDeadEvent += IsDeath;
+=======
+>>>>>>> Martel/main
     }
 
     private void Update()

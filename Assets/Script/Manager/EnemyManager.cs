@@ -58,6 +58,10 @@ public class EnemyManager : MonoBehaviour
             }
         }
 
+        //TODO: TP2 - Fix - foreach (var enemyType in _enemyTypeList)
+
+        //TODO: TP2 - Spelling error/Code in spanish/Code in spanglish
+        //Delegates suscriptions
         _viewMapManager.floorPosition += PositionListSpawner;
         _levelManager.spawnEnemy += SpawnEnemyLogic;
         _levelManager.bossFight += SpawnBossLogic;
@@ -72,6 +76,7 @@ public class EnemyManager : MonoBehaviour
 
     private void Awake()
     {
+        //TODO: TP2 - Fix - These null checks should all be in awake (you sometimes have them in start/OnEnable)
         if (_viewMapManager == null)
         {
             Debug.LogError(message: $"{name}: ViewManager is null\n Check and assigned one\nDisabling component");

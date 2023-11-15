@@ -16,6 +16,7 @@ public class SearchLogic : MonoBehaviour
     [SerializeField] private List<Vector2> _listDirection = new List<Vector2>() { Vector2.up, Vector2.down , Vector2.left , Vector2.right };
     private int _index = 0;
 
+    //TODO: TP2 - Fix - Could be in Update
     private void FixedUpdate()
     {
         if (!_isHitting)

@@ -63,7 +63,12 @@ public abstract class Character : MonoBehaviour
     private void Start()
     {
         NullReferenceController();
+<<<<<<< HEAD
+        //TODO: TP2 - Should be done in OnEnable
+        SuscriptionsDelegates();
+=======
         p_healthPoints.maxLife = p_characterData.maxLife;
+>>>>>>> Martel/main
     }
 
     protected void NullReferenceController()
@@ -92,12 +97,21 @@ public abstract class Character : MonoBehaviour
             enabled = false;
             return;
         }
+<<<<<<< HEAD
+    }
+
+    //TODO: TP2 - Spelling error/Code in spanish/Code in spanglish
+    protected void SuscriptionsDelegates()
+    {
+        p_healthPoints.dead += Kill;
+=======
         if (p_characterData == null)
         {
             Debug.LogError(message: $"{name}: Character Data is null\n Check and assigned one\nDisabling component");
             enabled = false;
             return;
         }
+>>>>>>> Martel/main
     }
 
     protected void Movement(Vector2 direction)
@@ -138,6 +152,7 @@ public abstract class Character : MonoBehaviour
         p_isAttacking = true;
         isAttackingEvent?.Invoke(true);
         yield return new WaitForSeconds(p_shootDelay);
+        //TODO: TP2 - Spelling error/Code in spanish/Code in spanglish
         for (int i = 0; i < cantShoot; i++)
         {
             ElectionSpawnShoot(directionsList[i]);
