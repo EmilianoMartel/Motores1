@@ -4,18 +4,15 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public delegate void SpawnEnemy(int column, int row, int seed);
-public delegate void EndLevel();
-public delegate void ShowActualWave(int waveNum);
-public delegate void BossFight();
 public class LevelManager : MonoBehaviour
 {
     const int DIFF_MATRIX_ENEMY = 1;
 
     //Delegates
     public SpawnEnemy spawnEnemy;
-    public EndLevel endLevel;
-    public ShowActualWave showActualWave;
-    public BossFight bossFight;
+    public Action endLevel;
+    public Action<int> showActualWave;
+    public Action bossFight;
     public Action endBossFight;
 
     //Level variables for dificult
@@ -25,6 +22,7 @@ public class LevelManager : MonoBehaviour
     //Managers
     [SerializeField] private EnemyManager _enemyManager;
     [SerializeField] private ViewMapManager _viewMapManager;
+    [SerializeField] private DropController _dropController;
 
     [SerializeField] private Stair _stair;
     [SerializeField] private float _stairSpawnDelay = 1f;
@@ -43,6 +41,17 @@ public class LevelManager : MonoBehaviour
         ReSpawnStair();
         _actualWave = 0;
         bossWave = _maxWave + 2;
+
+        //Delegate
+        _viewMapManager.stairObject += SetStair;
+        _enemyManager.spawnedEnemies += SpawnedEnemiesCount;
+        _dropController.DelegateSuscriptionDrop(this);
+    }
+
+    private void OnDisable()
+    {
+        _viewMapManager.stairObject += SetStair;
+        _enemyManager.spawnedEnemies += SpawnedEnemiesCount;
     }
 
     private void Awake()
@@ -50,10 +59,6 @@ public class LevelManager : MonoBehaviour
         bossWave = _maxWave + 2;
         NullReferenceControll();
         SetDataList();
-
-        //Delegate
-        _viewMapManager.stairObject += SetStair;
-        _enemyManager.spawnedEnemies += SpawnedEnemiesCount;
     }
 
     private void NullReferenceControll()
@@ -86,6 +91,12 @@ public class LevelManager : MonoBehaviour
         {
             Debug.LogError(message: $"{name}: Min enemy is negative \n Check that and assigned positive number\nChange value to 1");
             _minEnemy = 1;
+            return;
+        }
+        if (_dropController == null)
+        {
+            Debug.LogError(message: $"{name}: DropController is null \n Check and assigned one\nDisabling component");
+            enabled = false;
             return;
         }
     }
@@ -187,6 +198,7 @@ public class LevelManager : MonoBehaviour
         }
     }
 
+    [ContextMenu("EndLevel")]
     private void EndLevel()
     {
         endLevel?.Invoke();

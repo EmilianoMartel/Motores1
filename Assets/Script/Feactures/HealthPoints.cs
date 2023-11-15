@@ -6,7 +6,7 @@ using UnityEngine;
 public class HealthPoints : MonoBehaviour
 {
     //Delegates
-    public Action<int> damaged;
+    public Action<int> changeLife;
     public Action dead;
 
     [SerializeField] private int _maxLife = 10;
@@ -51,26 +51,40 @@ public class HealthPoints : MonoBehaviour
         }
     }
 
-    public void Health(int health)
+    public bool Health(int health)
     {
         if (_life + health <= _maxLife)
         {
             _life = health;
+            changeLife?.Invoke(_life);
+            return true;
         }
+        return false;
     }
 
-    public void TakeDamage(int damage)
+    [ContextMenu("Take 1 point of damage")]
+    public void TakeDamage(int damage = 1)
     {
-        
         if (_isVulnerable)
         {
             _life -= damage;
             Debug.Log($"{name} was damaged, life: {_life}");
-            damaged?.Invoke(_life);
+            changeLife?.Invoke(_life);
             if (_life <= 0)
             {
                 Dead();
             }
+        }
+    }
+
+    [ContextMenu("Take 1 point of damage")]
+    private void BasicDamage()
+    {
+        _life--;
+        changeLife?.Invoke(_life);
+        if (_life <= 0)
+        {
+            Dead();
         }
     }
 

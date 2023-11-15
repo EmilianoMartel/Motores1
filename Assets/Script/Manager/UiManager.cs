@@ -61,7 +61,7 @@ public class UiManager : MonoBehaviour
         }
         try
         {
-            _playerHealthPoints.damaged += ShowLife;
+            _playerHealthPoints.changeLife += ShowLife;
         }
         catch (System.Exception)
         {
