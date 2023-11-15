@@ -55,7 +55,8 @@ public class BaseEnemy : Character
         {
             if (_enemyMovement != null)
             {
-                _enemyMovement.Movement();
+                p_direction = _enemyMovement.direction;
+                Movement(p_direction);
             }
             if (_enemyShoot != null)
             {
@@ -155,6 +156,7 @@ public class BaseEnemy : Character
         {
             _enemyShoot.startMultipleAttack += GetShootDirection;
         }
+        p_healthPoints.dead += Kill;
     }
 
     private void OnDisable()
@@ -171,5 +173,6 @@ public class BaseEnemy : Character
         {
             _enemyShoot.startMultipleAttack -= GetShootDirection;
         }
+        p_healthPoints.dead -= Kill;
     }
 }

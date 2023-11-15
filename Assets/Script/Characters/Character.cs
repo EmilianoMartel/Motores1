@@ -15,13 +15,13 @@ public abstract class Character : MonoBehaviour
     [SerializeField] protected CharacterView p_characterView;
     [SerializeField] protected VulnerableStateController p_stateController;
     [SerializeField] protected Hazard p_hazard;
+    [SerializeField] protected CharacterSO p_characterData;
 
     //Dead
     [SerializeField] protected float p_deadDelay = 1.0f;
     protected bool p_isDead = false;
 
     //Movement
-    [SerializeField] protected float p_speed = 1.0f;
     protected Vector3 p_direction;
     protected Vector3 p_attackDirection;
 
@@ -40,7 +40,6 @@ public abstract class Character : MonoBehaviour
     protected float p_actualTime = 0;
     protected static float timeEndGame = 2f;
 
-    public float speed { get { return p_speed; } }
     public Vector3 attackDirection { get { return p_attackDirection; } set { p_attackDirection = value; } }
     public Vector3 direction { get { return p_direction; } }
     public int multipleShootValue { get { return p_multipleShoot; } set { p_multipleShoot = value; } }
@@ -51,13 +50,25 @@ public abstract class Character : MonoBehaviour
         p_hazard.canHazard = true;
         p_isDead = false;
         isDeadEvent?.Invoke(false);
+
+        //SuscriptionDelegates
+        p_healthPoints.dead += Kill;
+    }
+
+    private void OnDisable()
+    {
+        p_healthPoints.dead -= Kill;
     }
 
     private void Start()
     {
         NullReferenceController();
+<<<<<<< HEAD
         //TODO: TP2 - Should be done in OnEnable
         SuscriptionsDelegates();
+=======
+        p_healthPoints.maxLife = p_characterData.maxLife;
+>>>>>>> Martel/main
     }
 
     protected void NullReferenceController()
@@ -86,17 +97,26 @@ public abstract class Character : MonoBehaviour
             enabled = false;
             return;
         }
+<<<<<<< HEAD
     }
 
     //TODO: TP2 - Spelling error/Code in spanish/Code in spanglish
     protected void SuscriptionsDelegates()
     {
         p_healthPoints.dead += Kill;
+=======
+        if (p_characterData == null)
+        {
+            Debug.LogError(message: $"{name}: Character Data is null\n Check and assigned one\nDisabling component");
+            enabled = false;
+            return;
+        }
+>>>>>>> Martel/main
     }
 
     protected void Movement(Vector2 direction)
     {
-        transform.Translate(direction * p_speed * Time.deltaTime);
+        transform.Translate(direction * p_characterData.speed * Time.deltaTime);
     }
 
     protected virtual void Kill()
@@ -113,6 +133,7 @@ public abstract class Character : MonoBehaviour
         gameObject.SetActive(false);
         p_isDead = false;
         isDeadEvent?.Invoke(false);
+        p_healthPoints.maxLife = p_characterData.maxLife;
     }
 
     protected IEnumerator Shoot()

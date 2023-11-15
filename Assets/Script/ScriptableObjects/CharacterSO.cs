@@ -3,12 +3,15 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "Character Data", menuName = "CharacterData")]
-public class CharacterScriptableObject : ScriptableObject
+public class CharacterSO : ScriptableObject
 {
-    //TODO finish the SO for Characters, and create the logic
     [SerializeField] private int _maxLife;
     [SerializeField] private float _speed;
     [SerializeField] private float _shootTimeRest;
     [SerializeField] private float _shootAnimDelay;
 
+    public int maxLife { get { return _maxLife; } }
+    public float speed { get { return _speed; } }
+    public float shootTimeRest { get { return _shootTimeRest; } }
+    public float shootAnimDelay { get {  return _shootAnimDelay; } }
 }

@@ -13,15 +13,23 @@ public class Player : Character
     [SerializeField] private bool _isDamaged = false;
     [SerializeField] private float _damagedDelay = 1f;
 
+    public Vector3 inputAttack { set {  _inputAttack = value; } }
+    public Vector3 direction { set { p_direction = value; } }
+
     private void OnEnable()
     {
         transform.position = new Vector3(0,0,-5);
+        p_healthPoints.dead += Kill;
+    }
+
+    private void OnDisable()
+    {
+        p_healthPoints.dead -= Kill;
     }
 
     private void Start()
     {
         NullReferenceController();
-        SuscriptionsDelegates();
         p_actualTime = 10;
         try
         {
@@ -66,6 +74,7 @@ public class Player : Character
         p_actualTime += Time.deltaTime;
     }
 
+<<<<<<< HEAD
     //TODO: TP2 - Move all input reads to specific class
     public void SetMoveValue(InputAction.CallbackContext inputContext)
     {
@@ -77,6 +86,8 @@ public class Player : Character
         _inputAttack = inputContext.ReadValue<Vector2>();
     }
 
+=======
+>>>>>>> Martel/main
     private void PlayerMovement()
     {
         Movement(p_direction);

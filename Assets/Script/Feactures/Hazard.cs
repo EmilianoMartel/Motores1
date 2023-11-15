@@ -12,13 +12,17 @@ public class Hazard : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D col)
     {
+        HealthPoints hp;
         Debug.Log($"{name} collided with {col.name}");
+<<<<<<< HEAD
         //TODO: TP2 - Optimization - TryGetComponent
         if (col.gameObject.GetComponent<HealthPoints>() != null && _canHazard)
+=======
+        if (col.gameObject.TryGetComponent(out hp) && _canHazard)
+>>>>>>> Martel/main
         {
             Debug.Log($"{name} try damaged {col.name}");
-            HealthPoints healthPoints = col.gameObject.GetComponent<HealthPoints>();
-            healthPoints.GetDamage(_damage);
+            hp.TakeDamage(_damage);
         }
     }
 }

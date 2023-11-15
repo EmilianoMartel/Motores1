@@ -13,6 +13,18 @@ public class TowerView : CharacterView
     //Parameters
     [SerializeField] private string _animatorParameterCanAttack = "canAttack";
 
+    private void OnEnable()
+    {
+        p_character.isAttackingEvent += IsAttacking;
+        p_character.isDeadEvent += IsDead;
+    }
+
+    private void OnDisable()
+    {
+        p_character.isAttackingEvent -= IsAttacking;
+        p_character.isDeadEvent -= IsDead;
+    }
+
     private void Start()
     {
         if (_enemy == null)
@@ -21,8 +33,6 @@ public class TowerView : CharacterView
             enabled = false;
             return;
         }
-        p_character.isAttackingEvent += IsAttacking;
-        p_character.isDeadEvent += IsDeath;
     }
 
     private void Update()
