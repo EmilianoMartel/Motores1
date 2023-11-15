@@ -57,7 +57,21 @@ public class EnemyManager : MonoBehaviour
                 _bossList[i].gameObject.SetActive(false);
             }
         }
+
         //TODO: TP2 - Fix - foreach (var enemyType in _enemyTypeList)
+
+        //TODO: TP2 - Spelling error/Code in spanish/Code in spanglish
+        //Delegates suscriptions
+        _viewMapManager.floorPosition += PositionListSpawner;
+        _levelManager.spawnEnemy += SpawnEnemyLogic;
+        _levelManager.bossFight += SpawnBossLogic;
+    }
+
+    private void OnDisable()
+    {
+        _viewMapManager.floorPosition -= PositionListSpawner;
+        _levelManager.spawnEnemy -= SpawnEnemyLogic;
+        _levelManager.bossFight -= SpawnBossLogic;
     }
 
     private void Awake()
@@ -78,12 +92,6 @@ public class EnemyManager : MonoBehaviour
         _row = _viewMapManager._row - 2;
         _column = _viewMapManager._column - 2;
         _positionMatriz = new Vector2[_column, _row];
-
-        //TODO: TP2 - Spelling error/Code in spanish/Code in spanglish
-        //Delegates suscriptions
-        _viewMapManager.floorPosition += PositionListSpawner;
-        _levelManager.spawnEnemy += SpawnEnemyLogic;
-        _levelManager.bossFight += SpawnBossLogic;
     }
 
     private void Start()

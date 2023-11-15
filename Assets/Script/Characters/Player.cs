@@ -45,7 +45,7 @@ public class Player : Character
         }
         try
         {
-            p_healthPoints.damaged += IsDamaged;
+            p_healthPoints.changeLife += IsDamaged;
         }
         catch (System.Exception)
         {
