@@ -28,6 +28,12 @@ public class DropPoolManager : MonoBehaviour
 
     private void Awake()
     {
+        if (!_dataSourceSO)
+        {
+            Debug.LogError(message: $"{name}: DataSource is null\n Check and assigned one\nDisabling component");
+            enabled = false;
+            return;
+        }
         if (_dataSourceSO)
         {
             _dataSourceSO.dropManager = this;

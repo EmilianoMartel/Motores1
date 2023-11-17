@@ -152,7 +152,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 06ef6f64ca2835349b1b5920890877ce, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _dataSourceSO: {fileID: 11400000, guid: 189ad4a16cf15264a8d5979bf3f251ef, type: 2}
   _poolCount: 5
+  _levelManager: {fileID: 0}
 --- !u!4 &115608828
 Transform:
   m_ObjectHideFlags: 0
@@ -198,8 +200,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 60cda7f583b61ef4a868f7fc30de27f9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _viewMapManager: {fileID: 1656527558}
-  _levelManager: {fileID: 1647145716}
+  _dataSource: {fileID: 11400000, guid: 189ad4a16cf15264a8d5979bf3f251ef, type: 2}
   _bulletManager: {fileID: 133105405}
   _enemyListPrefab:
   - {fileID: 2796134744829502551, guid: 795f1a9da8f7c7a4cbbe9336b079ccfc, type: 3}
@@ -810,6 +811,10 @@ PrefabInstance:
       value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 598270576925150867, guid: e49dc1c4e09f9634eb10c324a4424c30, type: 3}
+      propertyPath: _dataSourceSO
+      value: 
+      objectReference: {fileID: 11400000, guid: 189ad4a16cf15264a8d5979bf3f251ef, type: 2}
+    - target: {fileID: 598270576925150867, guid: e49dc1c4e09f9634eb10c324a4424c30, type: 3}
       propertyPath: _enemyManager
       value: 
       objectReference: {fileID: 133105403}
@@ -1379,17 +1384,6 @@ MonoBehaviour:
   m_DeselectOnBackgroundClick: 1
   m_PointerBehavior: 0
   m_CursorLockBehavior: 0
---- !u!114 &1647145716 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 598270576925150867, guid: e49dc1c4e09f9634eb10c324a4424c30, type: 3}
-  m_PrefabInstance: {fileID: 1132658881}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 977791324}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e9c87fffb61c3fe4187f65d4cf79484c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!4 &1647145717 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 598270576925150864, guid: e49dc1c4e09f9634eb10c324a4424c30, type: 3}
@@ -1407,6 +1401,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 319516690b771b94aaa51bfbdb1a7033, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _managerDataSourceSO: {fileID: 11400000, guid: 189ad4a16cf15264a8d5979bf3f251ef, type: 2}
   _dropList:
   - {fileID: 11400000, guid: 318069c0c6fb9994c81dc62b1339fd38, type: 2}
   _spawnPoint: {fileID: 1647145717}
@@ -1441,6 +1436,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _row: 10
   _column: 18
+  _dataSource: {fileID: 11400000, guid: 189ad4a16cf15264a8d5979bf3f251ef, type: 2}
   _grid: {fileID: 237632039}
   _wallPrefab: {fileID: 1098688569212820781, guid: 7f676c3488450e841a4ba40c7afc6b00, type: 3}
   _floorPrefab: {fileID: 9119538363208298100, guid: 8e145f017c274d542b9b607a23f97fba, type: 3}
@@ -1589,8 +1585,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9beaf0525f27573448c0094c5bae5b63, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _dataSourceSO: {fileID: 11400000, guid: 189ad4a16cf15264a8d5979bf3f251ef, type: 2}
   _playerHealth: {fileID: 1219007407}
-  _levelManager: {fileID: 1647145716}
   _gamePlay: {fileID: 444867366}
   _endGameDelay: 3
 --- !u!4 &2024353579
@@ -1638,9 +1634,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 147d5cee5113951448e7788bafe068bb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _gameManager: {fileID: 2024353578}
+  _dataSource: {fileID: 11400000, guid: 189ad4a16cf15264a8d5979bf3f251ef, type: 2}
   _playerHealthPoints: {fileID: 1219007407}
-  _levelManager: {fileID: 1647145716}
   _waveText: {fileID: 1211015991}
   _lifeImage: {fileID: 639964412}
   _lifeSpriteList:
@@ -1730,7 +1725,7 @@ PrefabInstance:
       objectReference: {fileID: 2024353578}
     - target: {fileID: 1761288347183207835, guid: 99aed8ee8543c9c47ba06d76848dc792, type: 3}
       propertyPath: _maxLife
-      value: 7
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 1761288347183207837, guid: 99aed8ee8543c9c47ba06d76848dc792, type: 3}
       propertyPath: m_RootOrder

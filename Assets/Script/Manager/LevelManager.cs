@@ -21,8 +21,8 @@ public class LevelManager : MonoBehaviour
 
     //Managers
     [SerializeField] private ManagerDataSourceSO _dataSourceSO;
-    [SerializeField] private EnemyManager _enemyManager;
-    [SerializeField] private ViewMapManager _viewMapManager;
+    private EnemyManager _enemyManager;
+    private ViewMapManager _viewMapManager;
     [SerializeField] private DropController _dropController;
 
     [SerializeField] private Stair _stair;
@@ -44,15 +44,27 @@ public class LevelManager : MonoBehaviour
         _bossWave = _maxWave + 2;
 
         //Delegate
-        _viewMapManager.stairObject += SetStair;
-        _enemyManager.spawnedEnemies += SpawnedEnemiesCount;
-        _dropController.DelegateSuscriptionDrop(this);
+        _stair.nextLevel += StartLevel;
+        if (_viewMapManager)
+        {
+            _viewMapManager.stairObject += SetStair;
+        }
+        if (_enemyManager)
+        {
+            _enemyManager.spawnedEnemies += SpawnedEnemiesCount;
+        }
+        if (_dropController)
+        {
+            _dropController.DelegateSuscriptionDrop(this);
+        }
+        
     }
 
     private void OnDisable()
     {
-        _viewMapManager.stairObject += SetStair;
-        _enemyManager.spawnedEnemies += SpawnedEnemiesCount;
+        _viewMapManager.stairObject -= SetStair;
+        _enemyManager.spawnedEnemies -= SpawnedEnemiesCount;
+        _stair.nextLevel -= StartLevel;
     }
 
     private void Awake()
@@ -65,8 +77,15 @@ public class LevelManager : MonoBehaviour
 
     private void Start()
     {
-        if (_dataSourceSO.enemyManager) _enemyManager = _dataSourceSO.enemyManager;
-        if (_dataSourceSO.viewMapManager) _viewMapManager = _dataSourceSO.viewMapManager;
+        if (_dataSourceSO.enemyManager)
+        {
+            _enemyManager = _dataSourceSO.enemyManager;
+        }
+        if (_dataSourceSO.viewMapManager)
+        {
+            _viewMapManager = _dataSourceSO.viewMapManager;
+            _viewMapManager.stairObject += SetStair;
+        }
     }
 
     private void NullReferenceControll()
@@ -83,7 +102,7 @@ public class LevelManager : MonoBehaviour
             enabled = false;
             return;
         }
-        if (_stair == null)
+        if (!_stair)
         {
             Debug.LogError(message: $"{name}: Stair is null \n Check and assigned one\nDisabling component");
             enabled = false;
@@ -95,15 +114,9 @@ public class LevelManager : MonoBehaviour
             _minEnemy = 1;
             return;
         }
-        if (_dropController == null)
+        if (!_dropController)
         {
             Debug.LogError(message: $"{name}: DropController is null \n Check and assigned one\nDisabling component");
-            enabled = false;
-            return;
-        }
-        if (!_dataSourceSO)
-        {
-            Debug.LogError(message: $"{name}: DataSource is null \n Check and assigned one\nDisabling component");
             enabled = false;
             return;
         }

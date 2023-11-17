@@ -14,6 +14,8 @@ public class ViewMapManager : MonoBehaviour
     public int _row; //High
     public int _column; //Width
 
+    [SerializeField] private ManagerDataSourceSO _dataSource;
+
     //Table
     [SerializeField] private Grid _grid;
     [SerializeField] private GameObject _wallPrefab;
@@ -35,9 +37,10 @@ public class ViewMapManager : MonoBehaviour
     //Index
     private int index;
 
-    private void Start()
+    private void Awake()
     {
         NullReferenceControll();
+        _dataSource.viewMapManager = this;
         FirstSpawnData();
         InstantiateStairSpawner();
     }
@@ -72,6 +75,12 @@ public class ViewMapManager : MonoBehaviour
         if (_StairPrefab == null)
         {
             Debug.LogError(message: $"{name}: StairPrefab is null \n Check the parameter\nDisabling component");
+            enabled = false;
+            return;
+        }
+        if (!_dataSource)
+        {
+            Debug.LogError(message: $"{name}: DataSource is null \n Check the parameter\nDisabling component");
             enabled = false;
             return;
         }
@@ -128,7 +137,6 @@ public class ViewMapManager : MonoBehaviour
         {
             for (int f_column = 0; f_column < data.rows[f_row].row.Length; f_column++)
             {
-                //Debug.Log($"Fila {i}, Columna {f}: {state}");
                 _state = data.rows[f_row].row[f_column];
                 switch (_state)
                 {

@@ -19,6 +19,12 @@ public class DropController : MonoBehaviour
 
     private void Awake()
     {
+        if (!_managerDataSourceSO)
+        {
+            Debug.LogError(message: $"{name}: DataSource is null\n Check and assigned one\nDisabling component");
+            enabled = false;
+            return;
+        }
         if (_dropList == null)
         {
             Debug.LogError(message: $"{name}: Drop SO is null\n Check and assigned one\nDisabling component");
