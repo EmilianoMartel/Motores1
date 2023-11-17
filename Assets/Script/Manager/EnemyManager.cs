@@ -20,6 +20,7 @@ public class EnemyManager : MonoBehaviour
     [SerializeField] private ViewMapManager _viewMapManager;
     [SerializeField] private LevelManager _levelManager;
     [SerializeField] private BulletManager _bulletManager;
+    [SerializeField] private DropPoolManager _dropPoolManager;
 
     private int _row = 1;
     private int _column = 1;
@@ -38,9 +39,9 @@ public class EnemyManager : MonoBehaviour
 
     private void OnEnable()
     {
-        for (int i = 0; i < _enemyTypeList.Count; i++)
+        foreach (var enemyType in _enemyTypeList)
         {
-            foreach (BaseEnemy enemy in _enemyTypeList[i].enemyList)
+            foreach (BaseEnemy enemy in enemyType.enemyList)
             {
                 if (enemy.activateEnemy)
                 {
@@ -61,7 +62,8 @@ public class EnemyManager : MonoBehaviour
         //TODO: TP2 - Fix - foreach (var enemyType in _enemyTypeList)
 
         //TODO: TP2 - Spelling error/Code in spanish/Code in spanglish
-        //Delegates suscriptions
+
+        //Subscription to delegates
         _viewMapManager.floorPosition += PositionListSpawner;
         _levelManager.spawnEnemy += SpawnEnemyLogic;
         _levelManager.bossFight += SpawnBossLogic;

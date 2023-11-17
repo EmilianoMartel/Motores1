@@ -7,6 +7,7 @@ public class HealthPoints : MonoBehaviour
 {
     //Delegates
     public Action<int> changeLife;
+    public Action damagedEvent;
     public Action dead;
 
     [SerializeField] private int _maxLife = 10;
@@ -56,7 +57,7 @@ public class HealthPoints : MonoBehaviour
     {
         if (_life + health <= _maxLife)
         {
-            _life = health;
+            _life += health;
             changeLife?.Invoke(_life);
             return true;
         }
@@ -70,6 +71,7 @@ public class HealthPoints : MonoBehaviour
             _life -= damage;
             Debug.Log($"{name} was damaged, life: {_life}");
             changeLife?.Invoke(_life);
+            damagedEvent?.Invoke();
             if (_life <= 0)
             {
                 Dead();
@@ -82,6 +84,7 @@ public class HealthPoints : MonoBehaviour
     {
         _life--;
         changeLife?.Invoke(_life);
+        damagedEvent?.Invoke();
         if (_life <= 0)
         {
             Dead();

@@ -9,6 +9,7 @@ public class DropController : MonoBehaviour
     private HealthPoints _healthPoints;
     private LevelManager _levelManager;
 
+    [SerializeField] private ManagerDataSourceSO _managerDataSourceSO;
     [SerializeField] private List<DropSO> _dropList;
     [SerializeField] private Transform _spawnPoint;
     private int _dropRate;
@@ -36,12 +37,15 @@ public class DropController : MonoBehaviour
     {
         for (int i = 0; i < _dropList.Count; i++)
         {
-            DropPoolManager.INSTANCE.CreatePool(_dropList[i].dropObject.name, _dropList[i].dropObject);
+            if (_managerDataSourceSO.dropManager)
+            {
+                _managerDataSourceSO.dropManager.CreatePool(_dropList[i].dropObject.name, _dropList[i].dropObject);
+            }
         }
     }
 
     [ContextMenu("Active Drop")]
-    private void DropLogic()
+    private void DropItem()
     {
         Debug.Log($"{name}: try to drop objects.");
         _dropChance = UnityEngine.Random.Range(0,100);
@@ -49,7 +53,10 @@ public class DropController : MonoBehaviour
         {
             if (_dropChance <= _dropList[i].dropRate)
             {
-                DropPoolManager.INSTANCE.SpawnDropObject(_dropList[i].dropObject.name, _dropList[i].dropObject, _spawnPoint.position);
+                if (_managerDataSourceSO.dropManager)
+                {
+                    _managerDataSourceSO.dropManager.SpawnDropObject(_dropList[i].dropObject.name, _dropList[i].dropObject, _spawnPoint.position);
+                }
             }
         }
     }
@@ -57,25 +64,25 @@ public class DropController : MonoBehaviour
     public void DelegateSuscriptionDrop(HealthPoints hp)
     {
         _healthPoints = hp;
-        _healthPoints.dead += DropLogic;
+        _healthPoints.dead += DropItem;
     }
 
     public void DelegateSuscriptionDrop(LevelManager lv)
     {
         _levelManager = lv;
-        _levelManager.endLevel += DropLogic;
-        _levelManager.endBossFight += DropLogic;
+        _levelManager.endLevel += DropItem;
+        _levelManager.endBossFight += DropItem;
     }
 
     private void OnDisable()
     {
         if (_healthPoints != null)
         {
-            _healthPoints.dead -= DropLogic;
+            _healthPoints.dead -= DropItem;
         }
         if( _levelManager != null)
         {
-            _levelManager.endLevel -= DropLogic;
+            _levelManager.endLevel -= DropItem;
         }
     }
 }

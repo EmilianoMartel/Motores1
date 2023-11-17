@@ -7,23 +7,30 @@ using UnityEngine.UIElements;
 
 public class DropPoolManager : MonoBehaviour
 {
-    public static DropPoolManager INSTANCE;
-
     private List<DropController> _controllersList = new List<DropController>();
     private Dictionary<string, List<GameObject>> _dropDictionary = new Dictionary<string, List<GameObject>>();
 
+    [SerializeField] private ManagerDataSourceSO _dataSourceSO;
+
     [SerializeField] private int _poolCount = 5;
+
+    [SerializeField] private LevelManager _levelManager;
+
+    private void OnEnable()
+    {
+                
+    }
+
+    private void OnDisable()
+    {
+        
+    }
 
     private void Awake()
     {
-        if (INSTANCE != null)
+        if (_dataSourceSO)
         {
-            Destroy(this);
-        }
-        else
-        {
-            INSTANCE = this;
-            DontDestroyOnLoad(this);
+            _dataSourceSO.dropManager = this;
         }
     }
 
@@ -84,5 +91,18 @@ public class DropPoolManager : MonoBehaviour
             temp.SetActive(false);
         }
         return tempList;
+    }
+
+    public void AddController(DropController drop)
+    {
+        _controllersList.Add(drop);
+    }
+
+    public void DeleteController(DropController drop)
+    {
+        if (_controllersList.Contains(drop))
+        {
+            _controllersList.Remove(drop);
+        }
     }
 }

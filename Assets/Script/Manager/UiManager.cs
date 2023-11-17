@@ -7,9 +7,10 @@ using UnityEngine.UI;
 public class UiManager : MonoBehaviour
 {
     //Managers
-    [SerializeField] private GameManager _gameManager;
+    [SerializeField] private ManagerDataSourceSO _dataSource;
+    private GameManager _gameManager;
     [SerializeField] private HealthPoints _playerHealthPoints;
-    [SerializeField] private LevelManager _levelManager;
+    private LevelManager _levelManager;
 
     [SerializeField] private TMPro.TMP_Text _waveText;
     [SerializeField] private Image _lifeImage;
@@ -22,10 +23,45 @@ public class UiManager : MonoBehaviour
     [SerializeField] private Sprite _winImage;
     [SerializeField] private Sprite _loseImage;
 
+    private void OnEnable()
+    {
+        _playerHealthPoints.changeLife += ShowLife;
+        if (_levelManager)
+        {
+            _levelManager.showActualWave += ShowActualWave;
+        }
+        if (_gameManager)
+        {
+            _gameManager.endGame += EndGame;
+            _gameManager.resetGame += ResetGame;
+        }
+    }
+
+    private void OnDisable()
+    {
+        _playerHealthPoints.changeLife += ShowLife;
+        if (_levelManager)
+        {
+            _levelManager.showActualWave -= ShowActualWave;
+        }
+        if (_gameManager)
+        {
+            _gameManager.endGame -= EndGame;
+            _gameManager.resetGame -= ResetGame;
+        }    
+    }
+
     private void Awake()
     {
         NullReferenceControll();
         _panelEndGame.SetActive(false);
+        _dataSource.uiManager = this;
+    }
+
+    private void Start()
+    {
+        if (_dataSource.gameManager) _gameManager = _dataSource.gameManager;
+        if (_dataSource.levelManager) _levelManager = _dataSource.levelManager;
     }
 
     private void ShowLife(int actualLife)
@@ -59,36 +95,17 @@ public class UiManager : MonoBehaviour
             Debug.LogError(message: $"{name}: Panel end game is null \n Check and assigned one\nDisabling component");
             enabled = false;
             return;
-        //TODO: TP2 - Fix - Avoid try-catch blocks
+        //TODO: TP2 - Fix - Avoid try-catch blocks (Done)
         }
-        try
-        {
-            _playerHealthPoints.changeLife += ShowLife;
-        }
-        catch (System.Exception)
+        if (!_playerHealthPoints)
         {
             Debug.LogError(message: $"{name}: PlayerHealthPoints is null\n Check and assigned one\nDisabling component");
             enabled = false;
             return;
         }
-        try
+        if (!_dataSource)
         {
-            _levelManager.showActualWave += ShowActualWave;
-        }
-        catch (System.Exception)
-        {
-            Debug.LogError(message: $"{name}: LevelManager is null\n Check and assigned one\nDisabling component");
-            enabled = false;
-            return;
-        }
-        try
-        {
-            _gameManager.endGame += EndGame;
-            _gameManager.resetGame += ResetGame;
-        }
-        catch (System.Exception)
-        {
-            Debug.LogError(message: $"{name}: GameManager is null\n Check and assigned one\nDisabling component");
+            Debug.LogError(message: $"{name}: DataSource is null\n Check and assigned one\nDisabling component");
             enabled = false;
             return;
         }

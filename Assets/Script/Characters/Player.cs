@@ -20,36 +20,26 @@ public class Player : Character
     {
         transform.position = new Vector3(0,0,-5);
         p_healthPoints.dead += Kill;
+        p_healthPoints.damagedEvent += IsDamaged;
+        _gameManger.resetGame += ActivePlayer;
     }
 
     private void OnDisable()
     {
         p_healthPoints.dead -= Kill;
+        p_healthPoints.damagedEvent -= IsDamaged;
+        _gameManger.resetGame -= ActivePlayer;
     }
 
     private void Start()
     {
         NullReferenceController();
         p_actualTime = 10;
-        try
+        //TODO: TP2 - Fix - Don't use try-catch blocks where a simple null-check is enough (for performance reasons) (DONE)
+        //TODO: TP2 - Should be done in OnEnable (DONE)
+        if (_gameManger == null)
         {
-            _gameManger.resetGame += ActivePlayer;
-        }
-        catch (System.Exception)
-        {
-        //TODO: TP2 - Fix - Don't use try-catch blocks where a simple null-check is enough (for performance reasons)
-            //TODO: TP2 - Should be done in OnEnable
             Debug.LogError(message: $"{name}: GameManager is null\n Check and assigned one\nDisabling component");
-            enabled = false;
-            return;
-        }
-        try
-        {
-            p_healthPoints.changeLife += IsDamaged;
-        }
-        catch (System.Exception)
-        {
-            Debug.LogError(message: $"{name}: HealthPoints is null\n Check and assigned one\nDisabling component");
             enabled = false;
             return;
         }
@@ -61,8 +51,8 @@ public class Player : Character
         }
     }
 
-    //TODO: TP2 - Syntax - Consistency in access modifiers (private/protected/public/etc)
-    void Update()
+    //TODO: TP2 - Syntax - Consistency in access modifiers (private/protected/public/etc) (DONE)
+    private void Update()
     {
         PlayerMovement();
         if (p_actualTime > p_shootTimeRest && (_inputAttack.x != 0 || _inputAttack.y != 0) && p_isAttacking == false)
@@ -74,7 +64,6 @@ public class Player : Character
         p_actualTime += Time.deltaTime;
     }
 
-
     private void PlayerMovement()
     {
         Movement(p_direction);
@@ -85,7 +74,7 @@ public class Player : Character
         gameObject.SetActive(true);
     }
 
-    private void IsDamaged(int damage)
+    private void IsDamaged()
     {
         if (!_isDamaged)
         {

@@ -20,6 +20,7 @@ public class LevelManager : MonoBehaviour
     [SerializeField] private List<GameObject> _dataPrefabList;
 
     //Managers
+    [SerializeField] private ManagerDataSourceSO _dataSourceSO;
     [SerializeField] private EnemyManager _enemyManager;
     [SerializeField] private ViewMapManager _viewMapManager;
     [SerializeField] private DropController _dropController;
@@ -33,14 +34,14 @@ public class LevelManager : MonoBehaviour
     //Variables for start and end game
     private int _enemyKillCount = 0;
     [SerializeField] private int _maxWave = 10;
-    private int bossWave;
+    private int _bossWave;
     private int _actualWave = 0;
 
     private void OnEnable()
     {
         ReSpawnStair();
         _actualWave = 0;
-        bossWave = _maxWave + 2;
+        _bossWave = _maxWave + 2;
 
         //Delegate
         _viewMapManager.stairObject += SetStair;
@@ -56,16 +57,23 @@ public class LevelManager : MonoBehaviour
 
     private void Awake()
     {
-        bossWave = _maxWave + 2;
+        _bossWave = _maxWave + 2;
         NullReferenceControll();
         SetDataList();
+        _dataSourceSO.levelManager = this;
+    }
+
+    private void Start()
+    {
+        if (_dataSourceSO.enemyManager) _enemyManager = _dataSourceSO.enemyManager;
+        if (_dataSourceSO.viewMapManager) _viewMapManager = _dataSourceSO.viewMapManager;
     }
 
     private void NullReferenceControll()
     {
-        if (_enemyManager == null)
+        if (!_dataSourceSO)
         {
-            Debug.LogError(message: $"{name}: Enemy Manager is null \n Check and assigned one\nDisabling component");
+            Debug.LogError(message: $"{name}: Data source is null \n Check and assigned one\nDisabling component");
             enabled = false;
             return;
         }
@@ -81,12 +89,6 @@ public class LevelManager : MonoBehaviour
             enabled = false;
             return;
         }
-        if (_viewMapManager == null)
-        {
-            Debug.LogError(message: $"{name}: ViewMapManager is null \n Check and assigned one\nDisabling component");
-            enabled = false;
-            return;
-        }
         if (_minEnemy < 0)
         {
             Debug.LogError(message: $"{name}: Min enemy is negative \n Check that and assigned positive number\nChange value to 1");
@@ -96,6 +98,12 @@ public class LevelManager : MonoBehaviour
         if (_dropController == null)
         {
             Debug.LogError(message: $"{name}: DropController is null \n Check and assigned one\nDisabling component");
+            enabled = false;
+            return;
+        }
+        if (!_dataSourceSO)
+        {
+            Debug.LogError(message: $"{name}: DataSource is null \n Check and assigned one\nDisabling component");
             enabled = false;
             return;
         }
@@ -178,6 +186,9 @@ public class LevelManager : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Randomly level selection
+    /// </summary>
     private void RandomLevel()
     {
         int index = UnityEngine.Random.Range(0, _dataList.Count);
@@ -191,7 +202,7 @@ public class LevelManager : MonoBehaviour
         _stair.isActiveStair = false;
         _stair.gameObject.SetActive(false);
         Debug.Log($"{name}: Event StartLevel is called");
-        if (_actualWave == _maxWave+1) SpawnBoss();
+        if (_actualWave == _maxWave + 1) SpawnBoss();
         else
         {
             showActualWave?.Invoke(_actualWave);

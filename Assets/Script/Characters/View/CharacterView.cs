@@ -20,8 +20,8 @@ public class CharacterView : MonoBehaviour
     protected bool p_isDamaged;
 
     [SerializeField] private float _timeBetweenColors = 0.3f;
-    //TODO: TP2 - Spelling error/Code in spanish/Code in spanglish
-    [SerializeField] private int _cantDamagedAnimation = 2;
+    //TODO: TP2 - Spelling error/Code in spanish/Code in spanglish (DONE)
+    [SerializeField] private int _numberOfRepetitionAnimation = 2;
     [SerializeField] private Color _damagedColor;
     [SerializeField] private Color _baseColor;
 
@@ -97,7 +97,7 @@ public class CharacterView : MonoBehaviour
     
     private IEnumerator Damaged()
     {
-        for (int i = 0; i < _cantDamagedAnimation; i++)
+        for (int i = 0; i < _numberOfRepetitionAnimation; i++)
         {
             p_spriteRenderer.color = _damagedColor;
             yield return new WaitForSeconds(_timeBetweenColors);
