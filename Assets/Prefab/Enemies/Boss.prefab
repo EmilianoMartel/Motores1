@@ -121,6 +121,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   p_animator: {fileID: 6003113332203233321}
   p_character: {fileID: 4093501843917922084}
+  p_spriteRenderer: {fileID: 0}
+  _timeBetweenColors: 0.3
+  _numberOfRepetitionAnimation: 2
+  _damagedColor: {r: 0, g: 0, b: 0, a: 0}
+  _baseColor: {r: 0, g: 0, b: 0, a: 0}
   p_animatorParameterDirX: dirX
   p_animatorParameterDirY: dirY
   p_animatorParameterIsMoving: isMoving
@@ -245,8 +250,8 @@ MonoBehaviour:
   p_characterView: {fileID: 6749301598340494745}
   p_stateController: {fileID: 0}
   p_hazard: {fileID: 654379792144347464}
+  p_characterData: {fileID: 11400000, guid: be20fed37a0e3d64a920a697ac1d0842, type: 2}
   p_deadDelay: 1
-  p_speed: 1
   p_shootTimeRest: 2
   p_isAttacking: 0
   p_shootDelay: 0.5
@@ -302,7 +307,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1c6fc341e9383f24291ef32c4dd34e58, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _originalLife: 50
+  _maxLife: 10
   _controller: {fileID: 0}
 --- !u!1 &4093501844365752216
 GameObject:
