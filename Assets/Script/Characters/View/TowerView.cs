@@ -25,9 +25,9 @@ public class TowerView : CharacterView
         p_character.isDeadEvent -= IsDead;
     }
 
-    private void Start()
+    private void Awake()
     {
-        if (_enemy == null)
+        if (!_enemy)
         {
             Debug.LogError(message: $"{name}: Enemy is null\n Check and assigned one\nDisabling component");
             enabled = false;

@@ -20,6 +20,7 @@ public class LevelManager : MonoBehaviour
     [SerializeField] private List<GameObject> _dataPrefabList;
 
     //Managers
+    [SerializeField] private float _waitForManager = 1f;
     [SerializeField] private ManagerDataSourceSO _dataSourceSO;
     private EnemyManager _enemyManager;
     private ViewMapManager _viewMapManager;
@@ -57,7 +58,6 @@ public class LevelManager : MonoBehaviour
         {
             _dropController.DelegateSuscriptionDrop(this);
         }
-        
     }
 
     private void OnDisable()
@@ -73,13 +73,17 @@ public class LevelManager : MonoBehaviour
         NullReferenceControll();
         SetDataList();
         _dataSourceSO.levelManager = this;
+        StartCoroutine(SetManagers());
     }
 
-    private void Start()
+    private IEnumerator SetManagers()
     {
+        yield return new WaitForSeconds(_waitForManager);
         if (_dataSourceSO.enemyManager)
         {
             _enemyManager = _dataSourceSO.enemyManager;
+            _enemyManager.spawnedEnemies += SpawnedEnemiesCount;
+
         }
         if (_dataSourceSO.viewMapManager)
         {
@@ -145,8 +149,8 @@ public class LevelManager : MonoBehaviour
         }
     }
 
-    //TODO: TP2 - Unclear name
-    private void SpawnEnemiesControll(int f_column, int f_row, int seed)
+    //TODO: TP2 - Unclear name(Done)
+    private void SpawnEnemiesLogic(int f_column, int f_row, int seed)
     {
         if (_minEnemy == 1)
         {
@@ -178,7 +182,7 @@ public class LevelManager : MonoBehaviour
                     case ArrayLayout.State.Rock:
                         break;
                     case ArrayLayout.State.Spawner:
-                        SpawnEnemiesControll(f_column, f_row, seed);
+                        SpawnEnemiesLogic(f_column, f_row, seed);
                         break;
                     case ArrayLayout.State.ObjectSpawner:
                         break;

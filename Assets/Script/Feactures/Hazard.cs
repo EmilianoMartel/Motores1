@@ -8,7 +8,7 @@ public class Hazard : MonoBehaviour
     private bool _canHazard = true;
 
     //TODO: TP2 - Unclear name
-    public bool canHazard { set { _canHazard = value; } }
+    public bool canHarm { set { _canHazard = value; } }
 
     private void OnTriggerEnter2D(Collider2D col)
     {

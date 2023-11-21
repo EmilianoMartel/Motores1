@@ -15,7 +15,7 @@ public class Health : MonoBehaviour
         if (col.gameObject.TryGetComponent(out hp))
         {
             Debug.Log($"{name} health {col.gameObject.name}");
-            if (hp.Health(_health))
+            if (hp.Healing(_health))
             {
                 gameObject.SetActive(false);
             }

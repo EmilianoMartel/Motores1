@@ -45,11 +45,11 @@ public class GameManager : MonoBehaviour
 
     private void Awake()
     {
-        NullController();
+        NullReferenceController();
         _dataSourceSO.gameManager = this;
     }
 
-    private void NullController()
+    private void NullReferenceController()
     {
         //TODO: TP2 - Fix - Avoid Try-catch blocks
         if (_playerHealth == null)
@@ -87,6 +87,6 @@ public class GameManager : MonoBehaviour
         yield return new WaitForSeconds(_endGameDelay);
         endGame?.Invoke(didPlayerWin);
         _gamePlay.SetActive(false);
-    //TODO: TP2 - Unclear name - didPlayerWin / playerWon
+    //TODO: TP2 - Unclear name - didPlayerWin / playerWon (DONE)
     }
 }

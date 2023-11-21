@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class EnemyFreeMovement : EnemyMovement
 {
-
     private void Update()
     {
         PatrolMovement();

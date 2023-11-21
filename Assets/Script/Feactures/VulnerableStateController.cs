@@ -13,8 +13,8 @@ public class VulnerableStateController : MonoBehaviour
         isVulnerable?.Invoke(true);
     }
 
-    //TODO: TP2 - Spelling error/Code in spanish/Code in spanglish
-    private void InvensibleState()
+    //TODO: TP2 - Spelling error/Code in spanish/Code in spanglish(DONE)
+    private void StateOfInvincibility()
     {
         isVulnerable?.Invoke(false);
     }
@@ -23,7 +23,7 @@ public class VulnerableStateController : MonoBehaviour
     {
         if (isVulnerable)
         {
-            InvensibleState();
+            StateOfInvincibility();
         }
         else
         {

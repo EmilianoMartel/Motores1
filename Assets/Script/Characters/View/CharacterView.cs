@@ -39,7 +39,7 @@ public class CharacterView : MonoBehaviour
         p_animator = GetComponent<Animator>();
     }
 
-    //TODO: TP2 - Should be done in OnEnable
+    //TODO: TP2 - Should be done in OnEnable(DONE)
     private void OnEnable()
     {
         p_character.isAttackingEvent += IsAttacking;
@@ -52,9 +52,9 @@ public class CharacterView : MonoBehaviour
         p_character.isDeadEvent -= IsDead;
     }
 
-    private void Start()
+    private void Awake()
     {
-        if (p_character == null)
+        if (!p_character)
         {
             Debug.LogError(message: $"{name}: Character is null\n Check and assigned one\nDisabling component");
             enabled = false;

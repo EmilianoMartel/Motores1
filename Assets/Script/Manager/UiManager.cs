@@ -6,6 +6,8 @@ using UnityEngine.UI;
 
 public class UiManager : MonoBehaviour
 {
+    [SerializeField] private float _waitForManager = 1f;
+
     //Managers
     [SerializeField] private ManagerDataSourceSO _dataSource;
     private GameManager _gameManager;
@@ -18,6 +20,7 @@ public class UiManager : MonoBehaviour
 
     [SerializeField] private Image _endGameImage;
     [SerializeField] private GameObject _panelEndGame;
+    [SerializeField] private GameObject _chargeScreen;
 
     //EndGameImages
     [SerializeField] private Sprite _winImage;
@@ -53,25 +56,43 @@ public class UiManager : MonoBehaviour
 
     private void Awake()
     {
-        NullReferenceControll();
+        NullReferenceController();
         _panelEndGame.SetActive(false);
         _dataSource.uiManager = this;
+        StartCoroutine(SetManagers());
     }
 
-    private void Start()
+    private IEnumerator SetManagers()
     {
-        if (_dataSource.gameManager) _gameManager = _dataSource.gameManager;
-        if (_dataSource.levelManager) _levelManager = _dataSource.levelManager;
-    }
+        yield return new WaitForSeconds(_waitForManager);
+        if (_dataSource.gameManager)
+        {
+            _gameManager = _dataSource.gameManager;
+            _gameManager.endGame += EndGame;
+            _gameManager.resetGame += ResetGame;
+        } 
+        if (_dataSource.levelManager)
+        {
+            _levelManager = _dataSource.levelManager;
+            _levelManager.showActualWave += ShowActualWave;
+        }
 
+        _chargeScreen.SetActive(false);
+    }
     private void ShowLife(int actualLife)
     {
         _lifeImage.sprite = _lifeSpriteList[actualLife];
     }
 
-    //TODO: TP2 - Unclear name
-    private void NullReferenceControll()
+    //TODO: TP2 - Unclear name(Done)
+    private void NullReferenceController()
     {
+        if (!_chargeScreen)
+        {
+            Debug.LogError(message: $"{name}: Charge Screen is null\n Check and assigned one\nDisabling component");
+            enabled = false;
+            return;
+        }
         if (_lifeImage == null)
         {
             Debug.LogError(message: $"{name}: LifeImage is null\n Check and assigned one\nDisabling component");

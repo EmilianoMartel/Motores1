@@ -11,6 +11,7 @@ public class DropPoolManager : MonoBehaviour
     private Dictionary<string, List<GameObject>> _dropDictionary = new Dictionary<string, List<GameObject>>();
 
     [SerializeField] private ManagerDataSourceSO _dataSourceSO;
+    [SerializeField] private float _waitForManager = 1f;
 
     [SerializeField] private int _poolCount = 5;
 
@@ -18,7 +19,7 @@ public class DropPoolManager : MonoBehaviour
 
     private void OnEnable()
     {
-                
+        
     }
 
     private void OnDisable()
@@ -34,10 +35,18 @@ public class DropPoolManager : MonoBehaviour
             enabled = false;
             return;
         }
-        if (_dataSourceSO)
-        {
-            _dataSourceSO.dropManager = this;
-        }
+         _dataSourceSO.dropManager = this;
+    }
+
+    private void Start()
+    {
+        StartCoroutine(SetManager());
+    }
+
+    private IEnumerator SetManager()
+    {
+        yield return new WaitForSeconds(_waitForManager);
+        _levelManager = _dataSourceSO.levelManager;
     }
 
     public void SpawnDropObject(string name, GameObject dropObject, Vector3 spawnPosition)

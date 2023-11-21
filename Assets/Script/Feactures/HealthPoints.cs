@@ -52,8 +52,8 @@ public class HealthPoints : MonoBehaviour
         }
     }
 
-    //TODO: TP2 - Unclear name
-    public bool Health(int health)
+    //TODO: TP2 - Unclear name(DONE)
+    public bool Healing(int health)
     {
         if (_life + health <= _maxLife)
         {

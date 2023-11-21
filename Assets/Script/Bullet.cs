@@ -11,7 +11,20 @@ public class Bullet : MonoBehaviour
     [SerializeField] private float _deleteTime = 6f;
     [SerializeField] private HealthPoints _healthPoints;
     [SerializeField] private LayerMask _wallLayerMask;
-    private float _actualTime;
+
+    private void OnEnable()
+    {
+        //TODO: TP2 - Should be done in OnEnable(DONE)
+        _healthPoints.dead += DisableBullet;
+        //TODO: TP2 - Could be a coroutine/Invoke(DONE)
+        StartCoroutine(LifeTimeBullet());
+    }
+
+    private void OnDisable()
+    {
+        //TODO: TP2 - Should be done in OnDisable(DONE)
+        _healthPoints.dead -= DisableBullet;
+    }
 
     private void Start()
     {
@@ -21,33 +34,25 @@ public class Bullet : MonoBehaviour
             enabled = false;
             return;
         }
-        //TODO: TP2 - Should be done in OnEnable
-        _healthPoints.dead += DisableBullet;
     }
 
-    //TODO: TP2 - Syntax - Consistency in access modifiers (private/protected/public/etc)
-    void Update()
+    //TODO: TP2 - Syntax - Consistency in access modifiers (private/protected/public/etc)(DONE)
+    private void Update()
     {
         transform.Translate(direction * _speed * Time.deltaTime);
-        //TODO: TP2 - Could be a coroutine/Invoke
-        _actualTime += Time.deltaTime;
-        if (_actualTime >= _deleteTime)
-        {
-            _actualTime = 0;
-            DisableBullet();
-        }
+        
+    }
+
+    private IEnumerator LifeTimeBullet()
+    {
+        yield return new WaitForSeconds(_deleteTime);
+        DisableBullet();
     }
 
     private void DisableBullet()
     {
         activeBullet = false;
         gameObject.SetActive(false);
-    }
-
-    private void OnDestroy()
-    {
-        //TODO: TP2 - Should be done in OnDisable
-        _healthPoints.dead -= DisableBullet;
     }
 
     private void OnTriggerEnter2D(Collider2D collision)

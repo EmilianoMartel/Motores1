@@ -45,14 +45,14 @@ public abstract class Character : MonoBehaviour
     public int multipleShootValue { get { return p_multipleShoot; } set { p_multipleShoot = value; } }
     public BulletManager bulletManager { set { p_bulletManager = value; } }
 
-    //TODO: TP2 - Should be done in OnEnable
+    //TODO: TP2 - Should be done in OnEnable(DONE)
     private void OnEnable()
     {
-        p_hazard.canHazard = true;
+        p_hazard.canHarm = true;
         p_isDead = false;
         isDeadEvent?.Invoke(false);
 
-        //SuscriptionDelegates
+        //Suscription to Delegates
         p_healthPoints.dead += Kill;
     }
 
@@ -115,7 +115,7 @@ public abstract class Character : MonoBehaviour
 
     private IEnumerator Dead()
     {
-        p_hazard.canHazard = false;
+        p_hazard.canHarm = false;
         yield return new WaitForSeconds(p_deadDelay);
         gameObject.SetActive(false);
         p_isDead = false;
@@ -134,13 +134,13 @@ public abstract class Character : MonoBehaviour
         isAttackingEvent?.Invoke(false);
     }
 
-    protected IEnumerator Shoot(int cantShoot, List<Vector2> directionsList)
+    protected IEnumerator Shoot(int numberOfShoot, List<Vector2> directionsList)
     {
         p_isAttacking = true;
         isAttackingEvent?.Invoke(true);
         yield return new WaitForSeconds(p_shootDelay);
-        //TODO: TP2 - Spelling error/Code in spanish/Code in spanglish
-        for (int i = 0; i < cantShoot; i++)
+        //TODO: TP2 - Spelling error/Code in spanish/Code in spanglish(DONE)
+        for (int i = 0; i < numberOfShoot; i++)
         {
             ElectionSpawnShoot(directionsList[i]);
             p_bulletManager.Shoot(directionsList[i], _realPointShoot);
