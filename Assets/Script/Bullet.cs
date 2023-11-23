@@ -26,9 +26,9 @@ public class Bullet : MonoBehaviour
         _healthPoints.dead -= DisableBullet;
     }
 
-    private void Start()
+    private void Awake()
     {
-        if (_healthPoints == null)
+        if (!_healthPoints)
         {
             Debug.LogError(message: $"{name}: HealthPoints is null\n Check and assigned one\nDisabling component");
             enabled = false;

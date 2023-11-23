@@ -31,6 +31,33 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": true
+                },
+                {
+                    "name": "Invulnerability",
+                    "type": "Button",
+                    "id": "cc29fa9a-bea7-4577-bfa7-edcb55051f33",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "FireRateCheat",
+                    "type": "Button",
+                    "id": "7909069e-a608-4a94-8ed0-c0f300cc86fa",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "EnemyDamageCheat",
+                    "type": "Button",
+                    "id": "466a8910-9cb1-4f40-a678-cc9e9b58f7e0",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -209,6 +236,39 @@
                     "action": "Fire",
                     "isComposite": false,
                     "isPartOfComposite": true
+                },
+                {
+                    "name": "",
+                    "id": "c5e338bf-c272-458a-831e-3e4635d663ea",
+                    "path": "<Keyboard>/f10",
+                    "interactions": "Press(pressPoint=0.2)",
+                    "processors": "",
+                    "groups": "Keyboard&Mouse",
+                    "action": "Invulnerability",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "36ec4f0a-2e3f-4efd-b884-d9dccf0f7d56",
+                    "path": "<Keyboard>/f11",
+                    "interactions": "Press",
+                    "processors": "",
+                    "groups": "Keyboard&Mouse",
+                    "action": "FireRateCheat",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "6519c74c-7307-4135-a810-7743d0bfc55e",
+                    "path": "<Keyboard>/f1",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "EnemyDamageCheat",
+                    "isComposite": false,
+                    "isPartOfComposite": false
                 }
             ]
         },

@@ -26,7 +26,7 @@ public abstract class Character : MonoBehaviour
     protected Vector3 p_attackDirection;
 
     //Shoot
-    [SerializeField] protected float p_shootTimeRest;
+    protected float p_shootTimeRest => p_characterData.shootTimeRest;
     [SerializeField] protected bool p_isAttacking = false;
     [SerializeField] protected float p_shootDelay = 1.0f;
     [SerializeField] protected float p_delayBetweenShoots = 1.0f;

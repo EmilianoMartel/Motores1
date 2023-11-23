@@ -12,6 +12,6 @@ public class CharacterSO : ScriptableObject
 
     public int maxLife { get { return _maxLife; } }
     public float speed { get { return _speed; } }
-    public float shootTimeRest { get { return _shootTimeRest; } }
-    public float shootAnimDelay { get {  return _shootAnimDelay; } }
+    public float shootTimeRest { get { return _shootTimeRest; } set { _shootTimeRest = value; } }
+    public float shootAnimDelay { get { return _shootAnimDelay; } }
 }

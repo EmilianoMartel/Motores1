@@ -84,7 +84,6 @@ MonoBehaviour:
   p_hazard: {fileID: 7524849006491544753}
   p_characterData: {fileID: 11400000, guid: 9cf248d892858594a99de43457ae4338, type: 2}
   p_deadDelay: 1
-  p_shootTimeRest: 0
   p_isAttacking: 0
   p_shootDelay: 0.4
   p_delayBetweenShoots: 1
@@ -98,7 +97,7 @@ MonoBehaviour:
   _isMoveEnemy: 0
   _isObserverShootEnemy: 1
   _isObserverMoveEnemy: 0
-  _isVulnerableEnemyIfSee: 1
+  _vulnerableEnemyIfSeen: 1
   _isMultipleShootEnemy: 0
   _maxTimeShoot: 5
 --- !u!114 &7524849006491545423
@@ -329,7 +328,7 @@ MonoBehaviour:
   p_character: {fileID: 7524849006491544752}
   p_spriteRenderer: {fileID: 0}
   _timeBetweenColors: 0.3
-  _cantDamagedAnimation: 2
+  _numberOfRepetitionAnimation: 2
   _damagedColor: {r: 0, g: 0, b: 0, a: 0}
   _baseColor: {r: 0, g: 0, b: 0, a: 0}
   p_animatorParameterDirX: dir_x

@@ -19,16 +19,9 @@ public class VulnerableStateController : MonoBehaviour
         isVulnerable?.Invoke(false);
     }
 
-    private void CallInvulnerability(bool isVulnerable)
+    public void CallInvulnerability(bool isVulnerableInt)
     {
-        if (isVulnerable)
-        {
-            StateOfInvincibility();
-        }
-        else
-        {
-            VulnerableState();
-        }
+        isVulnerable?.Invoke(isVulnerableInt);
     //TODO: TP1 - Unused method/variable
     }
 }

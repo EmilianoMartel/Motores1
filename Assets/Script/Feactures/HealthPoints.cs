@@ -16,7 +16,7 @@ public class HealthPoints : MonoBehaviour
     private int _life;
     private bool _isVulnerable = true;
 
-    public int maxLife { set { _maxLife = value; } }
+    public int maxLife { get { return _maxLife; } set { _maxLife = value; } }
 
     private void OnEnable()
     {
