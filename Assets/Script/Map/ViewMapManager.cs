@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
+using static TMPro.SpriteAssetUtilities.TexturePacker_JsonArray;
 
 public delegate void FloorPosition(Vector2 vector2, int column, int row);
 public delegate void StairObject(Stair stair);
@@ -13,6 +14,11 @@ public class ViewMapManager : MonoBehaviour
 
     public int _row; //High
     public int _column; //Width
+
+    [SerializeField] private ManagerDataSourceSO _dataSource;
+
+    [SerializeField] private float _timeToSetMapa = 0.5f;
+    [SerializeField] private float _waitForManager = 1f;
 
     //Table
     [SerializeField] private Grid _grid;
@@ -28,6 +34,7 @@ public class ViewMapManager : MonoBehaviour
     //Spawner
     [SerializeField] private Stair _StairPrefab;
     private Stair _stair;
+    public int frame;
 
     //FloorList
     [SerializeField] private GameObject _floorListParent;
@@ -35,15 +42,26 @@ public class ViewMapManager : MonoBehaviour
     //Index
     private int index;
 
+    private void Awake()
+    {
+        NullReferenceController();
+        _dataSource.viewMapManager = this;
+    }
+
     private void Start()
     {
-        NullReferenceControll();
+        StartCoroutine(SetMapa());
+    }
+
+    private IEnumerator SetMapa()
+    {
+        yield return new WaitForSeconds(_timeToSetMapa);
         FirstSpawnData();
         InstantiateStairSpawner();
     }
 
-    //TODO: TP2 - Unclear name
-    private void NullReferenceControll()
+    //TODO: TP2 - Unclear name(DONE)
+    private void NullReferenceController()
     {
         if (_column <= 0 || _row <= 0)
         {
@@ -72,6 +90,12 @@ public class ViewMapManager : MonoBehaviour
         if (_StairPrefab == null)
         {
             Debug.LogError(message: $"{name}: StairPrefab is null \n Check the parameter\nDisabling component");
+            enabled = false;
+            return;
+        }
+        if (!_dataSource)
+        {
+            Debug.LogError(message: $"{name}: DataSource is null \n Check the parameter\nDisabling component");
             enabled = false;
             return;
         }
@@ -128,7 +152,6 @@ public class ViewMapManager : MonoBehaviour
         {
             for (int f_column = 0; f_column < data.rows[f_row].row.Length; f_column++)
             {
-                //Debug.Log($"Fila {i}, Columna {f}: {state}");
                 _state = data.rows[f_row].row[f_column];
                 switch (_state)
                 {

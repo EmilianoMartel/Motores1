@@ -14,4 +14,10 @@ public class Stair : MonoBehaviour
         Debug.Log($"{name} collided with {col.name}");
         nextLevel?.Invoke();
     }
+
+    [ContextMenu("Start Level")]
+    private void StartLevel()
+    {
+        nextLevel?.Invoke();
+    }
 }

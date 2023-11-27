@@ -12,9 +12,9 @@ public class GameManager : MonoBehaviour
 
     [SerializeField] private ManagerDataSourceSO _dataSourceSO;
     [SerializeField] private HealthPoints _playerHealth;
-    [SerializeField] private LevelManager _levelManager;
-    [SerializeField] private EnemyManager _enemyManager;
-    [SerializeField] private DropPoolManager _dropManager;
+    private LevelManager _levelManager;
+    private EnemyManager _enemyManager;
+    private DropPoolManager _dropManager;
 
     [SerializeField] private GameObject _gamePlay;
     [SerializeField] private float _endGameDelay = 1f;
@@ -22,34 +22,39 @@ public class GameManager : MonoBehaviour
     private void OnEnable()
     {
         //Subscription to delegates
-        _levelManager.endBossFight += BossDeath;
-        _playerHealth.dead += PlayerDeath;
+        if (_dataSourceSO.levelManager)
+        {
+            _levelManager = _dataSourceSO.levelManager;
+            _levelManager.endBossFight += BossDeath;
+        }
+        if (_playerHealth)
+        {
+            _playerHealth.dead += PlayerDeath;
+        }
+        
     }
 
     private void OnDisable()
     {
-        _levelManager.endBossFight -= BossDeath;
+        if (_levelManager)
+        {
+            _levelManager.endBossFight -= BossDeath;
+        }
         _playerHealth.dead -= PlayerDeath;
     }
 
     private void Awake()
     {
-        NullController();
+        NullReferenceController();
         _dataSourceSO.gameManager = this;
     }
 
-    private void NullController()
+    private void NullReferenceController()
     {
         //TODO: TP2 - Fix - Avoid Try-catch blocks
         if (_playerHealth == null)
         {
             Debug.LogError(message: $"{name}: PlayerHealth is null\n Check and assigned one\nDisabling component");
-            enabled = false;
-            return;
-        }
-        if (_levelManager == null)
-        {
-            Debug.LogError(message: $"{name}: LevelManagers is null\n Check and assigned one\nDisabling component");
             enabled = false;
             return;
         }
@@ -82,6 +87,6 @@ public class GameManager : MonoBehaviour
         yield return new WaitForSeconds(_endGameDelay);
         endGame?.Invoke(didPlayerWin);
         _gamePlay.SetActive(false);
-    //TODO: TP2 - Unclear name - didPlayerWin / playerWon
+    //TODO: TP2 - Unclear name - didPlayerWin / playerWon (DONE)
     }
 }

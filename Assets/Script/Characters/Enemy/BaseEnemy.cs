@@ -23,7 +23,7 @@ public class BaseEnemy : Character
     [SerializeField] private bool _isObserverShootEnemy = false;
     //TODO: TP1 - Unused method/variable
     [SerializeField] private bool _isObserverMoveEnemy = false;
-    [SerializeField] private bool _isVulnerableEnemyIfSee = false;
+    [SerializeField] private bool _vulnerableEnemyIfSeen = false;
     [SerializeField] private bool _isMultipleShootEnemy = false;
 
     //Shooting
@@ -39,8 +39,8 @@ public class BaseEnemy : Character
 
     public bool canAttack { get { return _canAttack; } }
 
-    //TODO: TP2 - Syntax - Consistency in access modifiers (private/protected/public/etc)
-    void Awake()
+    //TODO: TP2 - Syntax - Consistency in access modifiers (private/protected/public/etc)(DONE)
+    private void Awake()
     {
         TimeShootSelection();
         p_actualTime = 0;
@@ -48,9 +48,13 @@ public class BaseEnemy : Character
 
     private void Update()
     {
-        //TODO: TP2 - Fix - Clean code
+        //TODO: TP2 - Fix - Clean code(Done)
         //if(p_isDead)
         //  return;
+        if (p_isDead)
+        {
+            return;
+        }
         if (!p_isDead)
         {
             if (_enemyMovement != null)
@@ -103,7 +107,7 @@ public class BaseEnemy : Character
     private void CanAttackChanger(bool canAttack)
     {
         _canAttack = canAttack;
-        if (_isVulnerableEnemyIfSee)
+        if (_vulnerableEnemyIfSeen)
         {
             _vulnerabilityController.isVulnerable?.Invoke(_canAttack);
         }
@@ -128,8 +132,8 @@ public class BaseEnemy : Character
             _searchLogic = gameObject.GetComponent<SearchLogic>();
             _searchLogic.foundPlayer += CanAttackChanger;
         }
-        //TODO: TP2 - Unclear name
-        if (_isVulnerableEnemyIfSee)
+        //TODO: TP2 - Unclear name(DONE)
+        if (_vulnerableEnemyIfSeen)
         {
             _vulnerabilityController = gameObject.GetComponent<VulnerableStateController>();
         }

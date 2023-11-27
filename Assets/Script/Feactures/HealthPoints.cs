@@ -16,7 +16,7 @@ public class HealthPoints : MonoBehaviour
     private int _life;
     private bool _isVulnerable = true;
 
-    public int maxLife { set { _maxLife = value; } }
+    public int maxLife { get { return _maxLife; } set { _maxLife = value; } }
 
     private void OnEnable()
     {
@@ -52,8 +52,8 @@ public class HealthPoints : MonoBehaviour
         }
     }
 
-    //TODO: TP2 - Unclear name
-    public bool Health(int health)
+    //TODO: TP2 - Unclear name(DONE)
+    public bool Healing(int health)
     {
         if (_life + health <= _maxLife)
         {

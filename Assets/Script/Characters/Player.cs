@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro.Examples;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -13,12 +14,13 @@ public class Player : Character
     [SerializeField] private bool _isDamaged = false;
     [SerializeField] private float _damagedDelay = 1f;
 
-    public Vector3 inputAttack { set {  _inputAttack = value; } }
+    public Vector3 inputAttack { set { _inputAttack = value; } }
     public Vector3 direction { set { p_direction = value; } }
+    public CharacterSO characterSO { get { return p_characterData; } }
 
     private void OnEnable()
     {
-        transform.position = new Vector3(0,0,-5);
+        transform.position = new Vector3(0, 0, -5);
         p_healthPoints.dead += Kill;
         p_healthPoints.damagedEvent += IsDamaged;
         _gameManger.resetGame += ActivePlayer;
@@ -31,12 +33,9 @@ public class Player : Character
         _gameManger.resetGame -= ActivePlayer;
     }
 
-    private void Start()
+    private void Awake()
     {
         NullReferenceController();
-        p_actualTime = 10;
-        //TODO: TP2 - Fix - Don't use try-catch blocks where a simple null-check is enough (for performance reasons) (DONE)
-        //TODO: TP2 - Should be done in OnEnable (DONE)
         if (_gameManger == null)
         {
             Debug.LogError(message: $"{name}: GameManager is null\n Check and assigned one\nDisabling component");
@@ -49,6 +48,13 @@ public class Player : Character
             enabled = false;
             return;
         }
+    }
+
+    private void Start()
+    {
+        p_actualTime = 10;
+        //TODO: TP2 - Fix - Don't use try-catch blocks where a simple null-check is enough (for performance reasons) (DONE)
+        //TODO: TP2 - Should be done in OnEnable (DONE)
     }
 
     //TODO: TP2 - Syntax - Consistency in access modifiers (private/protected/public/etc) (DONE)

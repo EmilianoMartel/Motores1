@@ -20,9 +20,10 @@ public class LevelManager : MonoBehaviour
     [SerializeField] private List<GameObject> _dataPrefabList;
 
     //Managers
+    [SerializeField] private float _waitForManager = 1f;
     [SerializeField] private ManagerDataSourceSO _dataSourceSO;
-    [SerializeField] private EnemyManager _enemyManager;
-    [SerializeField] private ViewMapManager _viewMapManager;
+    private EnemyManager _enemyManager;
+    private ViewMapManager _viewMapManager;
     [SerializeField] private DropController _dropController;
 
     [SerializeField] private Stair _stair;
@@ -44,15 +45,26 @@ public class LevelManager : MonoBehaviour
         _bossWave = _maxWave + 2;
 
         //Delegate
-        _viewMapManager.stairObject += SetStair;
-        _enemyManager.spawnedEnemies += SpawnedEnemiesCount;
-        _dropController.DelegateSuscriptionDrop(this);
+        _stair.nextLevel += StartLevel;
+        if (_viewMapManager)
+        {
+            _viewMapManager.stairObject += SetStair;
+        }
+        if (_enemyManager)
+        {
+            _enemyManager.spawnedEnemies += SpawnedEnemiesCount;
+        }
+        if (_dropController)
+        {
+            _dropController.DelegateSuscriptionDrop(this);
+        }
     }
 
     private void OnDisable()
     {
-        _viewMapManager.stairObject += SetStair;
-        _enemyManager.spawnedEnemies += SpawnedEnemiesCount;
+        _viewMapManager.stairObject -= SetStair;
+        _enemyManager.spawnedEnemies -= SpawnedEnemiesCount;
+        _stair.nextLevel -= StartLevel;
     }
 
     private void Awake()
@@ -61,12 +73,23 @@ public class LevelManager : MonoBehaviour
         NullReferenceControll();
         SetDataList();
         _dataSourceSO.levelManager = this;
+        StartCoroutine(SetManagers());
     }
 
-    private void Start()
+    private IEnumerator SetManagers()
     {
-        if (_dataSourceSO.enemyManager) _enemyManager = _dataSourceSO.enemyManager;
-        if (_dataSourceSO.viewMapManager) _viewMapManager = _dataSourceSO.viewMapManager;
+        yield return new WaitForSeconds(_waitForManager);
+        if (_dataSourceSO.enemyManager)
+        {
+            _enemyManager = _dataSourceSO.enemyManager;
+            _enemyManager.spawnedEnemies += SpawnedEnemiesCount;
+
+        }
+        if (_dataSourceSO.viewMapManager)
+        {
+            _viewMapManager = _dataSourceSO.viewMapManager;
+            _viewMapManager.stairObject += SetStair;
+        }
     }
 
     private void NullReferenceControll()
@@ -83,7 +106,7 @@ public class LevelManager : MonoBehaviour
             enabled = false;
             return;
         }
-        if (_stair == null)
+        if (!_stair)
         {
             Debug.LogError(message: $"{name}: Stair is null \n Check and assigned one\nDisabling component");
             enabled = false;
@@ -95,15 +118,9 @@ public class LevelManager : MonoBehaviour
             _minEnemy = 1;
             return;
         }
-        if (_dropController == null)
+        if (!_dropController)
         {
             Debug.LogError(message: $"{name}: DropController is null \n Check and assigned one\nDisabling component");
-            enabled = false;
-            return;
-        }
-        if (!_dataSourceSO)
-        {
-            Debug.LogError(message: $"{name}: DataSource is null \n Check and assigned one\nDisabling component");
             enabled = false;
             return;
         }
@@ -132,8 +149,8 @@ public class LevelManager : MonoBehaviour
         }
     }
 
-    //TODO: TP2 - Unclear name
-    private void SpawnEnemiesControll(int f_column, int f_row, int seed)
+    //TODO: TP2 - Unclear name(Done)
+    private void SpawnEnemiesLogic(int f_column, int f_row, int seed)
     {
         if (_minEnemy == 1)
         {
@@ -165,7 +182,7 @@ public class LevelManager : MonoBehaviour
                     case ArrayLayout.State.Rock:
                         break;
                     case ArrayLayout.State.Spawner:
-                        SpawnEnemiesControll(f_column, f_row, seed);
+                        SpawnEnemiesLogic(f_column, f_row, seed);
                         break;
                     case ArrayLayout.State.ObjectSpawner:
                         break;

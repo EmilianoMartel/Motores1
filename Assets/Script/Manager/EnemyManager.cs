@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Reflection;
 using UnityEngine;
@@ -17,10 +18,12 @@ public class EnemyManager : MonoBehaviour
     public SpawnedEnemyCount spawnedEnemies;
 
     //Managers
-    [SerializeField] private ViewMapManager _viewMapManager;
-    [SerializeField] private LevelManager _levelManager;
+    [SerializeField] private float _waitForManager = 1f;
+    [SerializeField] private ManagerDataSourceSO _dataSource;
+    private ViewMapManager _viewMapManager;
+    private LevelManager _levelManager;
     [SerializeField] private BulletManager _bulletManager;
-    [SerializeField] private DropPoolManager _dropPoolManager;
+    private DropPoolManager _dropPoolManager;
 
     private int _row = 1;
     private int _column = 1;
@@ -58,47 +61,73 @@ public class EnemyManager : MonoBehaviour
                 _bossList[i].gameObject.SetActive(false);
             }
         }
-
-        //TODO: TP2 - Fix - foreach (var enemyType in _enemyTypeList)
-
-        //TODO: TP2 - Spelling error/Code in spanish/Code in spanglish
+        //TODO: TP2 - Fix - foreach (var enemyType in _enemyTypeList) (DONE)
+        //TODO: TP2 - Spelling error/Code in spanish/Code in spanglish(DONE)
 
         //Subscription to delegates
-        _viewMapManager.floorPosition += PositionListSpawner;
-        _levelManager.spawnEnemy += SpawnEnemyLogic;
-        _levelManager.bossFight += SpawnBossLogic;
+
+        if (_dataSource.levelManager)
+        {
+            _levelManager = _dataSource.levelManager;
+            _levelManager.spawnEnemy += SpawnEnemyLogic;
+            _levelManager.bossFight += SpawnBossLogic;
+        }
+        
     }
 
     private void OnDisable()
     {
-        _viewMapManager.floorPosition -= PositionListSpawner;
-        _levelManager.spawnEnemy -= SpawnEnemyLogic;
-        _levelManager.bossFight -= SpawnBossLogic;
+        if (_viewMapManager)
+        {
+            _viewMapManager.floorPosition -= PositionListSpawner;
+        }
+        if (_levelManager)
+        {
+            _levelManager.spawnEnemy -= SpawnEnemyLogic;
+            _levelManager.bossFight -= SpawnBossLogic;
+        }
+        
     }
 
     private void Awake()
     {
-        //TODO: TP2 - Fix - These null checks should all be in awake (you sometimes have them in start/OnEnable)
-        if (_viewMapManager == null)
+        //TODO: TP2 - Fix - These null checks should all be in awake (you sometimes have them in start/OnEnable) (DONE)
+        if (!_dataSource)
         {
-            Debug.LogError(message: $"{name}: ViewManager is null\n Check and assigned one\nDisabling component");
+            Debug.LogError(message: $"{name}: DataSource is null\n Check and assigned one\nDisabling component");
             enabled = false;
             return;
         }
-        if (_levelManager == null)
-        {
-            Debug.LogError(message: $"{name}: LevelManager is null\n Check and assigned one\nDisabling component");
-            enabled = false;
-            return;
-        }
-        _row = _viewMapManager._row - 2;
-        _column = _viewMapManager._column - 2;
-        _positionMatriz = new Vector2[_column, _row];
+        _dataSource.enemyManager = this;
+        StartCoroutine(SetManager());
     }
 
     private void Start()
     {
+        _row = _dataSource.viewMapManager._row - 2;
+        _column = _dataSource.viewMapManager._column - 2;
+        _positionMatriz = new Vector2[_column, _row];
         InvokeEnemyList();
+    }
+
+    private IEnumerator SetManager()
+    {
+        yield return new WaitForSeconds(_waitForManager);
+        if (_dataSource.viewMapManager)
+        {
+            _viewMapManager = _dataSource.viewMapManager;
+            _viewMapManager.floorPosition += PositionListSpawner;
+        }
+        if (_dataSource.levelManager)
+        {
+            _levelManager = _dataSource.levelManager;
+            _levelManager.spawnEnemy += SpawnEnemyLogic;
+            _levelManager.bossFight += SpawnBossLogic;
+        }
+        if (_dataSource.dropManager)
+        {
+            _dropPoolManager = _dataSource.dropManager;
+        }
     }
 
     private void PositionListSpawner(Vector2 position, int column, int row)
