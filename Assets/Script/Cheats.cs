@@ -123,7 +123,7 @@ public class Cheats : MonoBehaviour
         }
         if (enemy.gameObject.TryGetComponent<VulnerableStateController>(out VulnerableStateController comp))
         {
-            _vulnerableEvent += comp.CallInvulnerability;
+            _vulnerableEvent += comp.InvulnerabilityCall;
         }
     }
 
@@ -139,7 +139,7 @@ public class Cheats : MonoBehaviour
             }
             if (enemy.gameObject.TryGetComponent<VulnerableStateController>(out VulnerableStateController comp))
             {
-                _vulnerableEvent -= comp.CallInvulnerability;
+                _vulnerableEvent -= comp.InvulnerabilityCall;
             }
         }
     }
