@@ -14,14 +14,14 @@ public class VulnerableStateController : MonoBehaviour
     }
 
     //TODO: TP2 - Spelling error/Code in spanish/Code in spanglish(DONE)
-    private void StateOfInvincibility()
+    private void InvincibilityState()
     {
         isVulnerable?.Invoke(false);
     }
 
-    public void CallInvulnerability(bool isVulnerableInt)
+    public void InvulnerabilityCall(bool isVulnerableInt)
     {
         isVulnerable?.Invoke(isVulnerableInt);
-    //TODO: TP1 - Unused method/variable
+    //TODO: TP1 - Unused method/variable(DONE)
     }
 }

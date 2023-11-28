@@ -9,6 +9,7 @@ public class HealthPoints : MonoBehaviour
     public Action<int> changeLife;
     public Action damagedEvent;
     public Action dead;
+    public Action IncrementedFullLifeEvent;
 
     [SerializeField] private int _maxLife = 10;
     [SerializeField] private VulnerableStateController _controller;
@@ -70,12 +71,14 @@ public class HealthPoints : MonoBehaviour
         {
             _life -= damage;
             Debug.Log($"{name} was damaged, life: {_life}");
-            changeLife?.Invoke(_life);
-            damagedEvent?.Invoke();
             if (_life <= 0)
             {
                 Dead();
+                return;
             }
+            changeLife?.Invoke(_life);
+            damagedEvent?.Invoke();
+            
         }
     }
 
