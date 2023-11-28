@@ -10,11 +10,11 @@ public class GameManager : MonoBehaviour
     public EndGame endGame;
     public ResetGame resetGame;
 
+    [SerializeField] private float _waitForManager = 1f;
+
     [SerializeField] private ManagerDataSourceSO _dataSourceSO;
     [SerializeField] private HealthPoints _playerHealth;
     private LevelManager _levelManager;
-    private EnemyManager _enemyManager;
-    private DropPoolManager _dropManager;
 
     [SerializeField] private GameObject _gamePlay;
     [SerializeField] private float _endGameDelay = 1f;
@@ -22,7 +22,7 @@ public class GameManager : MonoBehaviour
     private void OnEnable()
     {
         //Subscription to delegates
-        if (_dataSourceSO.levelManager)
+        if (_dataSourceSO.levelManager && !_levelManager)
         {
             _levelManager = _dataSourceSO.levelManager;
             _levelManager.endBossFight += BossDeath;
@@ -40,13 +40,31 @@ public class GameManager : MonoBehaviour
         {
             _levelManager.endBossFight -= BossDeath;
         }
-        _playerHealth.dead -= PlayerDeath;
+        if (_playerHealth)
+        {
+            _playerHealth.dead -= PlayerDeath;
+        }
     }
 
     private void Awake()
     {
         NullReferenceController();
         _dataSourceSO.gameManager = this;
+    }
+
+    private void Start()
+    {
+        StartCoroutine(SetManagers());
+    }
+
+    private IEnumerator SetManagers()
+    {
+        yield return new WaitForSeconds(_waitForManager);
+        if (_dataSourceSO.levelManager)
+        {
+            _levelManager = _dataSourceSO.levelManager;
+            _levelManager.endBossFight += BossDeath;
+        }
     }
 
     private void NullReferenceController()

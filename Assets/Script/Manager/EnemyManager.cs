@@ -66,13 +66,15 @@ public class EnemyManager : MonoBehaviour
 
         //Subscription to delegates
 
-        if (_dataSource.levelManager)
+        if (_levelManager)
         {
-            _levelManager = _dataSource.levelManager;
             _levelManager.spawnEnemy += SpawnEnemyLogic;
             _levelManager.bossFight += SpawnBossLogic;
         }
-        
+        if (_viewMapManager)
+        {
+            _viewMapManager.floorPosition += PositionListSpawner;
+        }
     }
 
     private void OnDisable()
@@ -113,12 +115,12 @@ public class EnemyManager : MonoBehaviour
     private IEnumerator SetManager()
     {
         yield return new WaitForSeconds(_waitForManager);
-        if (_dataSource.viewMapManager)
+        if (_dataSource.viewMapManager && !_viewMapManager)
         {
             _viewMapManager = _dataSource.viewMapManager;
             _viewMapManager.floorPosition += PositionListSpawner;
         }
-        if (_dataSource.levelManager)
+        if (_dataSource.levelManager && !_levelManager)
         {
             _levelManager = _dataSource.levelManager;
             _levelManager.spawnEnemy += SpawnEnemyLogic;
@@ -177,7 +179,7 @@ public class EnemyManager : MonoBehaviour
         CheckEnemyListActive(index);
         for (int i = 0; i < _enemyTypeList[index].enemyList.Count; i++)
         {
-            if (_enemyTypeList[index].enemyList[i].activateEnemy == false)
+            if (!_enemyTypeList[index].enemyList[i].activateEnemy)
             {
                 _enemy = _enemyTypeList[index].enemyList[i];
                 _enemy.transform.position = new Vector3(_positionMatriz[f_column, f_row].x, _positionMatriz[f_column, f_row].y, -2);
@@ -186,6 +188,7 @@ public class EnemyManager : MonoBehaviour
                 _enemy.activateEnemy = true;
                 _enemy.gameObject.SetActive(true);
                 spawnedEnemies?.Invoke(_enemy);
+                return;
             }
         }
     }

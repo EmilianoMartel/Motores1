@@ -15,7 +15,8 @@ public class DropPoolManager : MonoBehaviour
 
     [SerializeField] private int _poolCount = 5;
 
-    [SerializeField] private LevelManager _levelManager;
+    private LevelManager _levelManager;
+    private List<GameObject> _spawnedObjectList = new List<GameObject>();
 
     private void OnEnable()
     {
@@ -47,6 +48,7 @@ public class DropPoolManager : MonoBehaviour
     {
         yield return new WaitForSeconds(_waitForManager);
         _levelManager = _dataSourceSO.levelManager;
+        _levelManager.startLevel += DesactivateDropObjects;
     }
 
     public void SpawnDropObject(string name, GameObject dropObject, Vector3 spawnPosition)
@@ -62,6 +64,7 @@ public class DropPoolManager : MonoBehaviour
                     {
                         _dropDictionary[name][i].SetActive(true);
                         _dropDictionary[name][i].transform.position = spawnPosition;
+                        _spawnedObjectList.Add(_dropDictionary[name][i]);
                         count++;
                         return;
                     }
@@ -71,6 +74,7 @@ public class DropPoolManager : MonoBehaviour
                     GameObject temp;
                     temp = Instantiate(dropObject,spawnPosition,Quaternion.identity);
                     _dropDictionary[name].Add(temp);
+                    _spawnedObjectList.Add(temp);
                 }
             }
         }
@@ -119,5 +123,17 @@ public class DropPoolManager : MonoBehaviour
         {
             _controllersList.Remove(drop);
         }
+    }
+
+    private void DesactivateDropObjects()
+    {
+        foreach (GameObject obj in _spawnedObjectList) 
+        {
+            if (obj.activeSelf)
+            {
+                obj.SetActive(false);
+            }
+        }
+        _spawnedObjectList.Clear();
     }
 }

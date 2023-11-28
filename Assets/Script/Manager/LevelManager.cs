@@ -9,6 +9,7 @@ public class LevelManager : MonoBehaviour
     const int DIFF_MATRIX_ENEMY = 1;
 
     //Delegates
+    public Action startLevel;
     public SpawnEnemy spawnEnemy;
     public Action endLevel;
     public Action<int> showActualWave;
@@ -150,11 +151,12 @@ public class LevelManager : MonoBehaviour
     }
 
     //TODO: TP2 - Unclear name(Done)
-    private void SpawnEnemiesLogic(int f_column, int f_row, int seed)
+    private void EnemiesSpawnLogic(int f_column, int f_row, int seed)
     {
         if (_minEnemy == 1)
         {
             spawnEnemy?.Invoke(f_column - DIFF_MATRIX_ENEMY, f_row - DIFF_MATRIX_ENEMY, seed);
+            return;
         }
         else
         {
@@ -165,7 +167,7 @@ public class LevelManager : MonoBehaviour
         }
     }
 
-    private void SearchSpawnEnemies()
+    private void SearchEnemiesSpawners()
     {
         ArrayLayout.State state;
         int seed = UnityEngine.Random.Range(0, 100);
@@ -182,7 +184,7 @@ public class LevelManager : MonoBehaviour
                     case ArrayLayout.State.Rock:
                         break;
                     case ArrayLayout.State.Spawner:
-                        SpawnEnemiesLogic(f_column, f_row, seed);
+                        EnemiesSpawnLogic(f_column, f_row, seed);
                         break;
                     case ArrayLayout.State.ObjectSpawner:
                         break;
@@ -216,6 +218,7 @@ public class LevelManager : MonoBehaviour
     private void StartLevel()
     {
         _actualWave++;
+        startLevel?.Invoke();
         _stair.isActiveStair = false;
         _stair.gameObject.SetActive(false);
         Debug.Log($"{name}: Event StartLevel is called");
@@ -223,7 +226,7 @@ public class LevelManager : MonoBehaviour
         else
         {
             showActualWave?.Invoke(_actualWave);
-            SearchSpawnEnemies();
+            SearchEnemiesSpawners();
         }
     }
 

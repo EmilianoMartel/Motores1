@@ -15,8 +15,6 @@ public class UiManager : MonoBehaviour
     private LevelManager _levelManager;
 
     [SerializeField] private TMPro.TMP_Text _waveText;
-    [SerializeField] private Image _lifeImage;
-    [SerializeField] private List<Sprite> _lifeSpriteList = new List<Sprite>();
 
     [SerializeField] private Image _endGameImage;
     [SerializeField] private GameObject _panelEndGame;
@@ -28,7 +26,6 @@ public class UiManager : MonoBehaviour
 
     private void OnEnable()
     {
-        _playerHealthPoints.changeLife += ShowLife;
         if (_levelManager)
         {
             _levelManager.showActualWave += ShowActualWave;
@@ -42,7 +39,6 @@ public class UiManager : MonoBehaviour
 
     private void OnDisable()
     {
-        _playerHealthPoints.changeLife += ShowLife;
         if (_levelManager)
         {
             _levelManager.showActualWave -= ShowActualWave;
@@ -79,10 +75,6 @@ public class UiManager : MonoBehaviour
 
         _chargeScreen.SetActive(false);
     }
-    private void ShowLife(int actualLife)
-    {
-        _lifeImage.sprite = _lifeSpriteList[actualLife];
-    }
 
     //TODO: TP2 - Unclear name(Done)
     private void NullReferenceController()
@@ -93,21 +85,9 @@ public class UiManager : MonoBehaviour
             enabled = false;
             return;
         }
-        if (_lifeImage == null)
-        {
-            Debug.LogError(message: $"{name}: LifeImage is null\n Check and assigned one\nDisabling component");
-            enabled = false;
-            return;
-        }
         if (_waveText == null)
         {
             Debug.LogError(message: $"{name}: WaveText is null\n Check and assigned one\nDisabling component");
-            enabled = false;
-            return;
-        }
-        if (_lifeSpriteList.Count != 7)
-        {
-            Debug.LogError(message: $"{name}: LifeSprite list should be 6\n Check the list, remember 0 is 0 lifepoints\nDisabling component");
             enabled = false;
             return;
         }
@@ -153,7 +133,6 @@ public class UiManager : MonoBehaviour
     private void ResetGame()
     {
         _waveText.text = "0";
-        _lifeImage.sprite = _lifeSpriteList[_lifeSpriteList.Count - 1];
         _panelEndGame.SetActive(false);
     }
 }
