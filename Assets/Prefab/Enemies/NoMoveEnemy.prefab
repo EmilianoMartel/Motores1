@@ -97,7 +97,7 @@ MonoBehaviour:
   _isMoveEnemy: 0
   _isObserverShootEnemy: 1
   _isObserverMoveEnemy: 0
-  _vulnerableEnemyIfSeen: 1
+  _vulnerableEnemyIWhenSeen: 1
   _isMultipleShootEnemy: 0
   _maxTimeShoot: 5
 --- !u!114 &7524849006491545423
