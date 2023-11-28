@@ -7,7 +7,9 @@ using UnityEngine.InputSystem;
 public class Player : Character
 {
     private Vector3 _inputAttack;
-    [SerializeField] private GameManager _gameManger;
+
+    [SerializeField] private ManagerDataSourceSO _dataSourceSO;
+    [SerializeField] private float _waitForManagers = 1f;
 
     //Damaged
     [SerializeField] private VulnerableStateController _vulnerabilityController;
@@ -18,33 +20,41 @@ public class Player : Character
     public Vector3 direction { set { p_direction = value; } }
     public CharacterSO characterSO { get { return p_characterData; } }
 
-    private void OnEnable()
+    protected override void OnEnable()
     {
+        base.OnEnable();
         transform.position = new Vector3(0, 0, -5);
-        p_healthPoints.dead += Kill;
         p_healthPoints.damagedEvent += IsDamaged;
-        _gameManger.resetGame += ActivePlayer;
-    }
-
-    private void OnDisable()
-    {
-        p_healthPoints.dead -= Kill;
-        p_healthPoints.damagedEvent -= IsDamaged;
-        _gameManger.resetGame -= ActivePlayer;
-    }
-
-    private void Awake()
-    {
-        NullReferenceController();
-        if (_gameManger == null)
+        if (_dataSourceSO.gameManager)
         {
-            Debug.LogError(message: $"{name}: GameManager is null\n Check and assigned one\nDisabling component");
+            _dataSourceSO.gameManager.resetGame += ActivePlayer;
+        }
+    }
+
+    protected override void OnDisable()
+    {
+        base.OnDisable();
+        p_healthPoints.damagedEvent -= IsDamaged;
+    }
+
+    protected override void Awake()
+    {
+        base.Awake();
+        if (_dataSourceSO == null)
+        {
+            Debug.LogError(message: $"{name}: DataSource is null\n Check and assigned one\nDisabling component");
             enabled = false;
             return;
         }
         if (_vulnerabilityController == null)
         {
             Debug.LogError(message: $"{name}: VulnerabilityController is null\n Check and assigned one\nDisabling component");
+            enabled = false;
+            return;
+        }
+        if (p_characterData.maxLife % 2 != 0)
+        {
+            Debug.LogError(message: $"{name}: Max life is odd\n It must be even\nDisabling component");
             enabled = false;
             return;
         }
@@ -55,6 +65,8 @@ public class Player : Character
         p_actualTime = 10;
         //TODO: TP2 - Fix - Don't use try-catch blocks where a simple null-check is enough (for performance reasons) (DONE)
         //TODO: TP2 - Should be done in OnEnable (DONE)
+
+        StartCoroutine(SetManager());
     }
 
     //TODO: TP2 - Syntax - Consistency in access modifiers (private/protected/public/etc) (DONE)
@@ -68,6 +80,27 @@ public class Player : Character
             p_actualTime = 0;
         }
         p_actualTime += Time.deltaTime;
+    }
+
+    private IEnumerator SetManager()
+    {
+        yield return new WaitForSeconds(_waitForManagers);
+        if (_dataSourceSO.gameManager)
+        {
+            _dataSourceSO.gameManager.resetGame += ActivePlayer;
+        }
+    }
+
+    protected override IEnumerator Dead()
+    {
+        p_hazard.canHarm = false;
+        _vulnerabilityController.isVulnerable.Invoke(false);
+        yield return new WaitForSeconds(p_deadDelay);
+        _vulnerabilityController.isVulnerable.Invoke(true);
+        gameObject.SetActive(false);
+        p_isDead = false;
+        isDeadEvent?.Invoke(false);
+        p_healthPoints.maxLife = p_characterData.maxLife;
     }
 
     private void PlayerMovement()

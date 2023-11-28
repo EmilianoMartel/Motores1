@@ -23,7 +23,7 @@ public class BaseEnemy : Character
     [SerializeField] private bool _isObserverShootEnemy = false;
     //TODO: TP1 - Unused method/variable
     [SerializeField] private bool _isObserverMoveEnemy = false;
-    [SerializeField] private bool _vulnerableEnemyIfSeen = false;
+    [SerializeField] private bool _vulnerableEnemyIWhenSeen = false;
     [SerializeField] private bool _isMultipleShootEnemy = false;
 
     //Shooting
@@ -39,9 +39,68 @@ public class BaseEnemy : Character
 
     public bool canAttack { get { return _canAttack; } }
 
-    //TODO: TP2 - Syntax - Consistency in access modifiers (private/protected/public/etc)(DONE)
-    private void Awake()
+    protected override void OnEnable()
     {
+        base.OnEnable();
+
+        if (_isObserverShootEnemy)
+        {
+            _canAttack = false;
+            _searchLogic = gameObject.GetComponent<SearchLogic>();
+            _searchLogic.foundPlayer += CanAttackChanger;
+        }
+        //TODO: TP2 - Unclear name(DONE)
+        if (_vulnerableEnemyIWhenSeen)
+        {
+            _vulnerabilityController = gameObject.GetComponent<VulnerableStateController>();
+        }
+        if (_isSingleShootEnemy)
+        {
+            if (_enemyShoot == null)
+            {
+                Debug.LogError(message: $"{name}: EnemyShoot is null\n Check and assigned one\nDisabling component");
+                enabled = false;
+                return;
+            }
+            _enemyShoot.startAttack += GetShootDirection;
+        }
+        if (_isMoveEnemy)
+        {
+            if (_enemyMovement == null)
+            {
+                Debug.LogError(message: $"{name}: EnemyMovement is null\n Check and assigned one\nDisabling component");
+                enabled = false;
+                return;
+            }
+        }
+        if (_isMultipleShootEnemy)
+        {
+            _enemyShoot.startMultipleAttack += GetShootDirection;
+        }
+    }
+
+    protected override void OnDisable()
+    {
+        base.OnDisable();
+
+        if (_isObserverShootEnemy)
+        {
+            _searchLogic.foundPlayer -= CanAttackChanger;
+        }
+        if (_isSingleShootEnemy)
+        {
+            _enemyShoot.startAttack -= GetShootDirection;
+        }
+        if (_isMultipleShootEnemy)
+        {
+            _enemyShoot.startMultipleAttack -= GetShootDirection;
+        }
+    }
+
+    //TODO: TP2 - Syntax - Consistency in access modifiers (private/protected/public/etc)(DONE)
+    protected override void Awake()
+    {
+        base.Awake();
         TimeShootSelection();
         p_actualTime = 0;
     }
@@ -107,7 +166,7 @@ public class BaseEnemy : Character
     private void CanAttackChanger(bool canAttack)
     {
         _canAttack = canAttack;
-        if (_vulnerableEnemyIfSeen)
+        if (_vulnerableEnemyIWhenSeen)
         {
             _vulnerabilityController.isVulnerable?.Invoke(_canAttack);
         }
@@ -124,59 +183,5 @@ public class BaseEnemy : Character
         StartCoroutine(Shoot(p_multipleShoot,listDirection));
     }
 
-    private void OnEnable()
-    {
-        if (_isObserverShootEnemy)
-        {
-            _canAttack = false;
-            _searchLogic = gameObject.GetComponent<SearchLogic>();
-            _searchLogic.foundPlayer += CanAttackChanger;
-        }
-        //TODO: TP2 - Unclear name(DONE)
-        if (_vulnerableEnemyIfSeen)
-        {
-            _vulnerabilityController = gameObject.GetComponent<VulnerableStateController>();
-        }
-        if (_isSingleShootEnemy)
-        {
-            if (_enemyShoot == null)
-            {
-                Debug.LogError(message: $"{name}: EnemyShoot is null\n Check and assigned one\nDisabling component");
-                enabled = false;
-                return;
-            }
-            _enemyShoot.startAttack += GetShootDirection;
-        }
-        if (_isMoveEnemy)
-        {
-            if (_enemyMovement == null)
-            {
-                Debug.LogError(message: $"{name}: EnemyMovement is null\n Check and assigned one\nDisabling component");
-                enabled = false;
-                return;
-            }
-        }
-        if (_isMultipleShootEnemy)
-        {
-            _enemyShoot.startMultipleAttack += GetShootDirection;
-        }
-        p_healthPoints.dead += Kill;
-    }
 
-    private void OnDisable()
-    {
-        if (_isObserverShootEnemy)
-        {
-            _searchLogic.foundPlayer -= CanAttackChanger;
-        }
-        if (_isSingleShootEnemy)
-        {
-            _enemyShoot.startAttack -= GetShootDirection;
-        }
-        if (_isMultipleShootEnemy)
-        {
-            _enemyShoot.startMultipleAttack -= GetShootDirection;
-        }
-        p_healthPoints.dead -= Kill;
-    }
 }

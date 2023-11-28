@@ -46,25 +46,26 @@ public abstract class Character : MonoBehaviour
     public BulletManager bulletManager { set { p_bulletManager = value; } }
 
     //TODO: TP2 - Should be done in OnEnable(DONE)
-    private void OnEnable()
+    protected virtual void OnEnable()
     {
         p_hazard.canHarm = true;
         p_isDead = false;
         isDeadEvent?.Invoke(false);
 
+        p_healthPoints.maxLife = p_characterData.maxLife;
+
         //Suscription to Delegates
         p_healthPoints.dead += Kill;
     }
 
-    private void OnDisable()
+    protected virtual void OnDisable()
     {
         p_healthPoints.dead -= Kill;
     }
 
-    private void Start()
+    protected virtual void Awake()
     {
         NullReferenceController();
-        p_healthPoints.maxLife = p_characterData.maxLife;
     }
 
     protected void NullReferenceController()
@@ -113,9 +114,10 @@ public abstract class Character : MonoBehaviour
         StartCoroutine(Dead());
     }
 
-    private IEnumerator Dead()
+    protected virtual IEnumerator Dead()
     {
         p_hazard.canHarm = false;
+        
         yield return new WaitForSeconds(p_deadDelay);
         gameObject.SetActive(false);
         p_isDead = false;
@@ -134,13 +136,13 @@ public abstract class Character : MonoBehaviour
         isAttackingEvent?.Invoke(false);
     }
 
-    protected IEnumerator Shoot(int numberOfShoot, List<Vector2> directionsList)
+    protected IEnumerator Shoot(int shootAmount, List<Vector2> directionsList)
     {
         p_isAttacking = true;
         isAttackingEvent?.Invoke(true);
         yield return new WaitForSeconds(p_shootDelay);
         //TODO: TP2 - Spelling error/Code in spanish/Code in spanglish(DONE)
-        for (int i = 0; i < numberOfShoot; i++)
+        for (int i = 0; i < shootAmount; i++)
         {
             ElectionSpawnShoot(directionsList[i]);
             p_bulletManager.Shoot(directionsList[i], _realPointShoot);
