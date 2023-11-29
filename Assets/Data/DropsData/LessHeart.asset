@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8f10266f47b8a66448ab1363f8365b05, type: 3}
-  m_Name: Life
+  m_Name: LessHeart
   m_EditorClassIdentifier: 
-  _dropObject: {fileID: 2549466769892349444, guid: c6dca28dfc34a994b81d78ffa19c7b1e, type: 3}
-  _dropRate: 100
+  _dropObject: {fileID: 3405230962771394927, guid: 09d57becd6a824a4c902583bc29e42bb, type: 3}
+  _dropRate: 50
