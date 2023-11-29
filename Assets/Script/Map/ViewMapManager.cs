@@ -139,6 +139,7 @@ public class ViewMapManager : MonoBehaviour
     {
         _spawnMap = Instantiate(_floorPrefab, transform.position + _grid.CellToWorld(new Vector3Int(f_column, f_row, 10)), Quaternion.identity);
         SpriteRenderer spriteRenderer = _spawnMap.GetComponent<SpriteRenderer>();
+        _spawnMap.transform.position += new Vector3(0,0,10);
         index = Random.Range(0, _mapData.FloorList.Count);
         spriteRenderer.sprite = _mapData.FloorList[index];
         floorPosition?.Invoke(_spawnMap.transform.position, f_column -1, f_row -1);
@@ -191,7 +192,7 @@ public class ViewMapManager : MonoBehaviour
 
     public void InstantiateStairSpawner()
     {
-        _stair = Instantiate(_StairPrefab, transform.position + _grid.CellToWorld(new Vector3Int(5, 5, 10)), Quaternion.identity);
+        _stair = Instantiate(_StairPrefab, transform.position + _grid.CellToWorld(new Vector3Int(5, 5, -1)), Quaternion.identity);
         _stair.transform.parent = transform;
         stairObject?.Invoke(_stair);
     }

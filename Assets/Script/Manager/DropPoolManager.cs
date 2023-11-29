@@ -15,17 +15,34 @@ public class DropPoolManager : MonoBehaviour
 
     [SerializeField] private int _poolCount = 5;
 
+    //Managers
     private LevelManager _levelManager;
+    private GameManager _gameManager;
+
     private List<GameObject> _spawnedObjectList = new List<GameObject>();
 
     private void OnEnable()
     {
-        
+        if (_levelManager)
+        {
+            _levelManager.startLevel += DesactivateDropObjects;
+        }
+        if (_gameManager)
+        {
+            _gameManager.resetGame += DesactivateDropObjects;
+        }
     }
 
     private void OnDisable()
     {
-        
+        if (_levelManager)
+        {
+            _levelManager.startLevel -= DesactivateDropObjects;
+        }
+        if (_gameManager)
+        {
+            _gameManager.resetGame -= DesactivateDropObjects;
+        }
     }
 
     private void Awake()
@@ -47,8 +64,16 @@ public class DropPoolManager : MonoBehaviour
     private IEnumerator SetManager()
     {
         yield return new WaitForSeconds(_waitForManager);
-        _levelManager = _dataSourceSO.levelManager;
-        _levelManager.startLevel += DesactivateDropObjects;
+        if (!_levelManager && _dataSourceSO.levelManager)
+        {
+            _levelManager = _dataSourceSO.levelManager;
+            _levelManager.startLevel += DesactivateDropObjects;
+        }
+        if (!_gameManager && _dataSourceSO.gameManager)
+        {
+            _gameManager = _dataSourceSO.gameManager;
+            _gameManager.resetGame += DesactivateDropObjects;
+        }
     }
 
     public void SpawnDropObject(string name, GameObject dropObject, Vector3 spawnPosition)

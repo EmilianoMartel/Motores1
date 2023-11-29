@@ -13,7 +13,7 @@ public class EnemyFreeMovement : EnemyMovement
     {
         int randomRow = Random.Range(0, p_row);
         int randomColumn = Random.Range(0, p_column);
-        if(p_currentRowPosition  != randomRow && p_currentColumnPosition != randomColumn)
+        if(p_currentRowPosition != randomRow && p_currentColumnPosition != randomColumn)
         {
             p_nextPosition = p_enemyManager._positionMatriz[randomColumn, randomRow];
         }

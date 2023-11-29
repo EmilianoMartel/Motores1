@@ -233,7 +233,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _baseEnemy: {fileID: 4093501843917922084}
-  _treshold: 0.0001
+  _treshold: 0.1
 --- !u!114 &4093501843917922084
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -252,7 +252,6 @@ MonoBehaviour:
   p_hazard: {fileID: 654379792144347464}
   p_characterData: {fileID: 11400000, guid: be20fed37a0e3d64a920a697ac1d0842, type: 2}
   p_deadDelay: 1
-  p_shootTimeRest: 2
   p_isAttacking: 0
   p_shootDelay: 0.5
   p_delayBetweenShoots: 0.1
@@ -264,9 +263,7 @@ MonoBehaviour:
   _enemyShoot: {fileID: 4093501843917922086}
   _isSingleShootEnemy: 0
   _isMoveEnemy: 1
-  _isObserverShootEnemy: 0
-  _isObserverMoveEnemy: 0
-  _isVulnerableEnemyIfSee: 0
+  _vulnerableEnemyWhenSeen: 0
   _isMultipleShootEnemy: 1
   _maxTimeShoot: 5
 --- !u!114 &4093501843917922086
@@ -309,6 +306,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _maxLife: 10
   _controller: {fileID: 0}
+  _eventCallTime: 0.05
 --- !u!1 &4093501844365752216
 GameObject:
   m_ObjectHideFlags: 0

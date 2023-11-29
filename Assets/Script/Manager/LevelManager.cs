@@ -35,7 +35,7 @@ public class LevelManager : MonoBehaviour
     private ArrayLayout _dataLayout;
 
     //Variables for start and end game
-    private int _enemyKillCount = 0;
+    private List<BaseEnemy> _enemySpawnedList = new List<BaseEnemy>();
     [SerializeField] private int _maxWave = 10;
     private int _bossWave;
     private int _actualWave = 0;
@@ -253,7 +253,7 @@ public class LevelManager : MonoBehaviour
 
     private void SpawnedEnemiesCount(BaseEnemy enemy)
     {
-        _enemyKillCount++;
+        _enemySpawnedList.Add(enemy);
         enemy.enemyKill += KilledEnemiesCount;
     }
 
@@ -261,11 +261,10 @@ public class LevelManager : MonoBehaviour
     {
         Debug.Log($"{enemy.name} was killed and call KilledEnemiesCount event.");
         enemy.enemyKill -= KilledEnemiesCount;
-        _enemyKillCount--;
-        if (_enemyKillCount <= 0)
+        _enemySpawnedList.Remove(enemy);
+        if (_enemySpawnedList.Count <= 0)
         {
             Debug.Log("Last enemy killed, start end level moment.");
-            _enemyKillCount = 0;
             if (_actualWave == _maxWave + 1) endBossFight?.Invoke();
             else EndLevel();
         }
@@ -296,6 +295,21 @@ public class LevelManager : MonoBehaviour
 
     private void ResetGame()
     {
-        ReSpawnStair();
+        if (_stair.gameObject.activeSelf)
+        {
+            return;
+        }
+        else
+        {
+            ReSpawnStair();
+        }
+        if (_enemySpawnedList.Count > 0)
+        {
+            for (int i = 0; i < _enemySpawnedList.Count; i++)
+            {
+                _enemySpawnedList[i].enemyKill -= KilledEnemiesCount;
+            }
+            _enemySpawnedList.Clear();
+        }
     }
 }

@@ -115,8 +115,7 @@ MonoBehaviour:
   _enemyShoot: {fileID: 0}
   _isSingleShootEnemy: 0
   _isMoveEnemy: 1
-  _isObserverShootEnemy: 0
-  _vulnerableEnemyIWhenSeen: 0
+  _vulnerableEnemyWhenSeen: 0
   _isMultipleShootEnemy: 0
   _maxTimeShoot: 5
 --- !u!114 &5450413931319804768
@@ -181,7 +180,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _baseEnemy: {fileID: 5450413931319804769}
-  _treshold: 0.0001
+  _treshold: 0.01
   _searchLogic: {fileID: 5450413931319804768}
   _distanceToPlayerTeshold: 0.9
 --- !u!1 &5450413931736412116

@@ -264,7 +264,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _baseEnemy: {fileID: 2796134744829502551}
-  _treshold: 0.0001
+  _treshold: 0.01
 --- !u!114 &2796134744829502551
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -294,9 +294,7 @@ MonoBehaviour:
   _enemyShoot: {fileID: 2796134744829502549}
   _isSingleShootEnemy: 1
   _isMoveEnemy: 1
-  _isObserverShootEnemy: 0
-  _isObserverMoveEnemy: 0
-  _vulnerableEnemyIWhenSeen: 0
+  _vulnerableEnemyWhenSeen: 0
   _isMultipleShootEnemy: 0
   _maxTimeShoot: 5
 --- !u!114 &2796134744829502549

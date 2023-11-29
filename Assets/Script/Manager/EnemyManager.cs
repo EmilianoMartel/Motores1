@@ -24,6 +24,7 @@ public class EnemyManager : MonoBehaviour
     private LevelManager _levelManager;
     [SerializeField] private BulletManager _bulletManager;
     private DropPoolManager _dropPoolManager;
+    private GameManager _gameManager;
 
     private int _row = 1;
     private int _column = 1;
@@ -75,6 +76,10 @@ public class EnemyManager : MonoBehaviour
         {
             _viewMapManager.floorPosition += PositionListSpawner;
         }
+        if (_gameManager)
+        {
+            _gameManager.resetGame += ResetGame;
+        }
     }
 
     private void OnDisable()
@@ -88,7 +93,10 @@ public class EnemyManager : MonoBehaviour
             _levelManager.spawnEnemy -= SpawnEnemyLogic;
             _levelManager.bossFight -= SpawnBossLogic;
         }
-        
+        if (_gameManager)
+        {
+            _gameManager.resetGame -= ResetGame;
+        }
     }
 
     private void Awake()
@@ -129,6 +137,11 @@ public class EnemyManager : MonoBehaviour
         if (_dataSource.dropManager)
         {
             _dropPoolManager = _dataSource.dropManager;
+        }
+        if (_dataSource.gameManager && !_gameManager)
+        {
+            _gameManager = _dataSource.gameManager;
+            _gameManager.resetGame += ResetGame;
         }
     }
 
@@ -234,5 +247,22 @@ public class EnemyManager : MonoBehaviour
         _enemy.activateEnemy = true;
         _enemy.gameObject.SetActive(true);
         spawnedEnemies?.Invoke(_enemy);
+    }
+
+    private void ResetGame()
+    {
+        for (int i = 0; i < _enemyTypeList.Count; i++)
+        {
+            foreach (BaseEnemy enemyTemp in _enemyTypeList[i].enemyList)
+            {
+                enemyTemp.activateEnemy = false;
+                enemyTemp.gameObject.SetActive(false);
+            }
+        }
+        foreach (BaseEnemy enemyTemp in _bossList)
+        {
+            enemyTemp.activateEnemy = false;
+            enemyTemp.gameObject.SetActive(false);
+        }
     }
 }
