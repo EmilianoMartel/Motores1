@@ -730,6 +730,38 @@ PrefabInstance:
       value: Player
       objectReference: {fileID: 0}
     - target: {fileID: 7971806440893731714, guid: 306507fc497e8a44fab82da7ea6940bb, type: 3}
+      propertyPath: m_DefaultControlScheme
+      value: Keyboard&Mouse
+      objectReference: {fileID: 0}
+    - target: {fileID: 7971806440893731714, guid: 306507fc497e8a44fab82da7ea6940bb, type: 3}
+      propertyPath: m_ActionEvents.Array.size
+      value: 16
+      objectReference: {fileID: 0}
+    - target: {fileID: 7971806440893731714, guid: 306507fc497e8a44fab82da7ea6940bb, type: 3}
+      propertyPath: m_ActionEvents.Array.data[13].m_ActionId
+      value: cc29fa9a-bea7-4577-bfa7-edcb55051f33
+      objectReference: {fileID: 0}
+    - target: {fileID: 7971806440893731714, guid: 306507fc497e8a44fab82da7ea6940bb, type: 3}
+      propertyPath: m_ActionEvents.Array.data[14].m_ActionId
+      value: 7909069e-a608-4a94-8ed0-c0f300cc86fa
+      objectReference: {fileID: 0}
+    - target: {fileID: 7971806440893731714, guid: 306507fc497e8a44fab82da7ea6940bb, type: 3}
+      propertyPath: m_ActionEvents.Array.data[15].m_ActionId
+      value: 466a8910-9cb1-4f40-a678-cc9e9b58f7e0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7971806440893731714, guid: 306507fc497e8a44fab82da7ea6940bb, type: 3}
+      propertyPath: m_ActionEvents.Array.data[13].m_ActionName
+      value: Player/Invulnerability[/Keyboard/f10]
+      objectReference: {fileID: 0}
+    - target: {fileID: 7971806440893731714, guid: 306507fc497e8a44fab82da7ea6940bb, type: 3}
+      propertyPath: m_ActionEvents.Array.data[14].m_ActionName
+      value: Player/FireRateCheat[/Keyboard/f11]
+      objectReference: {fileID: 0}
+    - target: {fileID: 7971806440893731714, guid: 306507fc497e8a44fab82da7ea6940bb, type: 3}
+      propertyPath: m_ActionEvents.Array.data[15].m_ActionName
+      value: Player/EnemyDamageCheat[/Keyboard/f1]
+      objectReference: {fileID: 0}
+    - target: {fileID: 7971806440893731714, guid: 306507fc497e8a44fab82da7ea6940bb, type: 3}
       propertyPath: m_ActionEvents.Array.data[3].m_PersistentCalls.m_Calls.Array.size
       value: 0
       objectReference: {fileID: 0}
@@ -826,7 +858,7 @@ MonoBehaviour:
   m_ScrollWheelAction: {fileID: 1740482402}
   m_TrackedDevicePositionAction: {fileID: 1886892225}
   m_TrackedDeviceOrientationAction: {fileID: 925734354}
-  m_DeselectOnBackgroundClick: 1
+  m_DeselectOnBackgroundClick: 0
   m_PointerBehavior: 0
   m_CursorLockBehavior: 0
 --- !u!1 &1726911652
