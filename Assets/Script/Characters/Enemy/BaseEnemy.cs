@@ -26,6 +26,9 @@ public class BaseEnemy : Character
     [SerializeField] private bool _vulnerableEnemyIWhenSeen = false;
     [SerializeField] private bool _isMultipleShootEnemy = false;
 
+    //Move
+    private bool _canFreeMove = true;
+
     //Shooting
     [SerializeField] private float _maxTimeShoot = 5.0f;
     private float _timeShoot;
@@ -73,6 +76,12 @@ public class BaseEnemy : Character
                 return;
             }
         }
+        if (_isObserverMoveEnemy)
+        {
+            _searchLogic = gameObject.GetComponent<SearchLogic>();
+            _searchLogic.foundPlayer += CanMoveToPlayerLogic;
+            _searchLogic.getDirection += GetDirectionToSearch;
+        }
         if (_isMultipleShootEnemy)
         {
             _enemyShoot.startMultipleAttack += GetShootDirection;
@@ -95,6 +104,11 @@ public class BaseEnemy : Character
         {
             _enemyShoot.startMultipleAttack -= GetShootDirection;
         }
+        if (_isObserverMoveEnemy)
+        {
+            _searchLogic.foundPlayer -= CanMoveToPlayerLogic;
+            _searchLogic.getDirection -= GetDirectionToSearch;
+        }
     }
 
     //TODO: TP2 - Syntax - Consistency in access modifiers (private/protected/public/etc)(DONE)
@@ -116,9 +130,12 @@ public class BaseEnemy : Character
         }
         if (!p_isDead)
         {
-            if (_enemyMovement != null)
+            if (_isMoveEnemy && _canFreeMove)
             {
                 p_direction = _enemyMovement.direction;
+                Movement(p_direction);
+            }else if (_isMoveEnemy && !_canFreeMove)
+            {
                 Movement(p_direction);
             }
             if (_enemyShoot != null)
@@ -183,5 +200,13 @@ public class BaseEnemy : Character
         StartCoroutine(Shoot(p_multipleShoot,listDirection));
     }
 
+    private void CanMoveToPlayerLogic(bool canMove)
+    {
+        _canFreeMove = !canMove;
+    }
 
+    private void GetDirectionToSearch(Vector2 directionToMove)
+    {
+        p_direction = directionToMove;
+    }
 }

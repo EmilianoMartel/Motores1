@@ -40,8 +40,9 @@ public class SearchLogic : MonoBehaviour
 
         RaycastHit2D hit = Physics2D.Raycast(origin, direction, _rayLength, _collisionLayer);
 
-        if (hit.collider != null)
+        if (hit.collider)
         {
+            Debug.Log($"{name}: hit whit {hit.collider.gameObject.name}");
             foundPlayer?.Invoke(true);
             getDirection?.Invoke(direction);
             _direction = direction;
@@ -58,14 +59,10 @@ public class SearchLogic : MonoBehaviour
     {
         Gizmos.color = Color.red;
         Vector2 start = transform.position;
-        Vector2 up = transform.position + (Vector3.up * _rayLength);
-        Vector2 right = transform.position + (Vector3.right * _rayLength);
-        Vector2 left = transform.position + (Vector3.left * _rayLength);
-        Vector2 down = transform.position + (Vector3.down * _rayLength);
 
-        Gizmos.DrawLine(start, up);
-        Gizmos.DrawLine(start, right);
-        Gizmos.DrawLine(start, left);
-        Gizmos.DrawLine(start, down);
+        for (int i = 0; i < _listDirection.Count; i++)
+        {
+            Gizmos.DrawLine(start, _listDirection[i]);
+        }
     }
 }
