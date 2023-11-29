@@ -11,8 +11,6 @@ public class Cheats : MonoBehaviour
     [SerializeField] private Player _player;
     [SerializeField] private EnemyManager _enemyManager;
 
-    [SerializeField] private float _timePress = 0.2f;
-
     private VulnerableStateController _controller;
     private CharacterSO _characterData;
 

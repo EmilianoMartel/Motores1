@@ -18,7 +18,6 @@ public class ViewMapManager : MonoBehaviour
     [SerializeField] private ManagerDataSourceSO _dataSource;
 
     [SerializeField] private float _timeToSetMapa = 0.5f;
-    [SerializeField] private float _waitForManager = 1f;
 
     //Table
     [SerializeField] private Grid _grid;

@@ -9,19 +9,21 @@ public class HealthPoints : MonoBehaviour
     public Action<int> changeLife;
     public Action damagedEvent;
     public Action dead;
-    public Action IncrementedFullLifeEvent;
+    public Action<int> ChangeFullLifeEvent;
 
     [SerializeField] private int _maxLife = 10;
     [SerializeField] private VulnerableStateController _controller;
     private DropController _dropController;
-    private int _life;
+    private int _actualLife;
     private bool _isVulnerable = true;
+
+    [SerializeField] private float _eventCallTime = 0.05f;
 
     public int maxLife { get { return _maxLife; } set { _maxLife = value; } }
 
     private void OnEnable()
     {
-        _life = _maxLife;
+        _actualLife = _maxLife;
         if (TryGetComponent(out _controller))
         {
             _controller.isVulnerable += VulnerableStateChange;
@@ -42,7 +44,7 @@ public class HealthPoints : MonoBehaviour
 
     private void Start()
     {
-        _life = _maxLife;
+        _actualLife = _maxLife;
         if (TryGetComponent(out _controller))
         {
             _controller.isVulnerable += VulnerableStateChange;
@@ -56,10 +58,10 @@ public class HealthPoints : MonoBehaviour
     //TODO: TP2 - Unclear name(DONE)
     public bool Healing(int health)
     {
-        if (_life + health <= _maxLife)
+        if (_actualLife + health <= _maxLife)
         {
-            _life += health;
-            changeLife?.Invoke(_life);
+            _actualLife += health;
+            changeLife?.Invoke(_actualLife);
             return true;
         }
         return false;
@@ -69,26 +71,26 @@ public class HealthPoints : MonoBehaviour
     {
         if (_isVulnerable)
         {
-            _life -= damage;
-            Debug.Log($"{name} was damaged, life: {_life}");
-            if (_life <= 0)
+            _actualLife -= damage;
+            Debug.Log($"{name} was damaged, life: {_actualLife}");
+            if (_actualLife <= 0)
             {
                 Dead();
                 return;
             }
-            changeLife?.Invoke(_life);
+            changeLife?.Invoke(_actualLife);
             damagedEvent?.Invoke();
-            
+
         }
     }
 
     [ContextMenu("Take 1 point of damage")]
     private void BasicDamage()
     {
-        _life--;
-        changeLife?.Invoke(_life);
+        _actualLife--;
+        changeLife?.Invoke(_actualLife);
         damagedEvent?.Invoke();
-        if (_life <= 0)
+        if (_actualLife <= 0)
         {
             Dead();
         }
@@ -97,13 +99,13 @@ public class HealthPoints : MonoBehaviour
     [ContextMenu("Take total damage")]
     private void TakeTotalDamage()
     {
-        TakeDamage(_life);
+        TakeDamage(_actualLife);
     }
 
     private void Dead()
     {
         dead?.Invoke();
-        _life = _maxLife;
+        _actualLife = _maxLife;
     }
 
     private void VulnerableStateChange(bool isVulnerable)
@@ -111,8 +113,28 @@ public class HealthPoints : MonoBehaviour
         _isVulnerable = isVulnerable;
     }
 
-    public void IncrementFullLife(int incrementedLife)
+    public void ChangeFullLife(int incrementedLife)
     {
+        if (_maxLife + incrementedLife <= 0)
+        {
+            return;
+        }
         _maxLife += incrementedLife;
+        if (_maxLife < _actualLife)
+        {
+            _actualLife = _maxLife;
+        }
+        else
+        {
+            _actualLife += incrementedLife;
+        }
+        StartCoroutine(EventCallChangeFullLife());
+    }
+
+    public IEnumerator EventCallChangeFullLife()
+    {
+        ChangeFullLifeEvent?.Invoke(_maxLife / 2);
+        yield return new WaitForSeconds(_eventCallTime);
+        changeLife?.Invoke(_actualLife);
     }
 }

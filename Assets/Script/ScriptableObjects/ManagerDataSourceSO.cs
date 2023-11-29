@@ -12,6 +12,7 @@ public class ManagerDataSourceSO : ScriptableObject
     private EnemyManager _enemyManager;
     private UiManager _uiManager;
     private ViewMapManager _viewMapManager;
+    private PausingLogic _pausingLogic;
 
     public DropPoolManager dropManager { get => _dropManager; set => _dropManager = value; }
     public LevelManager levelManager { get => _levelManager; set => _levelManager = value; }
@@ -19,4 +20,5 @@ public class ManagerDataSourceSO : ScriptableObject
     public EnemyManager enemyManager { get => _enemyManager; set => _enemyManager = value; }
     public UiManager uiManager { get => _uiManager; set => _uiManager = value; }
     public ViewMapManager viewMapManager { get => _viewMapManager; set => _viewMapManager = value; }
+    public PausingLogic pausingLogic { get => _pausingLogic; set => _pausingLogic = value; }
 }
