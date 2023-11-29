@@ -7,16 +7,16 @@ public class DiagonalShootEnemy : EnemyShoot
     protected override Vector2 GetDirection()
     {
         ChooseDirection();
-        Vector2 direction = new Vector2(p_randomX, p_randomY);
-        p_randomY = 0;
-        p_randomX = 0;
+        Vector2 direction = new Vector2(p_directionX, p_directionY);
+        p_directionY = 0;
+        p_directionX = 0;
         return direction;
     }
 
     private void ChooseDirection()
     {
-        p_randomY = RandomDirection();
-        p_randomX = RandomDirection();
+        p_directionY = RandomDirection();
+        p_directionX = RandomDirection();
     }
 
     private int RandomDirection()

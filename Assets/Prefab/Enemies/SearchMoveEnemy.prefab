@@ -13,9 +13,9 @@ GameObject:
   - component: {fileID: 5450413931319804782}
   - component: {fileID: 5450413931319804769}
   - component: {fileID: 5450413931319804768}
-  - component: {fileID: 5450413931319804771}
   - component: {fileID: 5450413931319804770}
   - component: {fileID: 5450413931319804773}
+  - component: {fileID: 345828459125111733}
   m_Layer: 11
   m_Name: SearchMoveEnemy
   m_TagString: Untagged
@@ -111,12 +111,11 @@ MonoBehaviour:
   p_bulletManager: {fileID: 0}
   p_pointShoot: {fileID: 5450413931319804780}
   activateEnemy: 1
-  _enemyMovement: {fileID: 5450413931319804771}
+  _enemyMovement: {fileID: 345828459125111733}
   _enemyShoot: {fileID: 0}
   _isSingleShootEnemy: 0
   _isMoveEnemy: 1
   _isObserverShootEnemy: 0
-  _isObserverMoveEnemy: 1
   _vulnerableEnemyIWhenSeen: 0
   _isMultipleShootEnemy: 0
   _maxTimeShoot: 5
@@ -141,20 +140,6 @@ MonoBehaviour:
   - {x: 0, y: -1}
   - {x: -1, y: 0}
   - {x: 1, y: 0}
---- !u!114 &5450413931319804771
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5450413931319804772}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e71d783374c1bc24b828cbd34cc16154, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _baseEnemy: {fileID: 5450413931319804769}
-  _treshold: 0.0001
 --- !u!114 &5450413931319804770
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -183,6 +168,22 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _damage: 1
+--- !u!114 &345828459125111733
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5450413931319804772}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c15251364560c3c49a53653250fb053b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _baseEnemy: {fileID: 5450413931319804769}
+  _treshold: 0.0001
+  _searchLogic: {fileID: 5450413931319804768}
+  _distanceToPlayerTeshold: 0.9
 --- !u!1 &5450413931736412116
 GameObject:
   m_ObjectHideFlags: 0

@@ -25,6 +25,7 @@ public class LevelManager : MonoBehaviour
     [SerializeField] private ManagerDataSourceSO _dataSourceSO;
     private EnemyManager _enemyManager;
     private ViewMapManager _viewMapManager;
+    private GameManager _gameManager;
     [SerializeField] private DropController _dropController;
 
     [SerializeField] private Stair _stair;
@@ -59,6 +60,10 @@ public class LevelManager : MonoBehaviour
         {
             _dropController.DelegateSuscriptionDrop(this);
         }
+        if (_gameManager)
+        {
+            _gameManager.resetGame += ResetGame;
+        }
     }
 
     private void OnDisable()
@@ -66,6 +71,10 @@ public class LevelManager : MonoBehaviour
         _viewMapManager.stairObject -= SetStair;
         _enemyManager.spawnedEnemies -= SpawnedEnemiesCount;
         _stair.nextLevel -= StartLevel;
+        if (_gameManager)
+        {
+            _gameManager.resetGame -= ResetGame;
+        }
     }
 
     private void Awake()
@@ -80,16 +89,21 @@ public class LevelManager : MonoBehaviour
     private IEnumerator SetManagers()
     {
         yield return new WaitForSeconds(_waitForManager);
-        if (_dataSourceSO.enemyManager)
+        if (_dataSourceSO.enemyManager && !_enemyManager)
         {
             _enemyManager = _dataSourceSO.enemyManager;
             _enemyManager.spawnedEnemies += SpawnedEnemiesCount;
 
         }
-        if (_dataSourceSO.viewMapManager)
+        if (_dataSourceSO.viewMapManager && !_viewMapManager)
         {
             _viewMapManager = _dataSourceSO.viewMapManager;
             _viewMapManager.stairObject += SetStair;
+        }
+        if (_dataSourceSO.gameManager && !_gameManager)
+        {
+            _gameManager = _dataSourceSO.gameManager;
+            _gameManager.resetGame += ResetGame;
         }
     }
 
@@ -278,5 +292,10 @@ public class LevelManager : MonoBehaviour
         _stair.isActiveStair = true;
         yield return new WaitForSeconds(_stairSpawnDelay);
         _stair.gameObject.SetActive(true);
+    }
+
+    private void ResetGame()
+    {
+        ReSpawnStair();
     }
 }

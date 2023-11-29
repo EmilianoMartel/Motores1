@@ -20,14 +20,8 @@ public class BaseEnemy : Character
     //EnemyType State
     [SerializeField] private bool _isSingleShootEnemy = false;
     [SerializeField] private bool _isMoveEnemy = false;
-    [SerializeField] private bool _isObserverShootEnemy = false;
-    //TODO: TP1 - Unused method/variable
-    [SerializeField] private bool _isObserverMoveEnemy = false;
-    [SerializeField] private bool _vulnerableEnemyIWhenSeen = false;
+    [SerializeField] private bool _vulnerableEnemyWhenSeen = false;
     [SerializeField] private bool _isMultipleShootEnemy = false;
-
-    //Move
-    private bool _canFreeMove = true;
 
     //Shooting
     [SerializeField] private float _maxTimeShoot = 5.0f;
@@ -46,42 +40,23 @@ public class BaseEnemy : Character
     {
         base.OnEnable();
 
-        if (_isObserverShootEnemy)
-        {
-            _canAttack = false;
-            _searchLogic = gameObject.GetComponent<SearchLogic>();
-            _searchLogic.foundPlayer += CanAttackChanger;
-        }
         //TODO: TP2 - Unclear name(DONE)
-        if (_vulnerableEnemyIWhenSeen)
+        if (_vulnerableEnemyWhenSeen)
         {
-            _vulnerabilityController = gameObject.GetComponent<VulnerableStateController>();
+            if (gameObject.TryGetComponent<VulnerableStateController>(out VulnerableStateController output) && gameObject.TryGetComponent<SearchLogic>(out SearchLogic output1))
+            {
+                _vulnerabilityController = output;
+                _searchLogic = output1;
+                _searchLogic.foundPlayer += ChangeVulnerability;
+                _canAttack = false;
+            }
         }
+
         if (_isSingleShootEnemy)
         {
-            if (_enemyShoot == null)
-            {
-                Debug.LogError(message: $"{name}: EnemyShoot is null\n Check and assigned one\nDisabling component");
-                enabled = false;
-                return;
-            }
             _enemyShoot.startAttack += GetShootDirection;
         }
-        if (_isMoveEnemy)
-        {
-            if (_enemyMovement == null)
-            {
-                Debug.LogError(message: $"{name}: EnemyMovement is null\n Check and assigned one\nDisabling component");
-                enabled = false;
-                return;
-            }
-        }
-        if (_isObserverMoveEnemy)
-        {
-            _searchLogic = gameObject.GetComponent<SearchLogic>();
-            _searchLogic.foundPlayer += CanMoveToPlayerLogic;
-            _searchLogic.getDirection += GetDirectionToSearch;
-        }
+
         if (_isMultipleShootEnemy)
         {
             _enemyShoot.startMultipleAttack += GetShootDirection;
@@ -92,10 +67,6 @@ public class BaseEnemy : Character
     {
         base.OnDisable();
 
-        if (_isObserverShootEnemy)
-        {
-            _searchLogic.foundPlayer -= CanAttackChanger;
-        }
         if (_isSingleShootEnemy)
         {
             _enemyShoot.startAttack -= GetShootDirection;
@@ -104,10 +75,10 @@ public class BaseEnemy : Character
         {
             _enemyShoot.startMultipleAttack -= GetShootDirection;
         }
-        if (_isObserverMoveEnemy)
+        if (_vulnerableEnemyWhenSeen)
         {
-            _searchLogic.foundPlayer -= CanMoveToPlayerLogic;
-            _searchLogic.getDirection -= GetDirectionToSearch;
+
+            _searchLogic.foundPlayer -= ChangeVulnerability;
         }
     }
 
@@ -115,6 +86,34 @@ public class BaseEnemy : Character
     protected override void Awake()
     {
         base.Awake();
+        if (_vulnerableEnemyWhenSeen)
+        {
+            if (!gameObject.TryGetComponent<VulnerableStateController>(out VulnerableStateController output))
+            {
+                Debug.LogError(message: $"{name}: VulenableStateController is null\n Check and assigned one\nDisabling component");
+                enabled = false;
+                return;
+            }
+            if (!gameObject.TryGetComponent<SearchLogic>(out SearchLogic output1))
+            {
+                Debug.LogError(message: $"{name}: SearchLogic is null\n Check and assigned one\nDisabling component");
+                enabled = false;
+                return;
+            }
+        }
+        if (_isMoveEnemy && !_enemyMovement)
+        {
+            Debug.LogError(message: $"{name}: EnemyMovement is null\n Check and assigned one\nDisabling component");
+            enabled = false;
+            return;
+        }
+        if (_isSingleShootEnemy && !_enemyShoot)
+        {
+            Debug.LogError(message: $"{name}: EnemyShoot is null\n Check and assigned one\nDisabling component");
+            enabled = false;
+            return;
+        }
+
         TimeShootSelection();
         p_actualTime = 0;
     }
@@ -130,15 +129,12 @@ public class BaseEnemy : Character
         }
         if (!p_isDead)
         {
-            if (_isMoveEnemy && _canFreeMove)
+            if (_isMoveEnemy)
             {
                 p_direction = _enemyMovement.direction;
                 Movement(p_direction);
-            }else if (_isMoveEnemy && !_canFreeMove)
-            {
-                Movement(p_direction);
             }
-            if (_enemyShoot != null)
+            if (_enemyShoot)
             {
                 p_actualTime += Time.deltaTime;
                 if (_canAttack)
@@ -180,15 +176,6 @@ public class BaseEnemy : Character
         }
     }
 
-    private void CanAttackChanger(bool canAttack)
-    {
-        _canAttack = canAttack;
-        if (_vulnerableEnemyIWhenSeen)
-        {
-            _vulnerabilityController.isVulnerable?.Invoke(_canAttack);
-        }
-    }
-
     private void GetShootDirection(Vector2 directionAttack)
     {
         p_attackDirection = directionAttack;
@@ -197,16 +184,12 @@ public class BaseEnemy : Character
 
     private void GetShootDirection(List<Vector2> listDirection)
     {
-        StartCoroutine(Shoot(p_multipleShoot,listDirection));
+        StartCoroutine(Shoot(p_multipleShoot, listDirection));
     }
 
-    private void CanMoveToPlayerLogic(bool canMove)
+    private void ChangeVulnerability(bool change)
     {
-        _canFreeMove = !canMove;
-    }
-
-    private void GetDirectionToSearch(Vector2 directionToMove)
-    {
-        p_direction = directionToMove;
+        _vulnerabilityController.isVulnerable?.Invoke(change);
+        _canAttack = change;
     }
 }

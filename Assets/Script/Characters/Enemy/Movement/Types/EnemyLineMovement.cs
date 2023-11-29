@@ -23,7 +23,7 @@ public class EnemyLineMovement : EnemyMovement
                 randomRow = Random.Range(0, p_row);
                 counter++;
             }
-            p_nextPosition = _enemyManager._positionMatriz[p_currentColumnPosition, randomRow];
+            p_nextPosition = p_enemyManager._positionMatriz[p_currentColumnPosition, randomRow];
             p_currentRowPosition = randomRow;
         }
         else
@@ -34,13 +34,13 @@ public class EnemyLineMovement : EnemyMovement
                 randomColumn = Random.Range(0, p_row);
                 counter++;
             }
-            p_nextPosition = _enemyManager._positionMatriz[randomColumn, p_currentRowPosition];
+            p_nextPosition = p_enemyManager._positionMatriz[randomColumn, p_currentRowPosition];
             p_currentColumnPosition = randomColumn;
         }
         
     }
 
-    protected void PatrolMovement()
+    protected virtual void PatrolMovement()
     {
         p_currentPosition = transform.position;
         p_directionToNextPosition = p_nextPosition - p_currentPosition;

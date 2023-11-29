@@ -13,6 +13,9 @@ public class HealthView : MonoBehaviour
     [SerializeField] private HealthPoints _healthPoints;
     private List<UiHearts> _heartList = new List<UiHearts>();
 
+    //Managers
+    private GameManager _gameManager;
+
     private void OnEnable()
     {
         _healthPoints.changeLife += ShowActualLife;
@@ -21,12 +24,20 @@ public class HealthView : MonoBehaviour
         {
             _heartList[i].ChangeLifeSprite(0);
         }
+        if (_gameManager)
+        {
+            _gameManager.resetGame += ResetLife;
+        }
     }
 
     private void OnDisable()
     {
         _healthPoints.changeLife -= ShowActualLife;
         _healthPoints.ChangeFullLifeEvent -= ChangeMaxLife;
+        if (_gameManager)
+        {
+            _gameManager.resetGame -= ResetLife;
+        }
     }
 
     private void Awake()
@@ -34,6 +45,12 @@ public class HealthView : MonoBehaviour
         if (!_healthPoints)
         {
             Debug.LogError(message: $"{name}: HealthPoints is null\n Check and assigned one\nDisabling component");
+            enabled = false;
+            return;
+        }
+        if(!_dataSourceSO)
+        {
+            Debug.LogError(message: $"{name}: DataSource is null\n Check and assigned one\nDisabling component");
             enabled = false;
             return;
         }
@@ -48,19 +65,28 @@ public class HealthView : MonoBehaviour
     private IEnumerator SetManager()
     {
         yield return new WaitForSeconds(_waitForManager);
-        if (_dataSourceSO.gameManager)
+        if (_dataSourceSO.gameManager && !_gameManager)
         {
-            _dataSourceSO.gameManager.resetGame += ResetLife;
+            _gameManager = _dataSourceSO.gameManager;
+            _gameManager.resetGame += ResetLife;
         }
     }
 
     private void ResetLife()
     {
+        StartCoroutine(WaitForHeartReset());
+    }
+
+    private IEnumerator WaitForHeartReset()
+    {
+        yield return new WaitForSeconds(_waitForManager);
+        _heartsCount = _healthPoints.maxLife / 2;
         for (int i = 0; i < _heartList.Count; i++)
         {
             if (i < _heartsCount)
             {
                 _heartList[i].ChangeLifeSprite(0);
+                _heartList[i].gameObject.SetActive(true);
             }
             else
             {

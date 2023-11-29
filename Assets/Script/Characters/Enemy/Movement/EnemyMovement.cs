@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 
-public class EnemyMovement : MonoBehaviour
+public abstract class EnemyMovement : MonoBehaviour
 {
     [SerializeField] protected BaseEnemy _baseEnemy;
-    protected EnemyManager _enemyManager;
+    protected EnemyManager p_enemyManager;
 
     //Positions
     protected Vector2 p_currentPosition;
@@ -24,14 +24,8 @@ public class EnemyMovement : MonoBehaviour
 
     private void Start()
     {
-        if (_enemyManager == null)
-        {
-            Debug.LogError(message: $"{name}: EnemyManager is null\n Check and assigned one\nDisabling component");
-            enabled = false;
-            return;
-        }
-        p_row = _enemyManager._positionMatriz.GetLength(1);
-        p_column = _enemyManager._positionMatriz.GetLength(0);
+        p_row = p_enemyManager._positionMatriz.GetLength(1);
+        p_column = p_enemyManager._positionMatriz.GetLength(0);
         p_currentColumnPosition = _baseEnemy.col;
         p_currentRowPosition = _baseEnemy.row;
         GetRandomNextPosition();
@@ -44,7 +38,7 @@ public class EnemyMovement : MonoBehaviour
 
     public void GetValueEnemyManager(EnemyManager enemyManager)
     {
-        _enemyManager = enemyManager;
+        p_enemyManager = enemyManager;
     }
 
     protected virtual void GetRandomNextPosition()

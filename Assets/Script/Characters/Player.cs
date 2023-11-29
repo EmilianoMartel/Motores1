@@ -16,6 +16,9 @@ public class Player : Character
     [SerializeField] private bool _isDamaged = false;
     [SerializeField] private float _damagedDelay = 1f;
 
+    //Manager
+    private GameManager _gameManager;
+
     public Vector3 inputAttack { set { _inputAttack = value; } }
     public Vector3 direction { set { p_direction = value; } }
     public CharacterSO characterSO { get { return p_characterData; } }
@@ -25,9 +28,9 @@ public class Player : Character
         base.OnEnable();
         transform.position = new Vector3(0, 0, -5);
         p_healthPoints.damagedEvent += IsDamaged;
-        if (_dataSourceSO.gameManager)
+        if (_gameManager)
         {
-            _dataSourceSO.gameManager.resetGame += ActivePlayer;
+            _gameManager.resetGame += ActivePlayer;
         }
     }
 
@@ -35,6 +38,10 @@ public class Player : Character
     {
         base.OnDisable();
         p_healthPoints.damagedEvent -= IsDamaged;
+        if (_gameManager)
+        {
+            _gameManager.resetGame -= ActivePlayer;
+        }
     }
 
     protected override void Awake()
@@ -85,9 +92,10 @@ public class Player : Character
     private IEnumerator SetManager()
     {
         yield return new WaitForSeconds(_waitForManagers);
-        if (_dataSourceSO.gameManager)
+        if (_dataSourceSO.gameManager && !_gameManager)
         {
-            _dataSourceSO.gameManager.resetGame += ActivePlayer;
+            _gameManager = _dataSourceSO.gameManager;
+            _gameManager.resetGame += ActivePlayer;
         }
     }
 
@@ -110,6 +118,7 @@ public class Player : Character
 
     private void ActivePlayer()
     {
+        gameObject.SetActive(false);
         gameObject.SetActive(true);
     }
 

@@ -151,8 +151,10 @@ public class EnemyManager : MonoBehaviour
             _enemy.GetEnemyManager(this);
             _enemy.bulletManager = _bulletManager;
             _enemyType.name = _enemy.name;
-            _enemyType.enemyList = new List<BaseEnemy>();
-            _enemyType.enemyList.Add(_enemy);
+            _enemyType.enemyList = new List<BaseEnemy>
+            {
+                _enemy
+            };
             _enemyTypeList.Add(_enemyType);
             _enemy.activateEnemy = false;
             _enemy.gameObject.SetActive(false);

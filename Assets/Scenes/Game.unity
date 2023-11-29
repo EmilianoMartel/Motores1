@@ -251,10 +251,10 @@ MonoBehaviour:
   _dataSource: {fileID: 11400000, guid: 189ad4a16cf15264a8d5979bf3f251ef, type: 2}
   _bulletManager: {fileID: 133105405}
   _enemyListPrefab:
-  - {fileID: 5450413931319804769, guid: 097385fe911b6fc429c9cf363d46d029, type: 3}
   - {fileID: 7524849006491544752, guid: 492dda8e4780fc74e8377bdc5c92496a, type: 3}
-  - {fileID: 4093501843917922084, guid: c80633b2c26f7d7439d7e9914e56df06, type: 3}
   - {fileID: 2796134744829502551, guid: 795f1a9da8f7c7a4cbbe9336b079ccfc, type: 3}
+  - {fileID: 5450413931319804769, guid: 097385fe911b6fc429c9cf363d46d029, type: 3}
+  - {fileID: 4093501843917922084, guid: c80633b2c26f7d7439d7e9914e56df06, type: 3}
   _bossListPrefab:
   - {fileID: 4093501843917922084, guid: 8d1fcc6f3ee57bc4a81df371c09b7033, type: 3}
   - {fileID: 4093501843917922084, guid: 8d1fcc6f3ee57bc4a81df371c09b7033, type: 3}

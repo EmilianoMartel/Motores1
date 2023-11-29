@@ -96,6 +96,7 @@ public class GameManager : MonoBehaviour
 
     public void ResetGame()
     {
+        Time.timeScale = 1.0f;
         resetGame?.Invoke();
         _gamePlay.SetActive(true);
     }

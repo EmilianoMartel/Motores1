@@ -42,7 +42,7 @@ public class SearchLogic : MonoBehaviour
 
         if (hit.collider)
         {
-            Debug.Log($"{name}: hit whit {hit.collider.gameObject.name}");
+            Debug.Log($"{name}: raycast hit with {hit.collider.gameObject.name}");
             foundPlayer?.Invoke(true);
             getDirection?.Invoke(direction);
             _direction = direction;

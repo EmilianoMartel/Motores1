@@ -166,6 +166,7 @@ public class UiManager : MonoBehaviour
         _waveText.text = "0";
         _panelEndGame.SetActive(false);
         _buttonLayout.SetActive(false);
+        _pausedScreen.SetActive(false);
     }
 
     private void PausingEvent()

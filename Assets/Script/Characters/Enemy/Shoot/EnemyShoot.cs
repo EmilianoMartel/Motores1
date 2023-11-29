@@ -13,12 +13,12 @@ public abstract class EnemyShoot : MonoBehaviour
 
     [SerializeField] protected CharacterView p_characterView;
     protected Vector2 p_directionShoot;
-    protected int p_randomY = 0;
-    protected int p_randomX = 0;
+    protected int p_directionY = 0;
+    protected int p_directionX = 0;
 
-    private void Start()
+    protected virtual void Awake()
     {
-        if (p_characterView == null)
+        if (!p_characterView)
         {
             Debug.LogError(message: $"{name}: CharacterView is null\n Check and assigned one\nDisabling component");
             enabled = false;
@@ -26,7 +26,7 @@ public abstract class EnemyShoot : MonoBehaviour
         }
     }
 
-    public void Shoot(int numShoot)
+    public virtual void Shoot(int numShoot)
     {
         List<Vector2> list = new List<Vector2>();
         for (int i = 0; i < numShoot; i++)
@@ -37,7 +37,7 @@ public abstract class EnemyShoot : MonoBehaviour
         startMultipleAttack?.Invoke(list);
     }
 
-    public void Shoot()
+    public virtual void Shoot()
     {
         p_directionShoot = GetDirection();
         startAttack?.Invoke(p_directionShoot);

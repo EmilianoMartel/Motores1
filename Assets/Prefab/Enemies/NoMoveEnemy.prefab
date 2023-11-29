@@ -14,8 +14,8 @@ GameObject:
   - component: {fileID: 7524849006491545423}
   - component: {fileID: 7524849006491544754}
   - component: {fileID: 7524849006491544753}
-  - component: {fileID: 2754763630728339446}
   - component: {fileID: 4795909926746027186}
+  - component: {fileID: 7739736398414187884}
   m_Layer: 8
   m_Name: NoMoveEnemy
   m_TagString: Untagged
@@ -92,12 +92,10 @@ MonoBehaviour:
   p_pointShoot: {fileID: 7524849007748788794}
   activateEnemy: 1
   _enemyMovement: {fileID: 0}
-  _enemyShoot: {fileID: 2754763630728339446}
+  _enemyShoot: {fileID: 7739736398414187884}
   _isSingleShootEnemy: 1
   _isMoveEnemy: 0
-  _isObserverShootEnemy: 1
-  _isObserverMoveEnemy: 0
-  _vulnerableEnemyIWhenSeen: 1
+  _vulnerableEnemyWhenSeen: 1
   _isMultipleShootEnemy: 0
   _maxTimeShoot: 5
 --- !u!114 &7524849006491545423
@@ -135,6 +133,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _maxLife: 10
   _controller: {fileID: 4795909926746027186}
+  _eventCallTime: 0.05
 --- !u!114 &7524849006491544753
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -148,20 +147,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _damage: 1
---- !u!114 &2754763630728339446
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7524849006491545419}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9123930c766e3144e9f834c866368692, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  p_characterView: {fileID: 6359102246570833659}
-  _searchLogic: {fileID: 7524849006491545423}
 --- !u!114 &4795909926746027186
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -174,6 +159,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5a28e0d5a93093a4189c11521e623597, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &7739736398414187884
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7524849006491545419}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4bfa0ee6cd4275649a8687beb4468a4c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  p_characterView: {fileID: 6359102246570833659}
+  _searchLogic: {fileID: 7524849006491545423}
 --- !u!1 &7524849007748788793
 GameObject:
   m_ObjectHideFlags: 0
@@ -326,7 +325,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   p_animator: {fileID: 7524849007753269902}
   p_character: {fileID: 7524849006491544752}
-  p_spriteRenderer: {fileID: 0}
+  p_spriteRenderer: {fileID: 7524849007753269903}
   _timeBetweenColors: 0.3
   _numberOfRepetitionAnimation: 2
   _damagedColor: {r: 0, g: 0, b: 0, a: 0}
